@@ -30,9 +30,7 @@ mat-table {
 .loading {
   position: absolute;
   width: calc(100% - 50px);
-  height: calc(100% - 50px);
-  background: rgba(255, 255, 255, 0.5);
+  height: calc(100% - 110px);
   background: rgba(0, 0, 0, 0.5);
-  //background: black;
   z-index: 100;
 }
