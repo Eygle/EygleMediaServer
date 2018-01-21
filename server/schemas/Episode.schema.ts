@@ -5,6 +5,7 @@ import * as _ from 'underscore';
 import DB from '../modules/DB';
 import ASchema from './ASchema.schema';
 import {ITVDBEpisode} from "../modules/TVDB";
+import {EygleFile} from "../../commons/models/file";
 
 const _schema: mongoose.Schema = DB.createSchema({
   title: String,
@@ -51,7 +52,7 @@ class Episode extends ASchema {
    * @param files
    * @return {Q.Promise<any>}
    */
-  public createOrUpdateFromTVDBResult(show: ITVShow, res: ITVDBEpisode, files: Array<IEygleFile>) {
+  public createOrUpdateFromTVDBResult(show: ITVShow, res: ITVDBEpisode, files: Array<EygleFile>) {
     const defer = q.defer();
 
     this._model.findOne()

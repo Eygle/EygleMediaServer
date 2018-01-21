@@ -14,7 +14,17 @@ export const locale = {
 
   // ALL DOWNLOADS
   "FILES": {
-    "TITLE": "Tous les téléchargements"
+    "TITLE": "Tous les téléchargements",
+    "TOOLBAR": {
+      "ROOT": "Téléchargements"
+    },
+    "SEARCH": "Rechercher",
+    "TABLE": {
+      "NAME": "Nom",
+      "SIZE": "Taille",
+      "TYPE": "Type",
+      "LAST_MODIFICATION": "Modifié",
+    }
   },
 
   // AUTH

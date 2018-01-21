@@ -4,6 +4,7 @@ import * as q from 'q';
 import DB from '../modules/DB';
 import ASchema from './ASchema.schema';
 import TMDB, {ITMDBMovie} from "../modules/TMDB";
+import {EygleFile} from "../../commons/models/file";
 
 const _schema: mongoose.Schema = DB.createSchema({
   title: String,
@@ -40,9 +41,9 @@ class Proposal extends ASchema {
   /**
    * Create new proposal instance from TMDB result
    * @param m
-   * @param {IEygleFile} file
+   * @param {EygleFile} file
    */
-  public createFromTMDBResult(m: ITMDBMovie, file: IEygleFile) {
+  public createFromTMDBResult(m: ITMDBMovie, file: EygleFile) {
     return this.create({
       title: m.title,
       originalTitle: m.original_title,

@@ -1,6 +1,7 @@
 import TVShow from "../../schemas/TVShow.schema"
 import {ARoute} from "../../middlewares/Resty";
 import {EPermission} from "../../typings/enums";
+import {RestyCallback} from "../../typings/resty.interface";
 
 /**
  * Resource class

@@ -1,6 +1,7 @@
 /**
  * Created by eygle on 4/29/17.
  */
+import {EygleFile} from "../models/file";
 
 interface ILocalFile {
   filename: string;
@@ -17,7 +18,7 @@ interface ILocalFile {
   mtime?: Date;
   mediaInfo: ITorrentInfo;
 
-  model: IEygleFile;
+  model: EygleFile;
 }
 
 interface ITorrentInfo {

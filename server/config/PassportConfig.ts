@@ -7,6 +7,10 @@ import UserSchema from "../schemas/User.schema";
 import {User} from "../../commons/models/user";
 
 class PassportConfig {
+  /**
+   * Initialise passport
+   * @param app
+   */
   public static init(app) {
     app.use(passport.initialize());
     app.use(passport.session());
@@ -41,7 +45,10 @@ class PassportConfig {
             return done(null, user);
           });
         })
-        .catch(err => done(err));
+        .catch(err => {
+          console.log("err");
+          done(err);
+        });
     });
   }
 

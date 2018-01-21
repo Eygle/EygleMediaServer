@@ -3,10 +3,12 @@ import * as _ from "underscore"
 
 import Utils from "../../config/Utils"
 import Movie from "../../schemas/Movie.schema"
-import File from "../../schemas/File.schema"
+import FileSchema from "../../schemas/File.schema"
 import TMDB from "../../modules/TMDB"
 import {ARoute} from "../../middlewares/Resty";
 import {EPermission} from "../../typings/enums";
+import {RestyCallback} from "../../typings/resty.interface";
+import {EygleFile} from "../../../commons/models/file";
 
 /**
  * Resource class
@@ -36,8 +38,8 @@ class Resource extends ARoute {
    * @param next
    */
   public put(fid: string, next: RestyCallback): void {
-    File.get(fid)
-      .then((file: IEygleFile) => {
+    FileSchema.get(fid)
+      .then((file: EygleFile) => {
         TMDB.get(this.data.tmdbId, file)
           .then((movie: IMovie) => {
             Movie.findWithFileId(fid)
@@ -53,7 +55,7 @@ class Resource extends ARoute {
                 q.allSettled(promises)
                   .then(() => {
                     q.allSettled([
-                      File.save(file),
+                      FileSchema.save(file),
                       Movie.save(movie)
                     ])
                       .then(() => next())
@@ -83,11 +85,11 @@ class Resource extends ARoute {
       });
 
       if (!!~idx) {
-        const f = <IEygleFile>movie.files.splice(idx, 1)[0];
+        const f = <EygleFile>movie.files.splice(idx, 1)[0];
 
         f.movie = null;
         q.allSettled([
-          File.save(f),
+          FileSchema.save(f),
           Movie.save(movie)
         ])
           .then(defer.resolve)
@@ -96,9 +98,9 @@ class Resource extends ARoute {
         defer.resolve();
       }
     } else if (movie.files.length === 1) {
-      (<IEygleFile>movie.files[0]).movie = null;
+      (<EygleFile>movie.files[0]).movie = null;
       q.allSettled([
-        File.save(movie.files[0]),
+        FileSchema.save(movie.files[0]),
         Movie.setDeleted(movie)
       ])
         .then(defer.resolve)

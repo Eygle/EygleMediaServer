@@ -1,3 +1,5 @@
+import {EygleFile} from "../models/file";
+
 interface IProposal extends IModel {
   title: string;
   originalTitle: string;
@@ -7,5 +9,5 @@ interface IProposal extends IModel {
 
   tmdbId: number;
 
-  file: IEygleFile
+  file: EygleFile
 }

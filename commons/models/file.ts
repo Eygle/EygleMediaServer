@@ -1,8 +1,6 @@
-/**
- * Created by eygle on 5/6/17.
- */
+import {AModel} from "./model.abstract";
 
-interface IEygleFile extends IModel {
+export class EygleFile extends AModel {
   filename: string;
   ext: string;
   size: number;
@@ -13,7 +11,7 @@ interface IEygleFile extends IModel {
   episode: IEpisode | string;
   movie: IMovie;
 
-  parent: IEygleFile;
+  parent: EygleFile;
 
   mediaInfo: {
     title: string;
@@ -36,11 +34,11 @@ interface IEygleFile extends IModel {
     excess: [{
       type: string;
     }];
-  }
+  };
 
   // View
   loading: boolean;
   selected: boolean;
-  directory: IEygleFile;
-  children: Array<IEygleFile>;
+  directory: EygleFile;
+  children: Array<EygleFile>;
 }

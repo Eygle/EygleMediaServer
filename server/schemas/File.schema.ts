@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 import DB from '../modules/DB';
 import ASchema from './ASchema.schema';
 import Utils from "../config/Utils";
+import * as q from "q";
 
 const _schema: mongoose.Schema = DB.createSchema({
   filename: String,
@@ -47,7 +48,7 @@ _schema.pre('save', function (next) {
   next();
 });
 
-class File extends ASchema {
+class FileSchema extends ASchema {
 
   /**
    * Schema getter
@@ -56,9 +57,28 @@ class File extends ASchema {
   getSchema(): mongoose.Schema {
     return _schema;
   }
+
+  /**
+   * Get children
+   * @return {Promise<IModel>}
+   */
+  public getChildren(parent: string = null) {
+    const defer = <q.Deferred<Array<IModel>>>q.defer();
+
+    this._model.find()
+      .where('parent').equals(parent)
+      .select('filename mtime size ext directory movie tvshow')
+      .sort({mtime: -1})
+      .exec((err, items) => {
+        if (err) return defer.reject(err);
+        defer.resolve(items);
+      });
+
+    return defer.promise;
+  }
 }
 
-const instance = new File();
+const instance = new FileSchema();
 
 module.exports.schema = instance;
 export default instance;

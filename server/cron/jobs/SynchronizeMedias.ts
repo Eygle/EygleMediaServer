@@ -6,7 +6,7 @@ import * as ptn from "parse-torrent-name";
 
 import AJob from "../AJob";
 import Utils from "../../config/Utils"
-import File from "../../schemas/File.schema"
+import FileSchema from "../../schemas/File.schema"
 import TMDB, {ITMDBMovie} from "../../modules/TMDB";
 import Movie from "../../schemas/Movie.schema";
 import Proposal from "../../schemas/Proposal.schema";
@@ -14,6 +14,7 @@ import TVDB, {ITVDBEpisode, ITVDBShow} from "../../modules/TVDB";
 import TVShow from "../../schemas/TVShow.schema";
 import Episode from "../../schemas/Episode.schema";
 import {EEnv} from "../../typings/enums";
+import {EygleFile} from "../../../commons/models/file";
 
 
 class SynchronizeMedias extends AJob {
@@ -147,14 +148,14 @@ class SynchronizeMedias extends AJob {
   /**
    * Identify medias and create IFiles
    * @param {Array<ILocalFile>} list
-   * @param {IEygleFile} parent
+   * @param {EygleFile} parent
    * @return {any}
    * @private
    */
-  private _identifyMedias(list = this._filesToAdd, parent: IEygleFile = null) {
+  private _identifyMedias(list = this._filesToAdd, parent: EygleFile = null) {
     for (let f of list) {
       f.parent = parent ? parent._id.toString() : null;
-      f.model = File.create(f);
+      f.model = FileSchema.create(f);
       if (f.directory && f.children) {
         this._identifyMedias(f.children, f.model)
       } else {
@@ -217,7 +218,7 @@ class SynchronizeMedias extends AJob {
       let movie, tvShow = null;
 
       q.allSettled([
-        File.remove(f.model),
+        FileSchema.remove(f.model),
         Movie.findWithFileId(f.model._id).then(res => {
           movie = res;
         }),
@@ -489,7 +490,7 @@ class SynchronizeMedias extends AJob {
 
     for (let f of files) {
       if (f.model) {
-        promises.push(File.save(f.model));
+        promises.push(FileSchema.save(f.model));
         this._nbrFilesAdded++;
       }
       if (f.children) {

@@ -49,7 +49,7 @@ class Utils {
   public static imagesRoot: string;
 
   /**
-   * File upload & download root path
+   * FileSchema upload & download root path
    */
   public static filesRoot: string;
 

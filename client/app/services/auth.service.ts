@@ -3,11 +3,14 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from "rxjs/Observable";
 
 import {User} from "../../../commons/models/user";
-import {catchError} from "rxjs/operators";
+import {catchError, tap} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
+import {CookieService} from "ngx-cookie-service";
+import {Router} from "@angular/router";
 
 const httpOptions = {
-  headers: new HttpHeaders({'Content-Type': 'plain/text'})
+  headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'}),
+  responseType: 'text'
 };
 
 @Injectable()
@@ -17,8 +20,9 @@ export class AuthService {
    */
   user: User;
 
-  constructor(private http: HttpClient) {
-    this.user = null;
+  constructor(private http: HttpClient, private cookie: CookieService, private router: Router) {
+    const json = this.cookie.get("user");
+    this.user = json ? JSON.parse(json) : null;
   }
 
   /**
@@ -38,6 +42,11 @@ export class AuthService {
       password: password
     }, httpOptions)
       .pipe(
+        tap(() => {
+          this.user = JSON.parse(this.cookie.get("user"));
+          console.log(this.user);
+          this.router.navigate(['files']);
+        }),
         catchError(this._handleError<User>('login'))
       );
   }

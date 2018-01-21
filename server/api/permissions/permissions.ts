@@ -1,5 +1,6 @@
 import Config from '../../schemas/Config.schema';
 import {ARoute} from "../../middlewares/Resty";
+import {RestyCallback} from "../../typings/resty.interface";
 
 class Collection extends ARoute {
   /**

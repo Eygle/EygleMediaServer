@@ -1,0 +1,38 @@
+@import "../../common";
+
+.toolbar {
+  & > .actions > .boxed {
+    color: $color-yellow;
+  }
+}
+
+.search {
+  width: 100%;
+  padding: 0 20px;
+}
+
+mat-table {
+  height: calc(100% - 60px);
+  overflow: auto;
+  position: relative;
+
+  mat-row {
+    &.selected {
+      background-color: transparentize($color-yellow, 0.8);
+    }
+
+    mat-cell {
+      cursor: default;
+    }
+  }
+}
+
+.loading {
+  position: absolute;
+  width: calc(100% - 50px);
+  height: calc(100% - 50px);
+  background: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.5);
+  //background: black;
+  z-index: 100;
+}

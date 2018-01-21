@@ -1,4 +1,70 @@
-<div class="toolbar">Coucou je suis la toolbar</div>
-<div class="content">
-  files works!
+<div fxLayout="column">
+  <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="breadcrumbs" fxLayout="row" fxLayoutAlign="start center">
+      <span *ngIf="!root" [translate]="'FILES.TOOLBAR.ROOT'"></span>
+      <mat-icon (click)="open()" *ngIf="root">storage</mat-icon>
+      <span *ngIf="root">{{root.filename}}</span>
+      <span class="boxed" *ngIf="dataSource.data.length && !isLoading">{{dataSource.data.length}}</span>
+    </div>
+    <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+      <span class="boxed" *ngIf="selected.length">{{selected.length}}</span>
+      <mat-icon *ngIf="selected.length">file_download</mat-icon>
+      <mat-icon *ngIf="selected.length">insert_link</mat-icon>
+      <mat-icon *ngIf="selected.length">delete</mat-icon>
+      <mat-icon (click)="refresh()">refresh</mat-icon>
+      <mat-icon>info_outline</mat-icon>
+    </div>
+  </div>
+  <div class="content" fxFlex="flex">
+    <mat-form-field class="search">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{'FILES.SEARCH' | translate}}">
+    </mat-form-field>
+
+    <div class="loading" *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-table [dataSource]="dataSource" matSort matSortActive="mtime" matSortDirection="desc"
+               [perfectScrollbar]="config">
+      <!-- Icon Column -->
+      <ng-container matColumnDef="icon">
+        <mat-header-cell *matHeaderCellDef fxFlex="30px"></mat-header-cell>
+        <mat-cell *matCellDef="let row" fxFlex="30px">
+          <mat-icon>{{getIcon(row)}}</mat-icon>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="filename">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'FILES.TABLE.NAME' | translate}}</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.filename}}</mat-cell>
+      </ng-container>
+
+      <!--&lt;!&ndash; Type Column &ndash;&gt;-->
+      <!--<ng-container matColumnDef="type">-->
+      <!--<mat-header-cell *matHeaderCellDef mat-sort-header>{{'FILES.TABLE.TYPE' | translate}}</mat-header-cell>-->
+      <!--<mat-cell *matCellDef="let row"> {{row.type}}%</mat-cell>-->
+      <!--</ng-container>-->
+
+      <!-- Size Column -->
+      <ng-container matColumnDef="size">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="100px">{{'FILES.TABLE.SIZE' | translate}}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" fxFlex="100px"> {{row.size | formatSize}}</mat-cell>
+      </ng-container>
+
+      <!-- Last Edited Column -->
+      <ng-container matColumnDef="mtime">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="100px">{{'FILES.TABLE.LAST_MODIFICATION' |
+          translate}}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" fxFlex="100px"> {{row.mtime | date}}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'selected': row.selected}"
+               (click)="select(row)" (dblclick)="open(row)">
+      </mat-row>
+    </mat-table>
+  </div>
 </div>

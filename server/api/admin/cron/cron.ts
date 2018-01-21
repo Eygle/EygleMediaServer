@@ -3,6 +3,7 @@ import CronJob from '../../../schemas/CronJob';
 import {EHTTPStatus, EPermission} from "../../../typings/enums";
 import CronManager from "../../../cron/CronManager";
 import EdError from "../../../config/EdError";
+import {RestyCallback} from "../../../typings/resty.interface";
 
 /**
  * Collection class

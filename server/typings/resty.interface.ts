@@ -1,9 +1,9 @@
 import {User} from "../../commons/models/user";
 
-interface IRestyContext {
+export interface IRestyContext {
   data: any;
   req: any;
   user: User;
 }
 
-type RestyCallback = (data?: any) => void;
+export type RestyCallback = (data?: any) => void;

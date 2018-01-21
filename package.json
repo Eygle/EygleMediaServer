@@ -44,6 +44,8 @@
     "method-override": "^2.3.10",
     "mongoose": "^5.0.0-rc2",
     "moviedb": "^0.2.10",
+    "ngx-cookie-service": "^1.0.10",
+    "ngx-perfect-scrollbar": "^5.3.1",
     "node-schedule": "^1.2.5",
     "node-tvdb": "^3.2.0",
     "nodemailer": "^4.4.1",

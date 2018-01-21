@@ -1,7 +1,8 @@
-import File from "../../schemas/File.schema"
+import FileSchema from "../../schemas/File.schema"
 import {ARoute} from "../../middlewares/Resty";
 import {EPermission} from "../../typings/enums";
-import Utils from "../../config/Utils";
+import {RestyCallback} from "../../typings/resty.interface";
+import {EygleFile} from "../../../commons/models/file";
 
 /**
  * Collection class
@@ -17,40 +18,32 @@ class Collection extends ARoute {
    * @param next
    */
   public get(next: RestyCallback): void {
-    File.getAll({
-      select: 'filename mtime size ext directory parent movie tvshow',
-      sort: {mtime: -1}
-    })
-      .then((items: Array<IEygleFile>) => next(this._createHierarchy(items)))
+    FileSchema.getChildren()
+      .then((items: Array<EygleFile>) => next(items))
       .catch(next);
+  }
+}
+
+/**
+ * Resource class
+ */
+class Resource extends ARoute {
+
+  constructor() {
+    super(EPermission.SeeFiles);
   }
 
   /**
-   * Create files hierarchy
-   * @param files
-   * @param {any} parent
-   * @returns {Array}
-   * @private
+   * Resource GET Route
+   * @param pId parent id
+   * @param next
    */
-  private _createHierarchy(files: Array<IEygleFile>, parent = null) {
-    const root = [];
-
-    for (let i in files) {
-      if (files.hasOwnProperty(i)) {
-        let f: IEygleFile = files[i];
-        if ((f.parent && Utils.compareIds(f.parent, parent) || (f.parent === parent))) {
-          if (f.directory) {
-            f = (<any>f).toObject();
-            f.children = this._createHierarchy(files, files[i]._id);
-          }
-          root.push(f);
-          delete files[i];
-        }
-      }
-    }
-
-    return root.length > 0 ? root : null;
+  public get(pId: string, next: RestyCallback): void {
+    FileSchema.getChildren(pId)
+      .then((items: Array<EygleFile>) => next(items))
+      .catch(next);
   }
 }
 
 module.exports.Collection = Collection;
+module.exports.Resource = Resource;

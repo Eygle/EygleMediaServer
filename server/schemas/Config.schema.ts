@@ -123,7 +123,7 @@ class Config extends ASchema {
   }
 
   /**
-   * Get File schema
+   * Get FileSchema schema
    * @return {"mongoose".Schema}
    */
   public getSchema(): mongoose.Schema {

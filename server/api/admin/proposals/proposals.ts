@@ -2,10 +2,11 @@ import * as q from "q";
 
 import Proposal from "../../../schemas/Proposal.schema"
 import Movie from "../../../schemas/Movie.schema"
-import File from "../../../schemas/File.schema"
+import FileSchema from "../../../schemas/File.schema"
 import TMDB from "../../../modules/TMDB"
 import {ARoute} from "../../../middlewares/Resty";
 import {EPermission} from "../../../typings/enums";
+import {RestyCallback} from "../../../typings/resty.interface";
 
 /**
  * Resource class
@@ -30,7 +31,7 @@ class Resource extends ARoute {
         TMDB.get(proposal.tmdbId, proposal.file)
           .then((movie: IMovie) => {
             q.allSettled([
-              File.save(proposal.file),
+              FileSchema.save(proposal.file),
               Movie.save(movie),
               this._deleteAllProposalsLinkedToFile(proposal.file._id)
             ])

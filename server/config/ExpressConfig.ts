@@ -33,7 +33,7 @@ class ExpressConfig {
     app.use(Permission.middleware());
 
     // INIT CSRF
-    if (EEnv.Test !== Utils.env) { //EEnv.Dev !== Utils.env &&
+    if (EEnv.Prod === Utils.env) {
       this._initCSRF(app);
     }
 

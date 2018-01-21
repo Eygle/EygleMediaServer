@@ -5,6 +5,7 @@ import Utils from "../config/Utils";
 import {CustomEdError} from "../config/EdError";
 import {EHTTPStatus, EPermission} from "../typings/enums";
 import {User} from "../../commons/models/user";
+import {IRestyContext} from "../typings/resty.interface";
 
 class Resty {
   private static _resources: any;
