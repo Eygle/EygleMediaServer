@@ -1,4 +1,6 @@
-interface IUser extends IModel {
+import {AModel} from "./model.abstract";
+
+export class User extends AModel {
   email?: string;
   userName?: string;
 

@@ -64,7 +64,7 @@ class Utils {
   public static sessionSecret: string;
 
   /**
-   * User hash used to identify user in urls
+   * UserSchema hash used to identify user in urls
    */
   public static userHash: string;
 

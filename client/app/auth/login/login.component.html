@@ -1,0 +1,19 @@
+<div class="container" fxLayout="column" fxLayoutAlign="center center">
+  <div class="content">
+    <h2 [translate]="'AUTH.LOGIN.TITLE'"></h2>
+
+    <form (submit)="logIn($event)">
+      <mat-form-field>
+        <input matInput placeholder="{{'AUTH.INPUT.USERNAME' | translate}}" [(ngModel)]="username" name="username"
+               required>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input type="password" matInput placeholder="{{'AUTH.INPUT.PASSWORD' | translate}}" [(ngModel)]="password"
+               name="password" required>
+      </mat-form-field>
+
+      <button mat-raised-button>{{'AUTH.LOGIN.ACTION' | translate}}</button>
+    </form>
+  </div>
+</div>

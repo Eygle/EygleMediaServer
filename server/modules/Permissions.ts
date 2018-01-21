@@ -1,6 +1,7 @@
 import Utils from "../config/Utils";
 
 import Config from '../schemas/Config.schema';
+import {User} from "../../commons/models/user";
 
 /**
  * List of permissions
@@ -32,12 +33,12 @@ class Permissions {
   }
 
   /**
-   * Ensure [[IUser]] has accessRole access
+   * Ensure [[User]] has accessRole access
    * @param user
    * @param accessRole
    * @return {boolean}
    */
-  public ensureAuthorized(user: IUser, accessRole: string) {
+  public ensureAuthorized(user: User, accessRole: string) {
     const memberRights = user.roles || ["public"];
 
     if (!!~memberRights.indexOf("admin")) {

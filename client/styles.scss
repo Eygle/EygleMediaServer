@@ -1,1 +1,138 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "common";
+
+body, html {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+}
+
+html {
+  display: block;
+  font-family: $font-family;
+  @include fontSize($font-size);
+  color: $font-color;
+
+  *, :after, :before {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  * {
+    text-rendering: optimizeLegibility;
+    -o-text-rendering: optimizeLegibility;
+    -ms-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility;
+    -webkit-text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.7);
+
+    a {
+      text-decoration: none;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .background-container {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      //background-color: #3f4245;
+
+      .background-img {
+        background-image: url('/assets/images/background-light.jpg');
+        background-size: cover;
+        background-position: center center;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 2;
+      }
+
+      .background-noise {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: url('/assets/images/noise-light.png');
+        z-index: 2;
+      }
+    }
+
+    mat-sidenav-container {
+      min-height: 100%;
+      background-color: transparent !important;
+
+      mat-sidenav {
+        width: $sidenav-width;
+        background-color: $bg-darken !important;
+        font-family: $font-family;
+        color: $font-color;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      mat-sidenav-content {
+        $space-around: 25px;
+
+        min-height: 100%;
+        font-family: $font-family;
+        color: $font-color;
+
+        &.with-toolbar {
+          & > * > .toolbar {
+            width: 100%;
+            height: $toolbar-height;
+            background-color: $bg-darken;
+          }
+          & > * > .content {
+            padding: $space-around;
+          }
+        }
+
+        &:not(.with-toolbar) {
+          padding: $space-around;
+        }
+      }
+    }
+
+    /* OVERRIDE ANGULAR MATERIAL THEME */
+
+    .mat-fab, .mat-mini-fab, .mat-raised-button {
+      color: $font-color;
+      background-color: $bg-darken;
+    }
+
+    .mat-input-element {
+      caret-color: $input-placeholder-color;
+    }
+
+    .mat-focused {
+      .mat-form-field-label {
+        color: $input-placeholder-color;
+      }
+
+      .mat-form-field-required-marker {
+        color: $color-yellow;
+      }
+    }
+
+    .mat-form-field-ripple {
+      background-color: $input-placeholder-color;
+    }
+  }
+}

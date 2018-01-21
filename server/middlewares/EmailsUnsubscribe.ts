@@ -3,9 +3,10 @@ import * as fs from "fs";
 import * as bcrypt from "bcrypt";
 
 import Utils from "../config/Utils";
-import User from "../schemas/User.schema";
+import UserSchema from "../schemas/User.schema";
 import {EHTTPStatus} from "../typings/enums";
 import {CustomEdError} from "../config/EdError";
+import {User} from "../../commons/models/user";
 
 class EmailsUnsubscribe {
   /**
@@ -63,8 +64,8 @@ class EmailsUnsubscribe {
    */
   private _checkUser(email, hash, success, error) {
     hash = hash.replace(new RegExp('\\+', 'g'), '/');
-    User.findOneByEmail(email)
-      .then((user: IUser) => {
+    UserSchema.findOneByEmail(email)
+      .then((user: User) => {
         if (!user) return error(new CustomEdError("Email not found", EHTTPStatus.BadRequest));
 
         if (bcrypt.compareSync(user._id.toString() + Utils.userHash, hash)) {

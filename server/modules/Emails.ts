@@ -7,6 +7,7 @@ import * as q from 'q';
 import {EmailTemplate} from 'email-templates';
 import Utils from '../config/Utils';
 import {EEnv} from "../typings/enums";
+import {User} from "../../commons/models/user";
 
 class Emails {
   private _siteURL: string;
@@ -18,28 +19,28 @@ class Emails {
   /**
    * TODO
    */
-  public sendWelcome(dest: IUser) {
+  public sendWelcome(dest: User) {
 
   }
 
   /**
    * TODO
    */
-  public sendPasswordRecovery(dest: IUser) {
+  public sendPasswordRecovery(dest: User) {
 
   }
 
   /**
    * TODO
    */
-  public sendLockedAccount(dest: IUser) {
+  public sendLockedAccount(dest: User) {
 
   }
 
   /**
    * TODO
    */
-  public sendUnlockedAccount(dest: IUser) {
+  public sendUnlockedAccount(dest: User) {
 
   }
 

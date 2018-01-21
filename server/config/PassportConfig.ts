@@ -3,7 +3,8 @@ import * as bcrypt from 'bcrypt';
 import * as local from 'passport-local';
 
 import Utils from './Utils';
-import User from "../schemas/User.schema";
+import UserSchema from "../schemas/User.schema";
+import {User} from "../../commons/models/user";
 
 class PassportConfig {
   public static init(app) {
@@ -23,8 +24,8 @@ class PassportConfig {
       username = username.replace(" ", "");
       username = username.toLowerCase();
 
-      User.findOneByUserNameOrEmail(username, true)
-        .then((user: IUser) => {
+      UserSchema.findOneByUserNameOrEmail(username, true)
+        .then((user: User) => {
           if (!user) {
             Utils.logger.log(`User '${username}' login failed (no such username or email)`);
             return done(null, false);
@@ -60,8 +61,8 @@ class PassportConfig {
    */
   private static _deserializeUser() {
     return (id, done) => {
-      User.getFullCached(id)
-        .then((user: IUser) => {
+      UserSchema.getFullCached(id)
+        .then((user: User) => {
           if (!user) return done(null, false);
           done(null, user);
         })

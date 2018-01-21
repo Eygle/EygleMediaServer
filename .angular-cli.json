@@ -17,7 +17,7 @@
       "test": "test.ts",
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
-      "prefix": "emp",
+      "prefix": "ems",
       "styles": [
         "styles.scss"
       ],
@@ -55,6 +55,15 @@
   },
   "defaults": {
     "styleExt": "scss",
-    "component": {}
+    "component": {
+      "spec": {
+        "default": false
+      },
+      "service": {
+        "spec": {
+          "default": false
+        }
+      }
+    }
   }
 }

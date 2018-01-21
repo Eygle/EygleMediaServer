@@ -8,12 +8,13 @@ import Utils from '../config/Utils';
 import ASchema from './ASchema.schema';
 import {EHTTPStatus} from "../typings/enums";
 import {CustomEdError} from "../config/EdError";
+import {User} from "../../commons/models/user";
 
 const _schema: mongoose.Schema = DB.createSchema({
   email: {
     type: String,
     unique: true,
-    required: [true, 'User email required'],
+    required: [true, 'UserSchema email required'],
     validate: {
       validator: function (v) {
         return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v);
@@ -107,7 +108,7 @@ _schema.post('save', function (doc) {
   Cache.remove(this._id.toString());
 });
 
-class User extends ASchema {
+class UserSchema extends ASchema {
   /**
    * Get by id
    * @param {string} id
@@ -142,8 +143,8 @@ class User extends ASchema {
    * @param queryParams
    * @return {Promise<T>}
    */
-  public findOneByEmail(email: string, queryParams: any = null): q.Promise<IUser> {
-    const defer = <q.Deferred<IUser>>q.defer();
+  public findOneByEmail(email: string, queryParams: any = null): q.Promise<User> {
+    const defer = <q.Deferred<User>>q.defer();
 
     const query = this._model.findOne()
       .where('email').equals(email.toLowerCase());
@@ -165,8 +166,8 @@ class User extends ASchema {
    * @param value
    * @param includePassword
    */
-  public findOneByUserNameOrEmail(value: string, includePassword = false): q.Promise<IUser> {
-    const defer = <q.Deferred<IUser>>q.defer();
+  public findOneByUserNameOrEmail(value: string, includePassword = false): q.Promise<User> {
+    const defer = <q.Deferred<User>>q.defer();
     const query = this._model.findOne()
       .or([{userName: value.toLowerCase()}, {email: value.toLowerCase()}]);
 
@@ -185,16 +186,16 @@ class User extends ASchema {
   /**
    * Get user password
    * @param {string} id
-   * @return {Q.Promise<IUser>}
+   * @return {Q.Promise<User>}
    */
   public getPasswordsById(id: string) {
-    const defer = <q.Deferred<IUser>>q.defer();
+    const defer = <q.Deferred<User>>q.defer();
 
     this._model.findById(id)
       .select('password validMail')
       .exec((err, user) => {
         if (err) return defer.reject(err);
-        if (!user) return defer.reject(new Error("User not found"));
+        if (!user) return defer.reject(new Error("UserSchema not found"));
         defer.resolve(user);
       });
 
@@ -206,10 +207,10 @@ class User extends ASchema {
    * @param {string} id
    * @param {string} oldPwd
    * @param {string} password
-   * @return {Q.Promise<IUser>}
+   * @return {Q.Promise<User>}
    */
   public changePasswordById(id: string, oldPwd: string, password: string) {
-    const defer = <q.Deferred<IUser>>q.defer();
+    const defer = <q.Deferred<User>>q.defer();
 
     this.getPasswordsById(id)
       .then(userPwds => {
@@ -217,7 +218,7 @@ class User extends ASchema {
           if (err) return defer.reject(err);
           if (!same || !oldPwd) return defer.reject(new CustomEdError("Wrong password", EHTTPStatus.Forbidden));
           this.saveById(id, {_id: id, password: password})
-            .then((res: IUser) => defer.resolve(res))
+            .then((res: User) => defer.resolve(res))
             .catch(err => defer.reject(err));
         });
       })
@@ -235,7 +236,7 @@ class User extends ASchema {
   }
 }
 
-const instance = new User();
+const instance = new UserSchema();
 
 module.exports.schema = instance;
 export default instance;

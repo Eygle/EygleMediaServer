@@ -4,6 +4,7 @@ import Permissions from '../modules/Permissions';
 import Utils from "../config/Utils";
 import {CustomEdError} from "../config/EdError";
 import {EHTTPStatus, EPermission} from "../typings/enums";
+import {User} from "../../commons/models/user";
 
 class Resty {
   private static _resources: any;
@@ -185,9 +186,9 @@ export class RoutePermissions implements IRoutePermissions {
 
 export abstract class ARoute implements IRestyContext {
   /**
-   * Request [[IUser]]
+   * Request [[User]]
    */
-  public user: IUser;
+  public user: User;
 
   /**
    * Request data

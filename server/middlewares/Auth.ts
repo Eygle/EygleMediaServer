@@ -4,9 +4,10 @@ import * as _ from 'underscore';
 import Utils from '../config/Utils';
 import {CustomEdError, EdError} from '../config/EdError';
 import Emails from '../modules/Emails';
-import User from '../schemas/User.schema';
+import UserSchema from '../schemas/User.schema';
 import Permission from '../modules/Permissions';
 import {EEnv, EHTTPStatus} from "../typings/enums";
+import {User} from "../../commons/models/user";
 
 class Auth {
   /**
@@ -57,12 +58,12 @@ class Auth {
    */
   public registerMiddleware() {
     return (req, res, next) => {
-      User.add({
+      UserSchema.add({
         email: req.body.email,
         userName: req.body.userName,
         password: req.body.password
       })
-        .then((user: IUser) => {
+        .then((user: User) => {
           Emails.sendWelcome(user);
           Utils.logger.log(`User ${req.body.email} registered successfully`);
           res.sendStatus(200);
@@ -76,11 +77,11 @@ class Auth {
    */
   public forgotPasswordMiddleware() {
     return (req, res, next) => {
-      User.findOneByEmail(req.body.email).then((user: IUser) => {
-        if (!user) return res.status(404).send("User not found");
+      UserSchema.findOneByEmail(req.body.email).then((user: User) => {
+        if (!user) return res.status(404).send("UserSchema not found");
         user.password = null; // set password has null to force validMail generation
-        User.save(user).then((user: IUser) => {
-          User.getPasswordsById(user._id.toString()).then(user => {
+        UserSchema.save(user).then((user: User) => {
+          UserSchema.getPasswordsById(user._id.toString()).then(user => {
             Emails.sendPasswordRecovery(user);
             Utils.logger.log(`User ${req.body.email} recovered password`);
             res.sendStatus(200);
@@ -102,7 +103,7 @@ class Auth {
         return next(new CustomEdError(`Permission denied (admin) for user ${req.user ? req.user.fullName || req.user.email : '[null]'}`, EHTTPStatus.Forbidden));
       }
 
-      User.changePasswordById(id, req.body.oldPwd, req.body.password)
+      UserSchema.changePasswordById(id, req.body.oldPwd, req.body.password)
         .then((user) => {
           Utils.logger.log(`User ${req.user.email} changed password`);
           res.status(200).json(user);
@@ -147,9 +148,9 @@ class Auth {
         return next(new EdError(EHTTPStatus.Forbidden));
       }
 
-      User.saveById(id, {
+      UserSchema.saveById(id, {
         locked: false
-      }).then((user: IUser) => {
+      }).then((user: User) => {
         this._cleanAttempts(user.userName);
         this._cleanAttempts(user.email);
         Emails.sendUnlockedAccount(user);
@@ -202,10 +203,10 @@ class Auth {
     this._addAttempt(username);
 
     if (this._attempts[username].locked) {
-      User.findOneByUserNameOrEmail(username).then((user: IUser) => {
+      UserSchema.findOneByUserNameOrEmail(username).then((user: User) => {
         if (user && !user.locked) {
           user.locked = true;
-          User.save(user).then((user: IUser) => {
+          UserSchema.save(user).then((user: User) => {
             Emails.sendLockedAccount(user);
             Utils.logger.warn(`User ${username} account is locked due to too many login attempts`);
           }).catch(err => next(err));
