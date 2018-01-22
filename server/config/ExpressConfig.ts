@@ -8,7 +8,7 @@ import * as csrf from 'csurf';
 import Utils from './Utils';
 import Permission from '../modules/Permissions';
 import {EdError} from './EdError';
-import {EEnv} from "../typings/enums";
+import {EEnv} from '../typings/enums';
 
 class ExpressConfig {
 
@@ -18,7 +18,7 @@ class ExpressConfig {
    * @param session Express session instance
    */
   public static init(app, session) {
-    app.set("view options", {layout: false});
+    app.set('view options', {layout: false});
     app.set('port', Utils.port);
     app.disable('x-powered-by');
 
@@ -52,11 +52,14 @@ class ExpressConfig {
   public static handleErrors(app) {
     app.use(function (err, req, res, next) { // DO NOT REMOVE next argument
       if (err instanceof EdError || err.name === 'ValidationError') {
-        Utils.logger.error(`[user ${req.user ? req.user._id : '[null]'}] HTTP ${req.method.toUpperCase()} ${req.url} - Error ${err.status || 500}: ${err.message}`);
+        Utils.logger.error(`[user ${req.user ?
+          req.user._id :
+          '[null]'}] HTTP ${req.method.toUpperCase()} ${req.url} - Error ${err.status || 500}: ${err.message}`);
         res.status(err.status || 500).send(err.message);
-      }
-      else {
-        Utils.logger.error(`[user ${req.user ? req.user._id : '[null]'}] HTTP ${req.method.toUpperCase()} ${req.url} - Server Error ${err.status || 500}:`, err);
+      } else {
+        Utils.logger.error(`[user ${req.user
+          ? req.user._id :
+          '[null]'}] HTTP ${req.method.toUpperCase()} ${req.url} - Server Error ${err.status || 500}:`, err);
         res.status(err.status || 500).send(new EdError(err.status || 500).message);
       }
     });
@@ -84,7 +87,8 @@ class ExpressConfig {
       if (err.code !== 'EBADCSRFTOKEN') return next(err);
 
       // handle CSRF token errors here
-      const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+      const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        || req.socket.remoteAddress || req.connection.socket.remoteAddress;
       Utils.logger.error(`Error with CSRF token: HTTP ${req.method.toUpperCase()} ${req.url} [${ip}]`);
       res.status(403).send('Form tampered with');
     });

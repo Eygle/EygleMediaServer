@@ -6,14 +6,14 @@ import * as fs from 'fs';
 import * as q from 'q';
 import {EmailTemplate} from 'email-templates';
 import Utils from '../config/Utils';
-import {EEnv} from "../typings/enums";
-import {User} from "../../commons/models/user";
+import {EEnv} from '../typings/enums';
+import {User} from '../../commons/models/user';
 
 class Emails {
   private _siteURL: string;
 
   constructor() {
-    this._siteURL = "https://www.dl.eygle.fr";
+    this._siteURL = 'https://www.dl.eygle.fr';
   }
 
   /**
@@ -51,7 +51,7 @@ class Emails {
    */
   private _sendTemplateMail(locals) {
     const defer = q.defer();
-    const smtpTransport = this._smtpConnect();
+    const transporter = this._smtpConnect();
     const template = new EmailTemplate(`${__dirname}/../templates/${locals.template}`);
 
     handlebars.registerHelper('if_even', function (conditional, options) {
@@ -66,18 +66,17 @@ class Emails {
     });
 
     if (Utils.env !== EEnv.Prod) {
-      locals.email = "dev@eygle.fr";
+      locals.email = 'dev@eygle.fr';
       locals.bccmail = '';
     }
 
     template.render(locals, function (err, results) {
       if (err) {
-        Utils.logger.error("Email template rendering error: ", err);
+        Utils.logger.error('Email template rendering error: ', err);
         defer.reject(err);
-      }
-      else {
+      } else {
         if (Utils.env === EEnv.Dev || Utils.env === EEnv.Test) {
-          smtpTransport.use('stream', require('nodemailer-dkim').signer({
+          transporter.use('stream', require('nodemailer-dkim').signer({
             domainName: 'eygle.fr',
             keySelector: 'key1',
             privateKey: fs.readFileSync(`${Utils.root}/server/misc/key1.eygle.fr.pem`)
@@ -85,7 +84,7 @@ class Emails {
         }
 
         const optSendMail: any = {
-          from: "Eygle.fr ✔ <no-reply@eygle.fr>",
+          from: 'Eygle.fr ✔ <no-reply@eygle.fr>',
           to: locals.email,
           bcc: locals.bccmail,
           subject: locals.subject,
@@ -97,12 +96,11 @@ class Emails {
           optSendMail.attachments = locals.attachments;
         }
 
-        smtpTransport.sendMail(optSendMail, function (err, responseStatus) {
-          if (err) {
-            Utils.logger.error(`Error while sending email to ${optSendMail.to}:`, err);
-            defer.reject(err);
-          }
-          else {
+        transporter.sendMail(optSendMail, function (err2, responseStatus) {
+          if (err2) {
+            Utils.logger.error(`Error while sending email to ${optSendMail.to}:`, err2);
+            defer.reject(err2);
+          } else {
             defer.resolve();
           }
         });
@@ -124,12 +122,11 @@ class Emails {
         port: 465,
         secure: true,
         auth: {
-          user: "mapuitest@free.fr",
-          pass: "ruba1212"
+          user: 'mapuitest@free.fr',
+          pass: 'ruba1212'
         }
       }));
-    }
-    else {
+    } else {
       return nodemailer.createTransport(sendEmailTransport({path: '/usr/sbin/sendmail'}));
     }
   }

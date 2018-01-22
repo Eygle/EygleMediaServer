@@ -4,8 +4,10 @@ import * as _ from 'underscore';
 
 import DB from '../modules/DB';
 import ASchema from './ASchema.schema';
-import {ITVDBEpisode} from "../modules/TVDB";
-import {EygleFile} from "../../commons/models/file";
+import {ITVDBEpisode} from '../modules/TVDB';
+import {EygleFile} from '../../commons/models/file';
+import {Episode} from '../../commons/models/episode';
+import {TVShow} from '../../commons/models/tvshow';
 
 const _schema: mongoose.Schema = DB.createSchema({
   title: String,
@@ -20,11 +22,11 @@ const _schema: mongoose.Schema = DB.createSchema({
 
   overview: String,
 
-  tvShow: {type: String, ref: 'TVShow'},
+  tvShow: {type: String, ref: 'TVShowSchema'},
   files: [{type: String, ref: 'File'}]
 });
 
-class Episode extends ASchema {
+class EpisodeSchema extends ASchema {
 
   /**
    * Find all episodes by tvshow id
@@ -47,31 +49,31 @@ class Episode extends ASchema {
 
   /**
    * Create or update (if exists) episode from TVDB episode result
-   * @param {ITVShow} show
+   * @param {TVShow} show
    * @param {ITVDBEpisode} res
    * @param files
    * @return {Q.Promise<any>}
    */
-  public createOrUpdateFromTVDBResult(show: ITVShow, res: ITVDBEpisode, files: Array<EygleFile>) {
+  public createOrUpdateFromTVDBResult(show: TVShow, res: ITVDBEpisode, files: Array<EygleFile>) {
     const defer = q.defer();
 
     this._model.findOne()
       .where('tvdbId').equals(res.id)
-      .exec((err, item: IEpisode) => {
+      .exec((err, item: Episode) => {
         if (err || !item) {
           const ep = this.create({
             title: res.episodeName,
             tvdbId: res.id,
             tvShow: show._id,
             files: _.map(files, (f) => {
-              return f._id.toString()
+              return f._id.toString();
             }),
             number: res.airedEpisodeNumber,
             season: res.airedSeason,
             overview: res.overview,
             date: res.firstAired
           });
-          for (let file of files) {
+          for (const file of files) {
             file.episode = ep._id;
           }
           return defer.resolve(ep);
@@ -80,7 +82,7 @@ class Episode extends ASchema {
         item.files = item.files.concat(<any>_.map(files, (f) => {
           return f._id.toString();
         }));
-        for (let file of files) {
+        for (const file of files) {
           file.episode = item._id;
         }
         defer.resolve(item);
@@ -97,7 +99,7 @@ class Episode extends ASchema {
   }
 }
 
-const instance = new Episode();
+const instance = new EpisodeSchema();
 
 module.exports.schema = instance;
 export default instance;

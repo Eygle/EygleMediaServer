@@ -1,4 +1,4 @@
-import * as q from "q"
+import * as q from 'q';
 
 abstract class ALimitedApi {
   /**
@@ -82,7 +82,7 @@ abstract class ALimitedApi {
             if (res) {
               item.defer.resolve(res);
             } else {
-              item.defer.reject(new Error("No result"));
+              item.defer.reject(new Error('No result'));
             }
           })
           .catch(err => {

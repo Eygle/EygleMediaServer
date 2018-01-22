@@ -1,15 +1,16 @@
-import * as q from "q"
-import * as _ from "underscore"
-import * as moviedb from "moviedb"
+import * as q from 'q';
+import * as _ from 'underscore';
+import * as moviedb from 'moviedb';
 
-import Utils from "../config/Utils";
-import Movie from "../schemas/Movie.schema";
-import ALimitedApi from "./ALimitedApi";
+import Utils from '../config/Utils';
+import MovieSchema from '../schemas/Movie.schema';
+import ALimitedApi from './ALimitedApi';
+import {Movie} from '../../commons/models/movie';
 
 class TMDB extends ALimitedApi {
 
   /**
-   * Config object
+   * ConfigSchema object
    */
   public config: { images: { base_url: { base_url: string } } };
 
@@ -31,8 +32,8 @@ class TMDB extends ALimitedApi {
     const defer = q.defer();
 
     // Check if we already have a movie with this tmdbId
-    Movie.findOneByTMDBId(tmdbId)
-      .then((movie: IMovie) => {
+    MovieSchema.findOneByTMDBId(tmdbId)
+      .then((movie: Movie) => {
         if (!movie) {
           // Fetch movie using API
           this.request('movieInfo', {
@@ -40,7 +41,7 @@ class TMDB extends ALimitedApi {
             language: 'fr',
             append_to_response: 'credits,videos'
           })
-            .then((res: ITMDBMovie) => defer.resolve(Movie.createFromTMDB(res, file)))
+            .then((res: ITMDBMovie) => defer.resolve(MovieSchema.createFromTMDB(res, file)))
             .catch(defer.reject);
         } else {
           file.movie = movie._id;
@@ -76,18 +77,18 @@ class TMDB extends ALimitedApi {
    */
   public getSizeCloseTo(type, width) {
     switch (type) {
-      case "p":
-        type = "poster_sizes";
+      case 'p':
+        type = 'poster_sizes';
         break;
-      case "b":
-        type = "backdrop_sizes";
+      case 'b':
+        type = 'backdrop_sizes';
         break;
-      case "c":
-        type = "profile_sizes";
+      case 'c':
+        type = 'profile_sizes';
         break;
     }
 
-    for (let s of this.config.images[type]) {
+    for (const s of this.config.images[type]) {
       if (parseInt(s.substr(1)) >= width) {
         return s;
       }
@@ -104,7 +105,7 @@ class TMDB extends ALimitedApi {
         date: m.release_date ? new Date(m.release_date) : null,
         poster: m.poster_path ? this.config.images.base_url + this.getSizeCloseTo('p', 50) + m.poster_path : null,
         tmdbId: m.id
-      }
+      };
     });
   }
 }
@@ -130,7 +131,7 @@ export interface ITMDBMovie {
     cast: Array<{ id: number, name: string, character: string, profile_path: string, order: number }>,
     crew: Array<{ id: number, name: string, job: string, profile_path: string, department: string }>
   };
-  videos: { results: Array<{ id: number, name: string, key: string, iso_639_1: string, site: string, size: number, type: string }> }
+  videos: { results: Array<{ id: number, name: string, key: string, iso_639_1: string, site: string, size: number, type: string }> };
 
 }
 

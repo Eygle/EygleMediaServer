@@ -8,7 +8,7 @@ const _schema: mongoose.Schema = DB.createSchema({
   data: mongoose.Schema.Types.Mixed
 }, false);
 
-class Config extends ASchema {
+class ConfigSchema extends ASchema {
   /**
    * Get list of permissions
    * @return {Promise<Array<IPermission>>}
@@ -16,7 +16,7 @@ class Config extends ASchema {
   public getPermissions(): Q.Promise<Array<IPermission>> {
     const defer: any = q.defer();
 
-    this._model.findOne({name: "permissions"})
+    this._model.findOne({name: 'permissions'})
       .exec((err, permission: { data: Array<IPermission> }) => {
         if (err) return defer.reject(err);
         defer.resolve(permission ? permission.data : this._fill());
@@ -32,90 +32,90 @@ class Config extends ASchema {
    */
   private _fill() {
     const permissions = [{
-      name: "seeHome",
+      name: 'seeHome',
       roles: ['guest', 'user']
     }, {
-      name: "seeLastAdded",
+      name: 'seeLastAdded',
       roles: ['user']
     }, {
-      name: "seeSoonToBeRemoved",
+      name: 'seeSoonToBeRemoved',
       roles: ['user']
     }, {
-      name: "seeTVShows",
+      name: 'seeTVShows',
       roles: ['user']
     }, {
-      name: "editTVShows",
+      name: 'editTVShows',
       roles: ['contributor']
     }, {
-      name: "deleteTVShows",
+      name: 'deleteTVShows',
       roles: ['admin']
     }, {
-      name: "seeMovies",
+      name: 'seeMovies',
       roles: ['user']
     }, {
-      name: "editMovies",
+      name: 'editMovies',
       roles: ['contributor']
     }, {
-      name: "deleteMovies",
+      name: 'deleteMovies',
       roles: ['admin']
     }, {
-      name: "addSubtitles",
+      name: 'addSubtitles',
       roles: ['contributor']
     }, {
-      name: "removeSubtitles",
+      name: 'removeSubtitles',
       roles: ['admin']
     }, {
-      name: "seeFiles",
+      name: 'seeFiles',
       roles: ['user']
     }, {
-      name: "editFiles",
+      name: 'editFiles',
       roles: ['admin']
     }, {
-      name: "deleteFiles",
+      name: 'deleteFiles',
       roles: ['admin']
     }, {
-      name: "identifyMedia",
+      name: 'identifyMedia',
       roles: ['contributor']
     }, {
-      name: "seeAccount",
+      name: 'seeAccount',
       roles: ['guest', 'user']
     }, {
-      name: "editAccount",
+      name: 'editAccount',
       roles: ['guest', 'user']
     }, {
-      name: "seeSettings",
+      name: 'seeSettings',
       roles: ['guest', 'user']
     }, {
-      name: "editSettings",
+      name: 'editSettings',
       roles: ['guest', 'user']
     }, {
-      name: "deleteAccount",
+      name: 'deleteAccount',
       roles: ['admin']
     }, {
-      name: "seeAdminPanel",
+      name: 'seeAdminPanel',
       roles: ['admin']
     }, {
-      name: "seeMultipleResults",
+      name: 'seeMultipleResults',
       roles: ['admin']
     }, {
-      name: "manageMultipleResults",
+      name: 'manageMultipleResults',
       roles: ['admin']
     }, {
-      name: "seeUsers",
+      name: 'seeUsers',
       roles: ['admin']
     }, {
-      name: "editUsers",
+      name: 'editUsers',
       roles: ['admin']
     }, {
-      name: "seeStats",
+      name: 'seeStats',
       roles: ['admin']
     }, {
-      name: "manageCron",
+      name: 'manageCron',
       roles: ['admin']
     }];
 
     this.add({
-      name: "permissions",
+      name: 'permissions',
       data: permissions
     });
 
@@ -131,7 +131,7 @@ class Config extends ASchema {
   }
 }
 
-const instance = new Config();
+const instance = new ConfigSchema();
 
 module.exports.schema = instance; // Used by DB models loader (need require)
 export default instance; // Used anywhere else

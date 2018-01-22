@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Observable} from "rxjs/Observable";
-import {EygleFile} from "../../../commons/models/file";
-import {HttpClient} from "@angular/common/http";
+import {Observable} from 'rxjs/Observable';
+import {EygleFile} from '../../../commons/models/file';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class FilesService {
@@ -11,7 +11,7 @@ export class FilesService {
   private _api: string;
 
   constructor(private http: HttpClient) {
-    this._api = "/api/files";
+    this._api = '/api/files';
   }
 
   /**

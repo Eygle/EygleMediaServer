@@ -2,8 +2,8 @@ import mongoose = require('mongoose');
 import q = require('q');
 import fs = require('fs');
 import Utils from '../config/Utils';
-import {CustomEdError} from "../config/EdError";
-import {EHTTPStatus} from "../typings/enums";
+import {CustomEdError} from '../config/EdError';
+import {EHTTPStatus} from '../typings/enums';
 
 class DB {
   /**
@@ -36,10 +36,10 @@ class DB {
     const defer: Q.Deferred<any> = q.defer();
 
     mongoose.Promise = global.Promise;
-    mongoose.connect("mongodb://localhost/" + Utils.dbName);
+    mongoose.connect('mongodb://localhost/' + Utils.dbName);
     this._instance = mongoose.connection;
     this._instance.on('error', () => {
-      Utils.logger.error("Mongoose connection error");
+      Utils.logger.error('Mongoose connection error');
     });
     this._instance.once('open', () => {
       this._loadModels();
@@ -106,7 +106,6 @@ class DB {
   /**
    * Save item with author's information as updater
    * @param item
-   * @param user
    * @param data
    * @param populateOptions
    * @param model
@@ -115,23 +114,20 @@ class DB {
     const defer = q.defer();
 
     if (!item) {
-      defer.reject(new CustomEdError("Item not found", EHTTPStatus.BadRequest));
-    }
-    else {
+      defer.reject(new CustomEdError('Item not found', EHTTPStatus.BadRequest));
+    } else {
       if (data) {
         Object.assign(item, data);
       }
       item.updateDate = new Date();
-      item.save(function (err, item) {
+      item.save(function (err, res) {
         if (populateOptions) {
-          model.populate(item, populateOptions)
+          model.populate(res, populateOptions)
             .then(defer.resolve);
-        }
-        else if (err) {
+        } else if (err) {
           defer.reject(err);
-        }
-        else {
-          defer.resolve(item);
+        } else {
+          defer.resolve(res);
         }
       });
     }
@@ -156,13 +152,12 @@ class DB {
    * @param data
    */
   public transformUnpopulatedReferences(data) {
-    const excludes = ["_id", "id", "creationUID", "updateUID"];
-    for (let key in data) {
+    const excludes = ['_id', 'id', 'creationUID', 'updateUID'];
+    for (const key in data) {
       if (data.hasOwnProperty(key)) {
-        if (typeof data[key] === "string" && !~excludes.indexOf(key) && Utils.isMongoId(data[key])) {
+        if (typeof data[key] === 'string' && !~excludes.indexOf(key) && Utils.isMongoId(data[key])) {
           data[key] = {_id: data[key]};
-        }
-        else if (data[key] instanceof Object) {
+        } else if (data[key] instanceof Object) {
           this.transformUnpopulatedReferences(data[key]);
         }
       }
@@ -174,7 +169,7 @@ class DB {
    * @private
    */
   private _loadModels(path = `${__dirname}/../schemas`, parent = null): void {
-    for (let f of fs.readdirSync(path)) {
+    for (const f of fs.readdirSync(path)) {
       const modelName = f.split('.')[0];
       if (modelName === 'ASchema') continue;
 
@@ -193,7 +188,7 @@ class DB {
     if (!parent) {
       Utils.logger.info('Mongo database connected');
     }
-  };
+  }
 }
 
 const instance = new DB();

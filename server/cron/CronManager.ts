@@ -1,11 +1,12 @@
-import * as fs from "fs";
-import * as q from "q";
-import * as _ from "underscore";
+import * as fs from 'fs';
+import * as q from 'q';
+import * as _ from 'underscore';
 
 import Utils from '../config/Utils';
-import CronJob from '../schemas/CronJob';
-import {EEnv} from "../typings/enums";
-import AJob from "./AJob";
+import CronJobSchema from '../schemas/CronJob.schema';
+import {EEnv} from '../typings/enums';
+import AJob from './AJob';
+import {CronJob} from '../../commons/models/cronJob';
 
 class CronManager {
   /**
@@ -26,15 +27,15 @@ class CronManager {
    */
   public init(): void {
     if (EEnv.Prod !== Utils.env || parseInt(process.env.pm_id) === 1) { // Limit to a pm2 single instance for prod
-      CronJob.getAll()
-        .then((dbItems: Array<ICronJob>) => {
+      CronJobSchema.getAll()
+        .then((dbItems: Array<CronJob>) => {
           this._list = [];
           const promises = [];
           const added = [];
 
-          for (let filename of fs.readdirSync(this._jobsPath)) {
+          for (const filename of fs.readdirSync(this._jobsPath)) {
             const item: AJob = require(this._jobsPath + filename);
-            const dbItem: ICronJob = _.find(dbItems, (i) => {
+            const dbItem: CronJob = _.find(dbItems, (i) => {
               return i.name === item.name;
             });
 
@@ -47,23 +48,23 @@ class CronManager {
               // Schedule only if there is not environment restriction or the restriction is matched
               item.isScheduled = !item.environments || !!~item.environments.indexOf(Utils.env);
               promises.push(
-                CronJob.add(item)
-                  .then((model: ICronJob) => {
+                CronJobSchema.add(item)
+                  .then((model: CronJob) => {
                     item.setModel(model);
                   })
               );
             }
           }
 
-          for (let item of dbItems) {
+          for (const item of dbItems) {
             if (!~added.indexOf(item.name)) {
-              CronJob.remove(item);
+              CronJobSchema.remove(item);
             }
           }
 
           q.allSettled(promises)
             .then(() => {
-              for (let item of this._list) {
+              for (const item of this._list) {
                 if (item.isScheduled) {
                   item.schedule();
                 }
@@ -80,7 +81,7 @@ class CronManager {
    * @param job
    */
   public runJob(job: string): void {
-    for (let item of this._list) {
+    for (const item of this._list) {
       if (item.name === job) {
         item.run();
         break;
@@ -93,7 +94,7 @@ class CronManager {
    * @param job
    */
   public scheduleJob(job: string): void {
-    for (let item of this._list) {
+    for (const item of this._list) {
       if (item.name === job) {
         item.schedule();
         break;
@@ -106,7 +107,7 @@ class CronManager {
    * @param job
    */
   public unScheduleJob(job: string): void {
-    for (let item of this._list) {
+    for (const item of this._list) {
       if (item.name === job) {
         item.unSchedule();
         break;
@@ -116,9 +117,9 @@ class CronManager {
 
   /**
    * Return list of jobs
-   * @return {Array<ICronJob>}
+   * @return {Array<CronJob>}
    */
-  public jobs(): Array<ICronJob> {
+  public jobs(): Array<CronJob> {
     return this._list;
   }
 }

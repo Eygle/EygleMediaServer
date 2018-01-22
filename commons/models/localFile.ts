@@ -1,27 +1,24 @@
-/**
- * Created by eygle on 4/29/17.
- */
-import {EygleFile} from "../models/file";
+import {EygleFile} from './file';
 
-interface ILocalFile {
+export class LocalFile {
   filename: string;
   directory: boolean;
   parent: string;
-  children: Array<ILocalFile>;
+  children: Array<LocalFile>;
 
-  movie: string
-  tvshow: string
+  movie: string;
+  tvshow: string;
 
   ext?: string;
   path?: string;
   size?: number;
   mtime?: Date;
-  mediaInfo: ITorrentInfo;
+  mediaInfo: TorrentInfo;
 
   model: EygleFile;
 }
 
-interface ITorrentInfo {
+export class TorrentInfo {
   title: string;
   year: number;
   season: number;

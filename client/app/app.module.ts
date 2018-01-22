@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule} from '@angular/common/http';
 import {
   MatButtonModule,
   MatCheckboxModule,
@@ -26,9 +26,9 @@ import {FilesComponent} from './files/files.component';
 import {AppRoutingModule} from './app-routing.module';
 import {SidenavComponent} from './sidenav/sidenav.component';
 import {LoginComponent} from './auth/login/login.component';
-import {ConfigService} from "./services/config.service";
-import {AuthService} from "./services/auth.service";
-import {FilesService} from "./services/files.service";
+import {ConfigService} from './services/config.service';
+import {AuthService} from './services/auth.service';
+import {FilesService} from './services/files.service';
 import {FormatSizePipe} from './pipes/format-size.pipe';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {

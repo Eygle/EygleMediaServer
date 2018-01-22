@@ -1,4 +1,4 @@
-import {AModel} from "./model.abstract";
+import {AModel} from './model.abstract';
 
 export class User extends AModel {
   email?: string;

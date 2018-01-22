@@ -10,7 +10,7 @@
       true,
       "check-space"
     ],
-    "curly": true,
+    "curly": false,
     "deprecation": {
       "severity": "warn"
     },
@@ -45,7 +45,7 @@
       }
     ],
     "no-arg": true,
-    "no-bitwise": true,
+    "no-bitwise": false,
     "no-console": [
       true,
       "debug",
@@ -88,7 +88,6 @@
       true,
       "single"
     ],
-    "radix": true,
     "semicolon": [
       true,
       "always"
@@ -121,13 +120,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "emp",
+      "ems",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "emp",
+      "ems",
       "kebab-case"
     ],
     "no-output-on-prefix": true,

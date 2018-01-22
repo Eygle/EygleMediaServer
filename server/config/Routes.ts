@@ -4,7 +4,7 @@ import Resty from '../middlewares/Resty';
 import Utils from './Utils';
 import Auth from '../middlewares/Auth';
 import EmailsUnsubscribe from '../middlewares/EmailsUnsubscribe';
-import {EEnv} from "../typings/enums";
+import {EEnv} from '../typings/enums';
 
 class Routes {
   public static init(app) {

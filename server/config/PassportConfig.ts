@@ -3,8 +3,8 @@ import * as bcrypt from 'bcrypt';
 import * as local from 'passport-local';
 
 import Utils from './Utils';
-import UserSchema from "../schemas/User.schema";
-import {User} from "../../commons/models/user";
+import UserSchema from '../schemas/User.schema';
+import {User} from '../../commons/models/user';
 
 class PassportConfig {
   /**
@@ -25,7 +25,7 @@ class PassportConfig {
    */
   private static _localStrategy() {
     return new local.Strategy({passReqToCallback: true}, (req, username, password, done) => {
-      username = username.replace(" ", "");
+      username = username.replace(' ', '');
       username = username.toLowerCase();
 
       UserSchema.findOneByUserNameOrEmail(username, true)
@@ -46,7 +46,7 @@ class PassportConfig {
           });
         })
         .catch(err => {
-          console.log("err");
+          console.log('err');
           done(err);
         });
     });
@@ -74,7 +74,7 @@ class PassportConfig {
           done(null, user);
         })
         .catch(err => {
-          Utils.logger.error("Deserialize user error", err);
+          Utils.logger.error('Deserialize user error', err);
           done(null, false);
         });
     };

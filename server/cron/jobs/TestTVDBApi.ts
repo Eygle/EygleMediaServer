@@ -1,13 +1,13 @@
-import AJob from "../AJob";
-import TVDB from "../../modules/TVDB";
-import {EEnv} from "../../typings/enums";
+import AJob from '../AJob';
+import TVDB from '../../modules/TVDB';
+import {EEnv} from '../../typings/enums';
 
 
 class TestTVDBApi extends AJob {
 
   constructor() {
     super(TestTVDBApi.name);
-    this.scheduleRule = "* * * * *";
+    this.scheduleRule = '* * * * *';
     this.environments = [EEnv.Prod];
   }
 
@@ -17,15 +17,15 @@ class TestTVDBApi extends AJob {
   public run(): void {
     super.run();
 
-    for (let title of [
-      "a series of unfortunate events",
-      "family guy",
-      "the last man on earth",
-      "suits"
+    for (const title of [
+      'a series of unfortunate events',
+      'family guy',
+      'the last man on earth',
+      'suits'
     ]) {
       TVDB.searchByTitle(title)
-        .then(() => this.logger.log(title, "OK"))
-        .catch((err) => this.logger.error(title, "KO"))
+        .then(() => this.logger.log(title, 'OK'))
+        .catch((err) => this.logger.error(title, 'KO'));
     }
 
     this.end();

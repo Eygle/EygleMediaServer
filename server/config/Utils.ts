@@ -1,6 +1,6 @@
 import * as tracer from 'tracer';
-import * as path from "path";
-import {EEnv} from "../typings/enums";
+import * as path from 'path';
+import {EEnv} from '../typings/enums';
 
 class Utils {
   /**
@@ -119,7 +119,7 @@ class Utils {
     this.clientRoot = `${this.root}/client`;
     this.imagesRoot = `${this.root}/server/images`;
 
-    this.filesRoot = this.env == EEnv.Dev ? path.normalize(`${__dirname}/../../../files`) : `${this.root}/server/files`;
+    this.filesRoot = this.env === EEnv.Dev ? path.normalize(`${__dirname}/../../../files`) : `${this.root}/server/files`;
 
     this.filesHierarchy = [
       {name: 'subtitles'},
@@ -131,22 +131,21 @@ class Utils {
     this.maxLoginAttempts = 5;
     this.loginAttemptsExpire = 24 * 3600 * 1000; // 24 hours
 
-    this.tmdbToken = "22e2817ba73ca94f0b3971f847acefc6";
-    this.tvdbToken = "72FB8B2E308C7EE1";
+    this.tmdbToken = '22e2817ba73ca94f0b3971f847acefc6';
+    this.tvdbToken = '72FB8B2E308C7EE1';
 
     if (this.env === EEnv.Prod || this.env === EEnv.Preprod) {
       this.logger = (<any>tracer).dailyfile({
         root: `${Utils.root}/logs`,
         maxLogFiles: 10,
         allLogsFileName: `eygle-dl-${this.env === EEnv.Prod ? `-${process.env.pm_id}` : ''}`,
-        format: "{{timestamp}} <{{title}}> {{message}}",
-        dateformat: "HH:MM:ss.L"
+        format: '{{timestamp}} <{{title}}> {{message}}',
+        dateformat: 'HH:MM:ss.L'
       });
-    }
-    else {
+    } else {
       this.logger = (<any>tracer).colorConsole({
-        format: "{{timestamp}} <{{title}}> {{message}}",
-        dateformat: "HH:MM:ss.L"
+        format: '{{timestamp}} <{{title}}> {{message}}',
+        dateformat: 'HH:MM:ss.L'
       });
     }
   }
@@ -185,7 +184,7 @@ class Utils {
    * @return {boolean}
    */
   public static isString(value: any) {
-    return typeof value === "string";
+    return typeof value === 'string';
   }
 
   /**
@@ -212,7 +211,7 @@ class Utils {
    */
   public static formatSize(bytes: number): string {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    if (bytes == 0) return '0 Byte';
+    if (bytes === 0) return '0 Byte';
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
     return (Math.round(bytes / Math.pow(1024, i)) * 10 / 10) + ' ' + sizes[i];
   }
@@ -228,7 +227,7 @@ class Utils {
     if (!str) return null;
     str = str.toLowerCase();
 
-    const allowedCharacters = "abcdefghijklmnopqrstuvwxyz0123456789-";
+    const allowedCharacters = 'abcdefghijklmnopqrstuvwxyz0123456789-';
 
     for (let i = 0; i < Utils._defaultDiacriticsRemovalMap.length; i++) {
       str = str.replace(Utils._defaultDiacriticsRemovalMap[i].letters, Utils._defaultDiacriticsRemovalMap[i].base);

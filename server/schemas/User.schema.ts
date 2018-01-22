@@ -6,9 +6,9 @@ import DB from '../modules/DB';
 import Cache from '../modules/Cache';
 import Utils from '../config/Utils';
 import ASchema from './ASchema.schema';
-import {EHTTPStatus} from "../typings/enums";
-import {CustomEdError} from "../config/EdError";
-import {User} from "../../commons/models/user";
+import {EHTTPStatus} from '../typings/enums';
+import {CustomEdError} from '../config/EdError';
+import {User} from '../../commons/models/user';
 
 const _schema: mongoose.Schema = DB.createSchema({
   email: {
@@ -33,7 +33,7 @@ const _schema: mongoose.Schema = DB.createSchema({
     type: String,
     set: (plaintext) => {
       if (/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{6,}$/.test(plaintext)) {
-        return bcrypt.hashSync(plaintext, bcrypt.genSaltSync())
+        return bcrypt.hashSync(plaintext, bcrypt.genSaltSync());
       }
       return null;
     },
@@ -59,7 +59,7 @@ const _schema: mongoose.Schema = DB.createSchema({
 
   roles: {
     type: [String],
-    'default': ["public"],
+    'default': ['public'],
     select: false
   },
 
@@ -84,19 +84,15 @@ _schema.post('save', function (error, doc, next) {
     if (data.length >= 2) {
       if (!!~error.message.indexOf('email')) {
         next(new CustomEdError(`Email '${data[1]}' already assigned`, EHTTPStatus.BadRequest));
-      }
-      else if (!!~error.message.indexOf('userName')) {
+      } else if (!!~error.message.indexOf('userName')) {
         next(new CustomEdError(`Username '${data[1]}' already assigned`, EHTTPStatus.BadRequest));
-      }
-      else {
+      } else {
         next(error);
       }
-    }
-    else {
+    } else {
       next(error);
     }
-  }
-  else {
+  } else {
     next(error);
   }
 });
@@ -120,8 +116,7 @@ class UserSchema extends ASchema {
 
     if (user) {
       defer.resolve(user);
-    }
-    else {
+    } else {
       super.get(id, {
         select: '+roles'
       })
@@ -195,7 +190,7 @@ class UserSchema extends ASchema {
       .select('password validMail')
       .exec((err, user) => {
         if (err) return defer.reject(err);
-        if (!user) return defer.reject(new Error("UserSchema not found"));
+        if (!user) return defer.reject(new Error('UserSchema not found'));
         defer.resolve(user);
       });
 
@@ -216,10 +211,10 @@ class UserSchema extends ASchema {
       .then(userPwds => {
         bcrypt.compare(oldPwd, userPwds.password, (err, same) => {
           if (err) return defer.reject(err);
-          if (!same || !oldPwd) return defer.reject(new CustomEdError("Wrong password", EHTTPStatus.Forbidden));
+          if (!same || !oldPwd) return defer.reject(new CustomEdError('Wrong password', EHTTPStatus.Forbidden));
           this.saveById(id, {_id: id, password: password})
             .then((res: User) => defer.resolve(res))
-            .catch(err => defer.reject(err));
+            .catch(err2 => defer.reject(err2));
         });
       })
       .catch(err => defer.reject(err));

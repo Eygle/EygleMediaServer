@@ -1,9 +1,9 @@
-import * as q from "q";
-import * as _ from "underscore";
-import * as NodeTVDB from "node-tvdb";
+import * as q from 'q';
+import * as _ from 'underscore';
+import * as NodeTVDB from 'node-tvdb';
 
-import ALimitedApi from "./ALimitedApi";
-import Utils from "../config/Utils";
+import ALimitedApi from './ALimitedApi';
+import Utils from '../config/Utils';
 
 class TVDB extends ALimitedApi {
   constructor() {

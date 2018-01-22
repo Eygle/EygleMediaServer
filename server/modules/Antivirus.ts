@@ -21,8 +21,8 @@ class Antivirus {
   private _logPath: string;
 
   constructor() {
-    this._binPath = os.platform() == 'win32' ? 'C:\\Program Files\\ClamAV-x64\\clamscan.exe' : '/usr/local/bin/clamscan';
-    this._logPath = os.platform() == 'win32' ? '../clamscan.log' : '/var/log/node-clam/all.log';
+    this._binPath = os.platform() === 'win32' ? 'C:\\Program Files\\ClamAV-x64\\clamscan.exe' : '/usr/local/bin/clamscan';
+    this._logPath = os.platform() === 'win32' ? '../clamscan.log' : '/var/log/node-clam/all.log';
     this._clam = clamscan({
       remove_infected: true,
       scan_log: this._logPath,
@@ -40,16 +40,15 @@ class Antivirus {
   public checkFile(file): Q.Promise<any> {
     const defer = q.defer();
 
-    this._clam.is_infected(file, (err, file, is_infected) => {
+    this._clam.is_infected(file, (err, f, is_infected) => {
       if (err) {
-        Utils.logger.error("Error during virus scan", err);
+        Utils.logger.error('Error during virus scan', err);
         defer.reject(null);
       }
 
       if (is_infected) {
         defer.reject(null);
-      }
-      else {
+      } else {
         defer.resolve();
       }
     });

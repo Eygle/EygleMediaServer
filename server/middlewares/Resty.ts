@@ -1,11 +1,11 @@
 import fs = require('fs');
 import path = require('path');
 import Permissions from '../modules/Permissions';
-import Utils from "../config/Utils";
-import {CustomEdError} from "../config/EdError";
-import {EHTTPStatus, EPermission} from "../typings/enums";
-import {User} from "../../commons/models/user";
-import {IRestyContext} from "../typings/resty.interface";
+import Utils from '../config/Utils';
+import {CustomEdError} from '../config/EdError';
+import {EHTTPStatus, EPermission} from '../typings/enums';
+import {User} from '../../commons/models/user';
+import {IRestyContext} from '../typings/resty.interface';
 
 class Resty {
   private static _resources: any;
@@ -58,13 +58,12 @@ class Resty {
    * @private
    */
   private static _send(res, response: any, code: number = 200) {
-    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-    res.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); // HTTP 1.1.
+    res.setHeader('Pragma', 'no-cache'); // HTTP 1.0.
 
     if (response === undefined) {
       res.sendStatus(code);
-    }
-    else {
+    } else {
       res.status(code).json(response);
     }
   }
@@ -106,8 +105,7 @@ class Resty {
           ret.args.push(components[i + 1]);
           i++;
         }
-      }
-      else {
+      } else {
         collection = true;
       }
     }
@@ -128,7 +126,7 @@ class Resty {
       return ret;
     }
 
-    for (let a of ret.args) {
+    for (const a of ret.args) {
       if (!Utils.isMongoId(a)) {
         ret.error = new CustomEdError(`Invalid mongo id ${a}`, EHTTPStatus.BadRequest);
         return ret;
@@ -138,7 +136,9 @@ class Resty {
     if (ret.resource.permissions) {
       const permission = ret.resource.permissions[method] || ret.resource.permissions.default;
       if (permission && !Permissions.ensureAuthorized(context.user, permission)) {
-        ret.error = new CustomEdError(`Permission denied (${permission}) for user ${context.user ? context.user.email : '[null]'}`, EHTTPStatus.Forbidden);
+        ret.error = new CustomEdError(`Permission denied (${permission}) for user ${context.user ?
+          context.user.email :
+          '[null]'}`, EHTTPStatus.Forbidden);
       }
     }
 
@@ -154,7 +154,7 @@ class Resty {
   private static _readResources(resourceDir): any {
     const resources = {};
 
-    for (let filename of fs.readdirSync(resourceDir)) {
+    for (const filename of fs.readdirSync(resourceDir)) {
       const folder = path.join(resourceDir, filename);
       const file = path.join(folder, filename + '.js');
       const stat = fs.statSync(folder);

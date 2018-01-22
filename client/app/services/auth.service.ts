@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from "rxjs/Observable";
+import {Observable} from 'rxjs/Observable';
 
-import {User} from "../../../commons/models/user";
-import {catchError, tap} from "rxjs/operators";
-import {of} from "rxjs/observable/of";
-import {CookieService} from "ngx-cookie-service";
-import {Router} from "@angular/router";
+import {User} from '../../../commons/models/user';
+import {catchError, tap} from 'rxjs/operators';
+import {of} from 'rxjs/observable/of';
+import {CookieService} from 'ngx-cookie-service';
+import {Router} from '@angular/router';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'}),
@@ -21,7 +21,7 @@ export class AuthService {
   user: User;
 
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router) {
-    const json = this.cookie.get("user");
+    const json = this.cookie.get('user');
     this.user = json ? JSON.parse(json) : null;
   }
 
@@ -37,13 +37,13 @@ export class AuthService {
    */
   public logIn(username: string, password: string): Observable<User> {
     console.log(username, password);
-    return this.http.post<User>("/login", {
+    return this.http.post<User>('/login', {
       username: username,
       password: password
     }, httpOptions)
       .pipe(
         tap(() => {
-          this.user = JSON.parse(this.cookie.get("user"));
+          this.user = JSON.parse(this.cookie.get('user'));
           console.log(this.user);
           this.router.navigate(['files']);
         }),

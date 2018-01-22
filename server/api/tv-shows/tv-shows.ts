@@ -1,7 +1,7 @@
-import TVShow from "../../schemas/TVShow.schema"
-import {ARoute} from "../../middlewares/Resty";
-import {EPermission} from "../../typings/enums";
-import {RestyCallback} from "../../typings/resty.interface";
+import TVShowSchema from '../../schemas/TVShow.schema';
+import {ARoute} from '../../middlewares/Resty';
+import {EPermission} from '../../typings/enums';
+import {RestyCallback} from '../../typings/resty.interface';
 
 /**
  * Resource class
@@ -18,7 +18,7 @@ class Resource extends ARoute {
    * @param next
    */
   public get(id: string, next: RestyCallback): void {
-    TVShow.getFull(id)
+    TVShowSchema.getFull(id)
       .then(next)
       .catch(next);
   }
@@ -38,7 +38,7 @@ class Collection extends ARoute {
    * @param next
    */
   public get(next: RestyCallback): void {
-    TVShow.getAll()
+    TVShowSchema.getAll()
       .then(next)
       .catch(next);
   }

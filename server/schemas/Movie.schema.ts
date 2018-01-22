@@ -4,8 +4,8 @@ import * as _ from 'underscore';
 
 import DB from '../modules/DB';
 import ASchema from './ASchema.schema';
-import TMDB, {ITMDBMovie} from "../modules/TMDB";
-import {EygleFile} from "../../commons/models/file";
+import TMDB, {ITMDBMovie} from '../modules/TMDB';
+import {EygleFile} from '../../commons/models/file';
 
 const _schema: mongoose.Schema = DB.createSchema({
   title: String,
@@ -51,7 +51,7 @@ const _schema: mongoose.Schema = DB.createSchema({
   files: [{type: String, ref: 'File'}]
 });
 
-class Movie extends ASchema {
+class MovieSchema extends ASchema {
   /**
    * Find one by tmdbId
    * @param {number} tmdbId
@@ -92,7 +92,7 @@ class Movie extends ASchema {
    * Create movie from TMDB result
    * @param {ITMDBMovie} m
    * @param {EygleFile} file
-   * @returns {IMovie}
+   * @returns {Movie}
    */
   public createFromTMDB(m: ITMDBMovie, file: EygleFile = null) {
     const movie: any = this.create({
@@ -117,14 +117,14 @@ class Movie extends ASchema {
       }),
 
       cast: _.map(_.filter(m.credits.cast, (v) => {
-        return v.order <= 15
+        return v.order <= 15;
       }), (v) => {
         return {
           tmdbId: v.id,
           name: v.name,
           character: v.character,
           image: v.profile_path ? TMDB.config.images.base_url + TMDB.getSizeCloseTo('c', 138) + v.profile_path : null
-        }
+        };
       }),
       crew: _.map(_.filter(m.credits.crew, (v) => {
         return v.department === 'Directing' || v.department === 'Production';
@@ -134,7 +134,7 @@ class Movie extends ASchema {
           name: v.name,
           job: v.job,
           image: v.profile_path ? TMDB.config.images.base_url + TMDB.getSizeCloseTo('c', 138) + v.profile_path : null
-        }
+        };
       }),
 
       videos: _.map(m.videos.results, (v) => {
@@ -146,7 +146,7 @@ class Movie extends ASchema {
           site: v.site ? v.site.toLowerCase() : null,
           size: v.size,
           videoType: v.type
-        }
+        };
       }),
 
       tmdbId: m.id,
@@ -170,7 +170,7 @@ class Movie extends ASchema {
   }
 }
 
-const instance = new Movie();
+const instance = new MovieSchema();
 
 module.exports.schema = instance;
 export default instance;

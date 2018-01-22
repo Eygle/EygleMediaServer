@@ -2,8 +2,8 @@ import {NgModule} from '@angular/core';
 import {NavigationEnd, Router, RouterEvent, RouterModule, Routes} from '@angular/router';
 
 import {FilesComponent} from './files/files.component';
-import {LoginComponent} from "./auth/login/login.component";
-import {AuthService} from "./services/auth.service";
+import {LoginComponent} from './auth/login/login.component';
+import {AuthService} from './services/auth.service';
 
 const routes: Routes = [
   // { path: '', redirectTo: '/files', pathMatch: 'full' },
@@ -49,18 +49,18 @@ export class AppRoutingModule {
    * @return {boolean}
    */
   private _performChecksNRedirects(url: string): void {
-    this._ignoreRoutes = ["/auth/forgot-password", "/auth/login", "/auth/register"];
+    this._ignoreRoutes = ['/auth/forgot-password', '/auth/login', '/auth/register'];
 
-    for (let check of this._checks) {
+    for (const check of this._checks) {
       if (check.func.apply(this, [url])) {
         if (check.route) { // Redirect to url
-          console.info("Redirect to route", check.route);
+          console.info('Redirect to route', check.route);
           this.router.navigateByUrl(check.route);
         }
         return;
       }
     }
-  };
+  }
 
   /**
    * Should UserSchema be redirected to login view
@@ -70,7 +70,7 @@ export class AppRoutingModule {
    */
   private _shouldLogin(url) {
     return !this.auth.isLogged() && !this._urlIn(this._ignoreRoutes, url);
-  };
+  }
 
   /**
    * Should UserSchema be redirected to reset password view
@@ -81,7 +81,7 @@ export class AppRoutingModule {
   private _shouldSeeResetPassword(url) {
     this._ignoreRoutes.push('/auth/reset-password');
     return !this._urlIn(this._ignoreRoutes, url) && this.auth.user.changePassword;
-  };
+  }
 
   /**
    * Is url in exclude list
@@ -93,5 +93,5 @@ export class AppRoutingModule {
   private _urlIn(exclude: any, url: string) {
     exclude = exclude instanceof Array ? exclude : [exclude];
     return ~exclude.indexOf(url);
-  };
+  }
 }

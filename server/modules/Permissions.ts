@@ -1,7 +1,7 @@
-import Utils from "../config/Utils";
+import Utils from '../config/Utils';
 
-import Config from '../schemas/Config.schema';
-import {User} from "../../commons/models/user";
+import ConfigSchema from '../schemas/Config.schema';
+import {User} from '../../commons/models/user';
 
 /**
  * List of permissions
@@ -16,17 +16,16 @@ class Permissions {
   public middleware(): Function {
     return (req, res, next) => {
       if (!list) {
-        Config.getPermissions()
+        ConfigSchema.getPermissions()
           .then((permissions: Array<IPermission>) => {
             list = permissions;
             next();
           })
           .catch((err: Error) => {
-            Utils.logger.error("Mongo error", err);
+            Utils.logger.error('Mongo error', err);
             next(err);
           });
-      }
-      else {
+      } else {
         next();
       }
     };
@@ -39,9 +38,9 @@ class Permissions {
    * @return {boolean}
    */
   public ensureAuthorized(user: User, accessRole: string) {
-    const memberRights = user.roles || ["public"];
+    const memberRights = user.roles || ['public'];
 
-    if (!!~memberRights.indexOf("admin")) {
+    if (!!~memberRights.indexOf('admin')) {
       return true;
     }
     if (!list || !list.length) {

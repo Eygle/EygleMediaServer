@@ -1,14 +1,15 @@
-import * as q from "q"
-import * as _ from "underscore"
+import * as q from 'q';
+import * as _ from 'underscore';
 
-import Utils from "../../config/Utils"
-import Movie from "../../schemas/Movie.schema"
-import FileSchema from "../../schemas/File.schema"
-import TMDB from "../../modules/TMDB"
-import {ARoute} from "../../middlewares/Resty";
-import {EPermission} from "../../typings/enums";
-import {RestyCallback} from "../../typings/resty.interface";
-import {EygleFile} from "../../../commons/models/file";
+import Utils from '../../config/Utils';
+import MovieSchema from '../../schemas/Movie.schema';
+import FileSchema from '../../schemas/File.schema';
+import TMDB from '../../modules/TMDB';
+import {ARoute} from '../../middlewares/Resty';
+import {EPermission} from '../../typings/enums';
+import {RestyCallback} from '../../typings/resty.interface';
+import {EygleFile} from '../../../commons/models/file';
+import {Movie} from '../../../commons/models/movie';
 
 /**
  * Resource class
@@ -27,7 +28,7 @@ class Resource extends ARoute {
    * @param next
    */
   public get(id: string, next: RestyCallback): void {
-    Movie.get(id, {populate: 'files'})
+    MovieSchema.get(id, {populate: 'files'})
       .then(next)
       .catch(next);
   }
@@ -41,12 +42,12 @@ class Resource extends ARoute {
     FileSchema.get(fid)
       .then((file: EygleFile) => {
         TMDB.get(this.data.tmdbId, file)
-          .then((movie: IMovie) => {
-            Movie.findWithFileId(fid)
-              .then((items: Array<IMovie>) => {
+          .then((movie: Movie) => {
+            MovieSchema.findWithFileId(fid)
+              .then((items: Array<Movie>) => {
                 const promises = [];
 
-                for (let m of items) {
+                for (const m of items) {
                   if (!Utils.compareIds(m, movie)) {
                     promises.push(this._unlinkMovie(m, fid));
                   }
@@ -56,27 +57,27 @@ class Resource extends ARoute {
                   .then(() => {
                     q.allSettled([
                       FileSchema.save(file),
-                      Movie.save(movie)
+                      MovieSchema.save(movie)
                     ])
                       .then(() => next())
                       .catch(next);
                   });
               })
-              .catch(next)
+              .catch(next);
           })
-          .catch(next)
+          .catch(next);
       })
       .catch(next);
   }
 
   /**
    * Unlink movie from file
-   * @param {IMovie} movie
+   * @param {Movie} movie
    * @param fileId
    * @return {Q.Promise<any>}
    * @private
    */
-  private _unlinkMovie(movie: IMovie, fileId) {
+  private _unlinkMovie(movie: Movie, fileId) {
     const defer = q.defer();
 
     if (movie.files.length > 1) {
@@ -90,7 +91,7 @@ class Resource extends ARoute {
         f.movie = null;
         q.allSettled([
           FileSchema.save(f),
-          Movie.save(movie)
+          MovieSchema.save(movie)
         ])
           .then(defer.resolve)
           .catch(defer.reject);
@@ -101,12 +102,12 @@ class Resource extends ARoute {
       (<EygleFile>movie.files[0]).movie = null;
       q.allSettled([
         FileSchema.save(movie.files[0]),
-        Movie.setDeleted(movie)
+        MovieSchema.setDeleted(movie)
       ])
         .then(defer.resolve)
         .catch(defer.reject);
     } else {
-      Movie.setDeleted(movie)
+      MovieSchema.setDeleted(movie)
         .then(defer.resolve)
         .catch(defer.reject);
     }
@@ -129,7 +130,7 @@ class Collection extends ARoute {
    * @param next
    */
   public get(next: RestyCallback): void {
-    Movie.getAll({
+    MovieSchema.getAll({
       select: {title: 1, date: 1, posterThumb: 1, files: 1},
       populate: {path: 'files', select: 'mtime'}
     })

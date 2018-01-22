@@ -1,5 +1,5 @@
-import * as q from "q";
-import * as sizeof from "object-sizeof";
+import * as q from 'q';
+import * as sizeof from 'object-sizeof';
 
 import Utils from '../config/Utils';
 
@@ -72,8 +72,7 @@ class Cache {
     if (previous) {
       this._size -= previous.s;
       action = `Replaced '${key}' in cache`;
-    }
-    else {
+    } else {
       this._keys++;
     }
 
@@ -140,12 +139,12 @@ class Cache {
    */
   private _removeExpired() {
     const now = Date.now();
-    for (let i in this._data) {
+    for (const i in this._data) {
       if (this._data.hasOwnProperty(i) && this._data[i].t <= now) {
         this.remove(i, true);
       }
     }
-  };
+  }
 
   /**
    * Remove oldest value from cache
@@ -154,7 +153,7 @@ class Cache {
   private _removeOldestValue() {
     let key = null;
     let date = null;
-    for (let i in this._data) {
+    for (const i in this._data) {
       if (this._data.hasOwnProperty(i) && (!date || this._data[i].u <= date)) {
         date = this._data[i].u;
         key = i;

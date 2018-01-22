@@ -36,9 +36,9 @@ class ExpressServer {
    * Start node Express server
    */
   public start(): void {
-    Utils.logger.info("     =================================");
-    Utils.logger.info("     ===== START EYGLE DL SERVER =====");
-    Utils.logger.info("     =================================\n");
+    Utils.logger.info('     =================================');
+    Utils.logger.info('     ===== START EYGLE DL SERVER =====');
+    Utils.logger.info('     =================================\n');
 
     // Initialize all databases connections
     DB.init().then(() => {
@@ -47,7 +47,7 @@ class ExpressServer {
       Utils.logger.info(`Node v${process.versions.node}`);
       Utils.logger.info(`Environment: ${process.env.NODE_ENV || 'production'}`);
       this._http.listen(this._app.get('port'), this._app.get('ip'), () => {
-        Utils.logger.info("Express server listening on port %d\n", this._app.get('port'));
+        Utils.logger.info('Express server listening on port %d\n', this._app.get('port'));
       });
     });
   }

@@ -1,4 +1,4 @@
-import {User} from "../../commons/models/user";
+import {User} from '../../commons/models/user';
 
 export interface IRestyContext {
   data: any;

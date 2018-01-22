@@ -1,12 +1,12 @@
-import * as Twig from "twig";
-import * as fs from "fs";
-import * as bcrypt from "bcrypt";
+import * as Twig from 'twig';
+import * as fs from 'fs';
+import * as bcrypt from 'bcrypt';
 
-import Utils from "../config/Utils";
-import UserSchema from "../schemas/User.schema";
-import {EHTTPStatus} from "../typings/enums";
-import {CustomEdError} from "../config/EdError";
-import {User} from "../../commons/models/user";
+import Utils from '../config/Utils';
+import UserSchema from '../schemas/User.schema';
+import {EHTTPStatus} from '../typings/enums';
+import {CustomEdError} from '../config/EdError';
+import {User} from '../../commons/models/user';
 
 class EmailsUnsubscribe {
   /**
@@ -29,7 +29,7 @@ class EmailsUnsubscribe {
         }));
       }, next);
     };
-  };
+  }
 
   /**
    * Express middleware getter
@@ -39,7 +39,7 @@ class EmailsUnsubscribe {
       const [email, hash] = req.params[0].split('/');
 
       this._checkUser(email, hash, (user) => {
-        for (let k in req.body.subscriptions) {
+        for (const k in req.body.subscriptions) {
           if (req.body.subscriptions.hasOwnProperty(k)) {
             user.subscriptions[k] = req.body.subscriptions[k] === 'true';
           }
@@ -52,7 +52,7 @@ class EmailsUnsubscribe {
         });
       }, next);
     };
-  };
+  }
 
   /**
    * User getter
@@ -66,13 +66,12 @@ class EmailsUnsubscribe {
     hash = hash.replace(new RegExp('\\+', 'g'), '/');
     UserSchema.findOneByEmail(email)
       .then((user: User) => {
-        if (!user) return error(new CustomEdError("Email not found", EHTTPStatus.BadRequest));
+        if (!user) return error(new CustomEdError('Email not found', EHTTPStatus.BadRequest));
 
         if (bcrypt.compareSync(user._id.toString() + Utils.userHash, hash)) {
           success(user);
-        }
-        else {
-          error(new CustomEdError("Invalid user hash", EHTTPStatus.BadRequest));
+        } else {
+          error(new CustomEdError('Invalid user hash', EHTTPStatus.BadRequest));
         }
       })
       .catch(err => error(err));

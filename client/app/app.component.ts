@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
-import {TranslateService} from "@ngx-translate/core";
+import {TranslateService} from '@ngx-translate/core';
 
 import {locale as en} from './i18n/en';
 import {locale as fr} from './i18n/fr';
-import {ConfigService} from "./services/config.service";
+import {ConfigService} from './services/config.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'ems-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
@@ -32,13 +32,13 @@ export class AppComponent {
     translate.use(translate.getBrowserLang());
 
     // Set the translations
-    translate.setTranslation("en", en, true);
-    translate.setTranslation("fr", fr, true);
+    translate.setTranslation('en', en, true);
+    translate.setTranslation('fr', fr, true);
 
     config.onSettingsChanged
       .subscribe((newSettings) => {
         this.navbar = newSettings.layout.navbar;
         this.toolbar = newSettings.layout.toolbar;
-      })
+      });
   }
 }

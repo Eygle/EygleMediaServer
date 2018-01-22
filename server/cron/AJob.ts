@@ -1,11 +1,12 @@
-import * as tracer from "tracer";
-import * as cron from "node-schedule";
+import * as tracer from 'tracer';
+import * as cron from 'node-schedule';
 
-import Utils from "../config/Utils";
-import CronJob from "../schemas/CronJob";
-import {EEnv} from "../typings/enums";
+import Utils from '../config/Utils';
+import CronJobSchema from '../schemas/CronJob.schema';
+import {EEnv} from '../typings/enums';
+import {CronJob} from '../../commons/models/cronJob';
 
-abstract class AJob implements ICronJob {
+abstract class AJob implements CronJob {
   /**
    * Log file name
    */
@@ -46,7 +47,7 @@ abstract class AJob implements ICronJob {
   /**
    * Database model
    */
-  private _model: ICronJob;
+  private _model: CronJob;
 
   constructor(name: string) {
     this.name = name;
@@ -56,23 +57,22 @@ abstract class AJob implements ICronJob {
         root: `${Utils.root}/logs`,
         maxLogFiles: 10,
         allLogsFileName: this.logFilename,
-        format: "{{timestamp}} <{{title}}> {{message}}",
-        dateformat: "HH:MM:ss.L"
+        format: '{{timestamp}} <{{title}}> {{message}}',
+        dateformat: 'HH:MM:ss.L'
       });
-    }
-    else {
+    } else {
       this.logger = (<any>tracer).colorConsole({
-        format: "{{timestamp}} <{{title}}> {{message}}",
-        dateformat: "HH:MM:ss.L"
+        format: '{{timestamp}} <{{title}}> {{message}}',
+        dateformat: 'HH:MM:ss.L'
       });
     }
   }
 
   /**
    * Set database model
-   * @param {ICronJob} model
+   * @param {CronJob} model
    */
-  public setModel(model: ICronJob) {
+  public setModel(model: CronJob) {
     this._model = model;
     this.isScheduled = this._model.isScheduled;
     this.lastRun = this._model.lastRun;
@@ -92,7 +92,7 @@ abstract class AJob implements ICronJob {
       this.logger.log(`Start task ${this.name}`);
       this.saveDBModel();
     }
-  };
+  }
 
   /**
    * Schedule job
@@ -102,12 +102,11 @@ abstract class AJob implements ICronJob {
     Utils.logger.trace(`Cron load job ${this.name} (rule: ${this.scheduleRule})`);
     if (this._job) {
       this._job.reschedule(this.scheduleRule);
-    }
-    else {
+    } else {
       this._job = cron.scheduleJob(this.scheduleRule, this._getExecutable());
     }
     this.saveDBModel();
-  };
+  }
 
   /**
    * Un-schedule job
@@ -117,7 +116,7 @@ abstract class AJob implements ICronJob {
     this._job.cancel();
     Utils.logger.trace(`Cron un-schedule job ${this.name}`);
     this.saveDBModel();
-  };
+  }
 
   /**
    * Save job state in db
@@ -129,7 +128,7 @@ abstract class AJob implements ICronJob {
     this._model.isScheduled = this.isScheduled;
     this._model.isRunning = this.isRunning;
     this._model.lastRun = this.lastRun;
-    CronJob.save(this._model)
+    CronJobSchema.save(this._model)
       .catch(Utils.logger.error);
   }
 
@@ -140,7 +139,7 @@ abstract class AJob implements ICronJob {
     this.isRunning = false;
     this.logger.log(`End of task ${this.name}`);
     this.saveDBModel();
-  };
+  }
 
   /**
    * Allow to execute in another scope

@@ -1,4 +1,6 @@
-interface ICronJob extends IModel {
+import {AModel} from './model.abstract';
+
+export class CronJob extends AModel {
   /**
    * Service name
    */

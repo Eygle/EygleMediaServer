@@ -1,9 +1,9 @@
-import {ARoute} from "../../../middlewares/Resty";
-import CronJob from '../../../schemas/CronJob';
-import {EHTTPStatus, EPermission} from "../../../typings/enums";
-import CronManager from "../../../cron/CronManager";
-import EdError from "../../../config/EdError";
-import {RestyCallback} from "../../../typings/resty.interface";
+import {ARoute} from '../../../middlewares/Resty';
+import CronJobSchema from '../../../schemas/CronJob.schema';
+import {EHTTPStatus, EPermission} from '../../../typings/enums';
+import CronManager from '../../../cron/CronManager';
+import EdError from '../../../config/EdError';
+import {RestyCallback} from '../../../typings/resty.interface';
 
 /**
  * Collection class
@@ -19,7 +19,7 @@ class Collection extends ARoute {
    * @param next
    */
   public get(next: RestyCallback): void {
-    CronJob.getAll()
+    CronJobSchema.getAll()
       .then(next)
       .catch(next);
   }

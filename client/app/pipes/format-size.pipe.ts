@@ -14,7 +14,7 @@ export class FormatSizePipe implements PipeTransform {
 
     let result: String = (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision);
 
-    if (result.length > 1 && result.substr(result.length - 2) === ".0") {
+    if (result.length > 1 && result.substr(result.length - 2) === '.0') {
       result = result.substr(0, result.length - 2);
     }
 

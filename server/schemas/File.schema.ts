@@ -2,8 +2,9 @@ import * as mongoose from 'mongoose';
 
 import DB from '../modules/DB';
 import ASchema from './ASchema.schema';
-import Utils from "../config/Utils";
-import * as q from "q";
+import Utils from '../config/Utils';
+import * as q from 'q';
+import {AModel} from '../../commons/models/model.abstract';
 
 const _schema: mongoose.Schema = DB.createSchema({
   filename: String,
@@ -37,8 +38,8 @@ const _schema: mongoose.Schema = DB.createSchema({
   },
 
   parent: {type: String, ref: 'File'},
-  episode: {type: String, ref: 'Movie'},
-  movie: {type: String, ref: 'Movie'},
+  episode: {type: String, ref: 'MovieSchema'},
+  movie: {type: String, ref: 'MovieSchema'},
 });
 
 _schema.pre('save', function (next) {
@@ -63,7 +64,7 @@ class FileSchema extends ASchema {
    * @return {Promise<IModel>}
    */
   public getChildren(parent: string = null) {
-    const defer = <q.Deferred<Array<IModel>>>q.defer();
+    const defer = <q.Deferred<Array<AModel>>>q.defer();
 
     this._model.find()
       .where('parent').equals(parent)

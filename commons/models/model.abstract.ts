@@ -4,5 +4,5 @@ export abstract class AModel {
   creationDate?: Date;
   updateDate?: Date;
 
-  deleted?: boolean
+  deleted?: boolean;
 }

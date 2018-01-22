@@ -1,4 +1,4 @@
-import {EHTTPStatus} from "../typings/enums";
+import {EHTTPStatus} from '../typings/enums';
 
 export class EdError extends Error {
   /**
@@ -13,16 +13,16 @@ export class EdError extends Error {
   constructor(httpStatus: EHTTPStatus) {
     switch (httpStatus) {
       case EHTTPStatus.BadRequest:
-        super("Bad Request");
+        super('Bad Request');
         break;
       case EHTTPStatus.Forbidden:
-        super("Permission Denied");
+        super('Permission Denied');
         break;
       case EHTTPStatus.NotFound:
-        super("Not Found");
+        super('Not Found');
         break;
       case EHTTPStatus.InternalServerError:
-        super("Internal Server Error");
+        super('Internal Server Error');
         break;
     }
     this.status = httpStatus;

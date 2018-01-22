@@ -8,7 +8,7 @@ interface ILogger {
 }
 
 interface IPermission {
-  name: string,
+  name: string;
   roles: Array<string>;
 }
 

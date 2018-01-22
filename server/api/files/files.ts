@@ -1,8 +1,8 @@
-import FileSchema from "../../schemas/File.schema"
-import {ARoute} from "../../middlewares/Resty";
-import {EPermission} from "../../typings/enums";
-import {RestyCallback} from "../../typings/resty.interface";
-import {EygleFile} from "../../../commons/models/file";
+import FileSchema from '../../schemas/File.schema';
+import {ARoute} from '../../middlewares/Resty';
+import {EPermission} from '../../typings/enums';
+import {RestyCallback} from '../../typings/resty.interface';
+import {EygleFile} from '../../../commons/models/file';
 
 /**
  * Collection class

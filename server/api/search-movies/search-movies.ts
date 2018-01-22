@@ -1,7 +1,7 @@
-import TMDB, {ITMDBMovie} from "../../modules/TMDB"
-import {ARoute} from "../../middlewares/Resty";
-import {EPermission} from "../../typings/enums";
-import {RestyCallback} from "../../typings/resty.interface";
+import TMDB, {ITMDBMovie} from '../../modules/TMDB';
+import {ARoute} from '../../middlewares/Resty';
+import {EPermission} from '../../typings/enums';
+import {RestyCallback} from '../../typings/resty.interface';
 
 /**
  * Resource class

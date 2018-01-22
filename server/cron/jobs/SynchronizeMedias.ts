@@ -1,42 +1,47 @@
-import * as fs from "fs";
-import * as q from "q";
-import * as path from "path";
-import * as _ from "underscore";
-import * as ptn from "parse-torrent-name";
+import * as fs from 'fs';
+import * as q from 'q';
+import * as path from 'path';
+import * as _ from 'underscore';
+import * as ptn from 'parse-torrent-name';
 
-import AJob from "../AJob";
-import Utils from "../../config/Utils"
-import FileSchema from "../../schemas/File.schema"
-import TMDB, {ITMDBMovie} from "../../modules/TMDB";
-import Movie from "../../schemas/Movie.schema";
-import Proposal from "../../schemas/Proposal.schema";
-import TVDB, {ITVDBEpisode, ITVDBShow} from "../../modules/TVDB";
-import TVShow from "../../schemas/TVShow.schema";
-import Episode from "../../schemas/Episode.schema";
-import {EEnv} from "../../typings/enums";
-import {EygleFile} from "../../../commons/models/file";
+import AJob from '../AJob';
+import Utils from '../../config/Utils';
+import FileSchema from '../../schemas/File.schema';
+import TMDB, {ITMDBMovie} from '../../modules/TMDB';
+import MovieSchema from '../../schemas/Movie.schema';
+import ProposalSchema from '../../schemas/Proposal.schema';
+import TVDB, {ITVDBEpisode, ITVDBShow} from '../../modules/TVDB';
+import TVShowSchema from '../../schemas/TVShow.schema';
+import EpisodeSchema from '../../schemas/Episode.schema';
+import {EEnv} from '../../typings/enums';
+import {EygleFile} from '../../../commons/models/file';
+import {Episode} from '../../../commons/models/episode';
+import {LocalFile} from '../../../commons/models/localFile';
+import {Movie} from '../../../commons/models/movie';
+import {Proposal} from '../../../commons/models/proposal';
+import {TVShow} from '../../../commons/models/tvshow';
 
 
 class SynchronizeMedias extends AJob {
   /**
    * List of local files to process and add in database
    */
-  private _filesToAdd: Array<ILocalFile>;
+  private _filesToAdd: Array<LocalFile>;
 
   /**
    * List of files not present anymore to remove from database
    */
-  private _filesToDelete: Array<ILocalFile>;
+  private _filesToDelete: Array<LocalFile>;
 
   /**
    * List of local files identified as movies
    */
-  private _movies: Array<ILocalFile>;
+  private _movies: Array<LocalFile>;
 
   /**
    * List of local files identified as tv shows
    */
-  private _tvShows: Array<ILocalFile>;
+  private _tvShows: Array<LocalFile>;
 
   /**
    * List of local tvshows files grouped by show and season
@@ -75,12 +80,12 @@ class SynchronizeMedias extends AJob {
 
   constructor() {
     super(SynchronizeMedias.name);
-    this.scheduleRule = "* * * * *";
+    this.scheduleRule = '* * * * *';
     this.environments = [EEnv.Prod];
 
     this._dumpPath = `${Utils.filesRoot}/dl-files-dump.json`;
-    this._videoExtensions = [".avi", ".mkv", ".webm", ".flv", ".vob", ".ogg", ".ogv", ".mov", ".qt",
-      ".wmv", ".mp4", ".m4p", ".m4v", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv"];
+    this._videoExtensions = ['.avi', '.mkv', '.webm', '.flv', '.vob', '.ogg', '.ogv', '.mov', '.qt',
+      '.wmv', '.mp4', '.m4p', '.m4v', '.mpg', '.mp2', '.mpeg', '.mpe', '.mpv'];
   }
 
   /**
@@ -110,11 +115,11 @@ class SynchronizeMedias extends AJob {
   private _synchronize() {
     const defer = q.defer();
     const previous = EEnv.Dev === Utils.env ? [] : this._load();
-    const files: Array<ILocalFile> = EEnv.Dev === Utils.env ? this._load() : this._listDirectory(`${Utils.filesRoot}/downloads`);
+    const files: Array<LocalFile> = EEnv.Dev === Utils.env ? this._load() : this._listDirectory(`${Utils.filesRoot}/downloads`);
 
     this._dump(files); // dump as soon as possible to avoid having two time the same task running on the same medias
-    for (let f of files) {
-      const idx = _.findIndex(previous, (o: ILocalFile) => {
+    for (const f of files) {
+      const idx = _.findIndex(previous, (o: LocalFile) => {
         return o.filename === f.filename && o.size === f.size && o.path === f.path;
       });
 
@@ -147,17 +152,17 @@ class SynchronizeMedias extends AJob {
 
   /**
    * Identify medias and create IFiles
-   * @param {Array<ILocalFile>} list
+   * @param {Array<LocalFile>} list
    * @param {EygleFile} parent
    * @return {any}
    * @private
    */
   private _identifyMedias(list = this._filesToAdd, parent: EygleFile = null) {
-    for (let f of list) {
+    for (const f of list) {
       f.parent = parent ? parent._id.toString() : null;
       f.model = FileSchema.create(f);
       if (f.directory && f.children) {
-        this._identifyMedias(f.children, f.model)
+        this._identifyMedias(f.children, f.model);
       } else {
         if (this._isVideo(f.filename)) {
           if (!f.mediaInfo) {
@@ -170,8 +175,7 @@ class SynchronizeMedias extends AJob {
             if (f.mediaInfo.hasOwnProperty('episode') && f.mediaInfo.hasOwnProperty('season')) {
               this._tvShows.push(f);
             }
-          }
-          else {
+          } else {
             this._movies.push(f);
           }
         }
@@ -213,25 +217,25 @@ class SynchronizeMedias extends AJob {
   private _processFilesToDelete() {
     const promises = [];
 
-    for (let f of this._filesToDelete) {
+    for (const f of this._filesToDelete) {
       const defer = q.defer();
       let movie, tvShow = null;
 
       q.allSettled([
         FileSchema.remove(f.model),
-        Movie.findWithFileId(f.model._id).then(res => {
+        MovieSchema.findWithFileId(f.model._id).then(res => {
           movie = res;
         }),
-        TVShow.findWithFileId(f.model._id).then(res => {
+        TVShowSchema.findWithFileId(f.model._id).then(res => {
           tvShow = res;
         })
       ]).then(() => {
         if (movie) {
-          Movie.setDeletedById(movie)
+          MovieSchema.setDeletedById(movie)
             .then(() => defer.resolve())
             .catch((err) => defer.reject(err));
         } else if (tvShow) {
-          TVShow.setDeletedById(movie)
+          TVShowSchema.setDeletedById(movie)
             .then(() => defer.resolve())
             .catch((err) => defer.reject(err));
         } else {
@@ -248,21 +252,21 @@ class SynchronizeMedias extends AJob {
 
   /**
    * Merge tvshow episodes and seasons into shows
-   * @param {Array<ILocalFile>} files
+   * @param {Array<LocalFile>} files
    * @return {{}}
    * @private
    */
-  private _mergeTVShowList(files: Array<ILocalFile>) {
+  private _mergeTVShowList(files: Array<LocalFile>) {
     const tvshows = {};
     const res = [];
 
-    for (let f of files) {
+    for (const f of files) {
       const title = f.mediaInfo.title.toLowerCase();
       if (!tvshows.hasOwnProperty(title)) {
         const r = {};
         tvshows[title] = {};
         r[title] = tvshows[title];
-        res.push(r)
+        res.push(r);
       }
       if (!tvshows[title].hasOwnProperty(f.mediaInfo.season))
         tvshows[title][f.mediaInfo.season] = {};
@@ -280,7 +284,7 @@ class SynchronizeMedias extends AJob {
    * @private
    * @param file
    */
-  private _addMovieFromFile(file: ILocalFile) {
+  private _addMovieFromFile(file: LocalFile) {
     const defer = q.defer();
 
     this.logger.log(`Process movie from file ${file.filename}`);
@@ -294,7 +298,7 @@ class SynchronizeMedias extends AJob {
             .catch(defer.reject);
         } else {
           if (file.mediaInfo.year) {
-            for (let m of results) {
+            for (const m of results) {
               if (m.release_date && new Date(m.release_date).getFullYear() === file.mediaInfo.year) {
                 this._fetchMovieInfoAndSave(file, m.id)
                   .then(defer.resolve)
@@ -320,7 +324,7 @@ class SynchronizeMedias extends AJob {
   }
 
   /**
-   * Add TVShow
+   * Add TVShowSchema
    * @param {string} title
    * @param show
    * @return {Q.Promise<any>}
@@ -333,16 +337,16 @@ class SynchronizeMedias extends AJob {
     TVDB.searchByTitle(title)
       .then((res: Array<ITVDBShow>) => {
         if (res.length === 1) {
-          // insert unique TVShow & all episodes
+          // insert unique TVShowSchema & all episodes
           TVDB.get(res[0].id)
-            .then(res => {
-              TVShow.createOrUpdateFromTVDBResult(res)
-                .then((item: ITVShow) => {
-                  TVShow.save(item)
+            .then(res2 => {
+              TVShowSchema.createOrUpdateFromTVDBResult(res2)
+                .then((item: TVShow) => {
+                  TVShowSchema.save(item)
                     .then(() => {
                       this.logger.log(`Added/updated TVShow: ${item.title}`);
                       this._nbrTVShowsAdded++;
-                      this._addAllEpisodes(item, res.episodes, show).then(() => {
+                      this._addAllEpisodes(item, res2.episodes, show).then(() => {
                         defer.resolve();
                       });
                     })
@@ -374,29 +378,29 @@ class SynchronizeMedias extends AJob {
 
   /**
    * Add all show episodes
-   * @param {ITVShow} show
+   * @param {TVShow} show
    * @param {Array<ITVDBEpisode>} episodesList
    * @param filesPerSeasons
    * @return {Q.Promise<Array<Q.PromiseState<any>>>}
    * @private
    */
-  private _addAllEpisodes(show: ITVShow, episodesList: Array<ITVDBEpisode>, filesPerSeasons: any) {
+  private _addAllEpisodes(show: TVShow, episodesList: Array<ITVDBEpisode>, filesPerSeasons: any) {
     const promises = [];
 
-    for (let season in filesPerSeasons) {
+    for (const season in filesPerSeasons) {
       if (filesPerSeasons.hasOwnProperty(season)) {
-        for (let episode in filesPerSeasons[season]) {
+        for (const episode in filesPerSeasons[season]) {
           if (filesPerSeasons[season].hasOwnProperty(episode)) {
-            const res = this._findEpisodeFromList(episodesList, parseInt(season), parseInt(episode));
-            if (res) {
+            const ep = this._findEpisodeFromList(episodesList, parseInt(season), parseInt(episode));
+            if (ep) {
               const d = q.defer();
               promises.push(d.promise);
 
-              Episode.createOrUpdateFromTVDBResult(show, res, filesPerSeasons[season][episode])
-                .then((episode: IEpisode) => {
-                  Episode.save(episode)
+              EpisodeSchema.createOrUpdateFromTVDBResult(show, ep, filesPerSeasons[season][episode])
+                .then((res: Episode) => {
+                  EpisodeSchema.save(res)
                     .then(() => {
-                      this.logger.log(`Added S${episode.season}E${episode.number}`);
+                      this.logger.log(`Added S${res.season}E${res.number}`);
                       d.resolve();
                     })
                     .catch(err => {
@@ -428,7 +432,7 @@ class SynchronizeMedias extends AJob {
    * @private
    */
   private _findEpisodeFromList(list: Array<ITVDBEpisode>, s: number, e: number) {
-    for (let v of list) {
+    for (const v of list) {
       if (v.airedSeason === s && v.airedEpisodeNumber === e) {
         return v;
       }
@@ -438,23 +442,23 @@ class SynchronizeMedias extends AJob {
 
   /**
    * Fetch movie info from TMDB and save in database
-   * @param {ILocalFile} file
+   * @param {LocalFile} file
    * @param {number} tmdbId
    * @return {Q.Promise<any>}
    * @private
    */
-  private _fetchMovieInfoAndSave(file: ILocalFile, tmdbId: number) {
+  private _fetchMovieInfoAndSave(file: LocalFile, tmdbId: number) {
     const defer = q.defer();
 
     TMDB.get(tmdbId, file.model).then((res: ITMDBMovie) => {
-      Movie.save(res)
-        .then((movie: IMovie) => {
-          this.logger.log((movie.files.length === 1 ? 'Movie added' : 'Linked to existed movie') + ` ${movie.title}`);
+      MovieSchema.save(res)
+        .then((movie: Movie) => {
+          this.logger.log((movie.files.length === 1 ? 'MovieSchema added' : 'Linked to existed movie') + ` ${movie.title}`);
           this._nbrMoviesAdded++;
           defer.resolve();
         })
         .catch((err) => {
-          this.logger.error('[Movie] save error', err);
+          this.logger.error('[MovieSchema] save error', err);
           defer.reject(null);
         });
     });
@@ -464,17 +468,18 @@ class SynchronizeMedias extends AJob {
   /**
    * Add all movies proposals
    * @param {Array<ITMDBMovie>} results
-   * @param {ILocalFile} file
+   * @param {LocalFile} file
    * @return {Q.Promise<Array<Q.PromiseState<any>>>}
    * @private
    */
-  private _addMoviesProposals(results: Array<ITMDBMovie>, file: ILocalFile) {
+  private _addMoviesProposals(results: Array<ITMDBMovie>, file: LocalFile) {
     const promises = [];
 
-    for (let r of results) {
-      promises.push(Proposal.save(Proposal.createFromTMDBResult(r, file.model))
-        .then((proposal: IProposal) => this.logger.log(`Add proposal: ${proposal.title}${proposal.date ? ` (${proposal.date.getFullYear()})` : ''}`))
-        .catch(err => this.logger.error('[Proposal] save error', err)));
+    for (const r of results) {
+      promises.push(ProposalSchema.save(ProposalSchema.createFromTMDBResult(r, file.model))
+        .then((proposal: Proposal) =>
+          this.logger.log(`Add proposal: ${proposal.title}${proposal.date ? ` (${proposal.date.getFullYear()})` : ''}`))
+        .catch(err => this.logger.error('[ProposalSchema] save error', err)));
     }
 
     return q.allSettled(promises);
@@ -488,7 +493,7 @@ class SynchronizeMedias extends AJob {
   private _saveNewFiles(files = this._filesToAdd) {
     const promises = [];
 
-    for (let f of files) {
+    for (const f of files) {
       if (f.model) {
         promises.push(FileSchema.save(f.model));
         this._nbrFilesAdded++;
@@ -506,14 +511,14 @@ class SynchronizeMedias extends AJob {
    * @param dir
    * @param {any} parent
    * @param {any} filePath
-   * @return {ILocalFile[]} full hierarchy
+   * @return {LocalFile[]} full hierarchy
    * @private
    */
   private _listDirectory(dir, filePath = null) {
     return _.map(fs.readdirSync(dir), (f) => {
       const filename = path.join(dir, f);
       const stats = fs.statSync(filename);
-      const file: ILocalFile = <ILocalFile>{
+      const file: LocalFile = <LocalFile>{
         filename: f,
         directory: stats.isDirectory(),
         mtime: stats.mtime,
@@ -542,13 +547,13 @@ class SynchronizeMedias extends AJob {
 
   /**
    * Check if path relate to a tv show using it's full path (the info can be in the parent folder)
-   * @param path
+   * @param p
    * @return {any}
    */
-  private _isTVShow(path) {
-    const files = path.split('/');
+  private _isTVShow(p) {
+    const files = p.split('/');
 
-    for (let f of files) {
+    for (const f of files) {
       const info = ptn(f);
       if (info.season || info.episode)
         return true;
@@ -556,7 +561,7 @@ class SynchronizeMedias extends AJob {
 
     return files.length > 1 && files[files.length - 2].match(/(seasons?|saisons?)/i);
 
-  };
+  }
 
   /**
    * Return size of a given directory
@@ -565,7 +570,7 @@ class SynchronizeMedias extends AJob {
    * @private
    */
   private _filesSize(files) {
-    return _.reduce(files, (memo: number, f: ILocalFile) => {
+    return _.reduce(files, (memo: number, f: LocalFile) => {
       return memo + f.size;
     }, 0);
   }
@@ -573,7 +578,7 @@ class SynchronizeMedias extends AJob {
   /**
    * Dump full files list into a local JSON file
    */
-  private _dump(data: Array<ILocalFile>) {
+  private _dump(data: Array<LocalFile>) {
     fs.writeFileSync(this._dumpPath, JSON.stringify(data));
   }
 

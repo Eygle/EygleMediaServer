@@ -1,4 +1,6 @@
-import {AModel} from "./model.abstract";
+import {AModel} from './model.abstract';
+import {Episode} from './episode';
+import {Movie} from './movie';
 
 export class EygleFile extends AModel {
   filename: string;
@@ -8,8 +10,8 @@ export class EygleFile extends AModel {
   normalized: string;
   mtime: Date;
 
-  episode: IEpisode | string;
-  movie: IMovie;
+  episode: Episode | string;
+  movie: Movie;
 
   parent: EygleFile;
 

@@ -5,7 +5,7 @@ import * as _ from 'underscore';
 import DB from '../modules/DB';
 import ASchema from './ASchema.schema';
 import Episode from './Episode.schema';
-import {ITVDBShow} from "../modules/TVDB";
+import {ITVDBShow} from '../modules/TVDB';
 
 const _schema: mongoose.Schema = DB.createSchema({
   title: String,
@@ -35,9 +35,9 @@ const _schema: mongoose.Schema = DB.createSchema({
   network: String,
 });
 
-class TVShow extends ASchema {
+class TVShowSchema extends ASchema {
   /**
-   * Get full TVShow with episodes list
+   * Get full TVShowSchema with episodes list
    * @param {string} id
    * @return {Q.Promise<any>}
    */
@@ -107,7 +107,7 @@ class TVShow extends ASchema {
         item.posterThumb = t.posters ? `http://thetvdb.com/banners/${t.posters[0].thumbnail}` : null;
         item.actors = _.map(
           _.sortBy(t.actors, (s) => {
-            return s.sortOrder
+            return s.sortOrder;
           }),
           (v) => {
             return {
@@ -115,7 +115,7 @@ class TVShow extends ASchema {
               name: v.name,
               character: v.role,
               image: v.image ? `http://thetvdb.com/banners/${v.image}` : null
-            }
+            };
           });
         item.runtime = parseInt(t.runtime);
         item.status = t.status;
@@ -134,7 +134,7 @@ class TVShow extends ASchema {
   }
 }
 
-const instance = new TVShow();
+const instance = new TVShowSchema();
 
 module.exports.schema = instance;
 export default instance;

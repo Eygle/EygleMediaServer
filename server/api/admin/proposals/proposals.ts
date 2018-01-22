@@ -1,12 +1,14 @@
-import * as q from "q";
+import * as q from 'q';
 
-import Proposal from "../../../schemas/Proposal.schema"
-import Movie from "../../../schemas/Movie.schema"
-import FileSchema from "../../../schemas/File.schema"
-import TMDB from "../../../modules/TMDB"
-import {ARoute} from "../../../middlewares/Resty";
-import {EPermission} from "../../../typings/enums";
-import {RestyCallback} from "../../../typings/resty.interface";
+import ProposalSchema from '../../../schemas/Proposal.schema';
+import MovieSchema from '../../../schemas/Movie.schema';
+import FileSchema from '../../../schemas/File.schema';
+import TMDB from '../../../modules/TMDB';
+import {ARoute} from '../../../middlewares/Resty';
+import {EPermission} from '../../../typings/enums';
+import {RestyCallback} from '../../../typings/resty.interface';
+import {Movie} from '../../../../commons/models/movie';
+import {Proposal} from '../../../../commons/models/proposal';
 
 /**
  * Resource class
@@ -23,16 +25,16 @@ class Resource extends ARoute {
    * @param next
    */
   public put(id: string, next: RestyCallback): void {
-    Proposal.get(id, {
+    ProposalSchema.get(id, {
       select: {tmdbId: 1, file: 1},
       populate: 'file'
     })
-      .then((proposal: IProposal) => {
+      .then((proposal: Proposal) => {
         TMDB.get(proposal.tmdbId, proposal.file)
-          .then((movie: IMovie) => {
+          .then((movie: Movie) => {
             q.allSettled([
               FileSchema.save(proposal.file),
-              Movie.save(movie),
+              MovieSchema.save(movie),
               this._deleteAllProposalsLinkedToFile(proposal.file._id)
             ])
               .then(next)
@@ -64,12 +66,12 @@ class Resource extends ARoute {
   private _deleteAllProposalsLinkedToFile(fid) {
     const defer = q.defer();
 
-    Proposal.getAllByFileId(fid.toString())
-      .then((items: Array<IProposal>) => {
+    ProposalSchema.getAllByFileId(fid.toString())
+      .then((items: Array<Proposal>) => {
         const promises = [];
 
-        for (let item of items) {
-          promises.push(Proposal.remove(item));
+        for (const item of items) {
+          promises.push(ProposalSchema.remove(item));
         }
 
         q.allSettled(promises)
@@ -96,7 +98,7 @@ class Collection extends ARoute {
    * @param next
    */
   public get(next: RestyCallback): void {
-    Proposal.getAll({
+    ProposalSchema.getAll({
       select: {file: 1, date: 1, title: 1, originalTitle: 1, poster: 1},
       populate: 'file'
     })
@@ -115,7 +117,7 @@ class Collection extends ARoute {
 
     // populate files object with files
     // Each file has a proposal array
-    for (let i in proposals) {
+    for (const i in proposals) {
       if (proposals.hasOwnProperty(i)) {
         const proposal = proposals[i].toObject();
         const file = proposal._file;
@@ -135,7 +137,7 @@ class Collection extends ARoute {
 
     // files object to array
     const res = [];
-    for (let f in files) {
+    for (const f in files) {
       if (files.hasOwnProperty(f)) {
         res.push(files[f]);
       }

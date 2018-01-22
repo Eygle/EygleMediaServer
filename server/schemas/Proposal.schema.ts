@@ -3,8 +3,8 @@ import * as q from 'q';
 
 import DB from '../modules/DB';
 import ASchema from './ASchema.schema';
-import TMDB, {ITMDBMovie} from "../modules/TMDB";
-import {EygleFile} from "../../commons/models/file";
+import TMDB, {ITMDBMovie} from '../modules/TMDB';
+import {EygleFile} from '../../commons/models/file';
 
 const _schema: mongoose.Schema = DB.createSchema({
   title: String,
@@ -18,7 +18,7 @@ const _schema: mongoose.Schema = DB.createSchema({
   file: {type: String, ref: 'File'}
 }, false);
 
-class Proposal extends ASchema {
+class ProposalSchema extends ASchema {
 
   /**
    * Return all linked to a given file id
@@ -64,7 +64,7 @@ class Proposal extends ASchema {
   }
 }
 
-const instance = new Proposal();
+const instance = new ProposalSchema();
 
 module.exports.schema = instance;
 export default instance;

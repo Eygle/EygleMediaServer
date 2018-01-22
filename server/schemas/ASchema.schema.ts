@@ -3,8 +3,9 @@ import * as q from 'q';
 
 import DB from '../modules/DB';
 import Utils from '../config/Utils';
-import {CustomEdError} from "../config/EdError";
-import {EHTTPStatus} from "../typings/enums";
+import {CustomEdError} from '../config/EdError';
+import {EHTTPStatus} from '../typings/enums';
+import {AModel} from '../../commons/models/model.abstract';
 
 abstract class ASchema {
   /**
@@ -48,13 +49,12 @@ abstract class ASchema {
 
     if (!Utils.isMongoId(id)) {
       defer.reject(new Error(`Invalid mongo id ${id}`));
-    }
-    else {
+    } else {
       const query = this._model.findById(id);
       this.applyQueryParams(query, queryParams);
       query.exec((err, item) => {
         if (err) return defer.reject(err);
-        if (!item) return defer.reject(new CustomEdError("No such item", EHTTPStatus.BadRequest));
+        if (!item) return defer.reject(new CustomEdError('No such item', EHTTPStatus.BadRequest));
         defer.resolve(item);
       });
     }
@@ -66,7 +66,7 @@ abstract class ASchema {
    * @return {Promise<T>}
    */
   public getAll(queryParams: any = null) {
-    const defer = <q.Deferred<Array<IModel>>>q.defer();
+    const defer = <q.Deferred<Array<AModel>>>q.defer();
 
     const query = this._model.find();
     this.applyQueryParams(query, queryParams);
@@ -127,7 +127,7 @@ abstract class ASchema {
     this.get(id, {})
       .then(item => {
         this.save(item, data, exclude, populateOptions)
-          .then(item => defer.resolve(item))
+          .then(res => defer.resolve(res))
           .catch(err => defer.reject(err));
       })
       .catch(err => defer.reject(err));
@@ -144,11 +144,10 @@ abstract class ASchema {
     const defer = q.defer();
 
     if (!item) {
-      defer.reject(new Error("Item not found"));
-    }
-    else {
+      defer.reject(new Error('Item not found'));
+    } else {
       DB.saveItem(item, {deleted: true})
-        .then(item => defer.resolve(item))
+        .then(res => defer.resolve(res))
         .catch(err => defer.reject(err));
     }
 
@@ -165,7 +164,7 @@ abstract class ASchema {
     this.get(id, {})
       .then(item => {
         this.setDeleted(item)
-          .then((item) => defer.resolve(item))
+          .then((res) => defer.resolve(res))
           .catch(err => defer.reject(err));
       })
       .catch(err => defer.reject(err));
@@ -182,9 +181,8 @@ abstract class ASchema {
     const defer = q.defer();
 
     if (!item) {
-      defer.reject(new Error("Item not found"));
-    }
-    else {
+      defer.reject(new Error('Item not found'));
+    } else {
       item.remove((err) => {
         if (err) return defer.reject(err);
         defer.resolve();
@@ -204,7 +202,7 @@ abstract class ASchema {
     this.get(id, {})
       .then(item => {
         this.remove(item)
-          .then((item) => defer.resolve(item))
+          .then((res) => defer.resolve(res))
           .catch(err => defer.reject(err));
       })
       .catch(err => defer.reject(err));
@@ -220,24 +218,23 @@ abstract class ASchema {
   public formatData(body: any, exclude = null) {
     if (!body) return null;
     if (exclude) {
-      for (let e of exclude) {
+      for (const e of exclude) {
         if (body.hasOwnProperty(e)) {
           delete body[e];
         }
       }
     }
 
-    for (let idx in body) {
+    for (const idx in body) {
       if (body.hasOwnProperty(idx)) {
         const value = body[idx];
         if (value instanceof Array) { // Try to generate an array of {_id: mongoId} objects
-          for (let i in value) {
+          for (const i in value) {
             if (value.hasOwnProperty(i) && value[i] && value[i].hasOwnProperty('_id')) {
               value[i] = value[i]._id;
             }
           }
-        }
-        else if (value instanceof Object && value.hasOwnProperty('_id')) { // Try to extract _id from object
+        } else if (value instanceof Object && value.hasOwnProperty('_id')) { // Try to extract _id from object
           body[idx] = value._id;
         }
         if (idx === '__v') {
@@ -259,13 +256,13 @@ abstract class ASchema {
     if (queryParams) {
       if (queryParams.select) {
         queryParams.select = queryParams.select instanceof Array ? queryParams.select : [queryParams.select];
-        for (let select of queryParams.select) {
+        for (const select of queryParams.select) {
           query.select(select);
         }
       }
       if (queryParams.populate) {
         queryParams.populate = queryParams.populate instanceof Array ? queryParams.populate : [queryParams.populate];
-        for (let populate of queryParams.populate) {
+        for (const populate of queryParams.populate) {
           query.populate(populate);
         }
       }

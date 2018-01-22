@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FilesService} from "../services/files.service";
-import {EygleFile} from "../../../commons/models/file";
-import {MatSort, MatTableDataSource} from "@angular/material";
+import {FilesService} from '../services/files.service';
+import {EygleFile} from '../../../commons/models/file';
+import {MatSort, MatTableDataSource} from '@angular/material';
 
 import * as _ from 'underscore';
-import {PerfectScrollbarDirective} from "ngx-perfect-scrollbar";
+import {PerfectScrollbarDirective} from 'ngx-perfect-scrollbar';
 
 @Component({
   selector: 'ems-files',
@@ -69,7 +69,7 @@ export class FilesComponent implements OnInit {
   refresh(): void {
     this.isLoading = true;
     this.selected = [];
-    console.log("refresh with root id", this.root ? this.root._id : null);
+    console.log('refresh with root id', this.root ? this.root._id : null);
     this.filesService.getChildren(this.root ? this.root._id : null)
       .subscribe((res: EygleFile[]) => {
         this.dataSource.data = res;
@@ -127,7 +127,7 @@ export class FilesComponent implements OnInit {
    */
   getIcon(file: EygleFile): string {
     if (file.directory)
-      return "folder";
-    return ""
+      return 'folder';
+    return '';
   }
 }

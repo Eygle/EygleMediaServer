@@ -12,7 +12,7 @@ const _schema: mongoose.Schema = DB.createSchema({
   lastRun: Date
 }, false);
 
-class CronJob extends ASchema {
+class CronJobSchema extends ASchema {
 
   /**
    * Schema getter
@@ -23,7 +23,7 @@ class CronJob extends ASchema {
   }
 }
 
-const instance = new CronJob();
+const instance = new CronJobSchema();
 
 module.exports.schema = instance;
 export default instance;

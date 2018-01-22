@@ -6,8 +6,8 @@ import {CustomEdError, EdError} from '../config/EdError';
 import Emails from '../modules/Emails';
 import UserSchema from '../schemas/User.schema';
 import Permission from '../modules/Permissions';
-import {EEnv, EHTTPStatus} from "../typings/enums";
-import {User} from "../../commons/models/user";
+import {EEnv, EHTTPStatus} from '../typings/enums';
+import {User} from '../../commons/models/user';
 
 class Auth {
   /**
@@ -32,9 +32,9 @@ class Auth {
         }
         this._cleanExpiredAttempts(req.body.username);
 
-        req.logIn(user, (err) => {
-          if (err) {
-            return next(err);
+        req.logIn(user, (err2) => {
+          if (err2) {
+            return next(err2);
           }
           this.addUserCookie(res, user);
           res.sendStatus(200);
@@ -48,7 +48,9 @@ class Auth {
    */
   public logoutMiddleware() {
     return (req, res) => {
-      Utils.logger.log(`User ${req.user ? req.user.fullName || req.user.email : '[null]'}${req.user ? ` (${req.user._id})` : ''} logged out`);
+      Utils.logger.log(`User ${req.user ?
+        req.user.fullName || req.user.email :
+        '[null]'}${req.user ? ` (${req.user._id})` : ''} logged out`);
       req.logout();
       return res.sendStatus(200);
     };
@@ -79,11 +81,11 @@ class Auth {
   public forgotPasswordMiddleware() {
     return (req, res, next) => {
       UserSchema.findOneByEmail(req.body.email).then((user: User) => {
-        if (!user) return res.status(404).send("UserSchema not found");
+        if (!user) return res.status(404).send('UserSchema not found');
         user.password = null; // set password has null to force validMail generation
-        UserSchema.save(user).then((user: User) => {
-          UserSchema.getPasswordsById(user._id.toString()).then(user => {
-            Emails.sendPasswordRecovery(user);
+        UserSchema.save(user).then((userSaved: User) => {
+          UserSchema.getPasswordsById(userSaved._id.toString()).then(userWPwd => {
+            Emails.sendPasswordRecovery(userWPwd);
             Utils.logger.log(`User ${req.body.email} recovered password`);
             res.sendStatus(200);
           }).catch((err) => next(err));
@@ -101,7 +103,9 @@ class Auth {
       const id = p[p.length - 1];
 
       if (req.user._id !== id && !Permission.ensureAuthorized(req.user, 'admin')) {
-        return next(new CustomEdError(`Permission denied (admin) for user ${req.user ? req.user.fullName || req.user.email : '[null]'}`, EHTTPStatus.Forbidden));
+        return next(new CustomEdError(`Permission denied (admin) for user ${req.user ?
+          req.user.fullName || req.user.email :
+          '[null]'}`, EHTTPStatus.Forbidden));
       }
 
       UserSchema.changePasswordById(id, req.body.oldPwd, req.body.password)
@@ -128,7 +132,7 @@ class Auth {
 
       this._cleanExpiredAttempts(username);
       if (this._attempts[username].locked) {
-        return res.status(429).send("TooManyAttempts");
+        return res.status(429).send('TooManyAttempts');
       }
 
       next();
@@ -204,28 +208,25 @@ class Auth {
     this._addAttempt(username);
 
     if (this._attempts[username].locked) {
-      UserSchema.findOneByUserNameOrEmail(username).then((user: User) => {
-        if (user && !user.locked) {
-          user.locked = true;
-          UserSchema.save(user).then((user: User) => {
-            Emails.sendLockedAccount(user);
+      UserSchema.findOneByUserNameOrEmail(username).then((userRes: User) => {
+        if (userRes && !userRes.locked) {
+          userRes.locked = true;
+          UserSchema.save(userRes).then((userSaved: User) => {
+            Emails.sendLockedAccount(userSaved);
             Utils.logger.warn(`User ${username} account is locked due to too many login attempts`);
           }).catch(err => next(err));
-        }
-        else {
+        } else {
           Utils.logger.warn(`User ${username} tried to logged in with a locked account`);
         }
-        res.status(403).send("TooManyAttempts");
+        res.status(403).send('TooManyAttempts');
       }).catch(err => {
         next(err);
       });
-    }
-    else if (user) {
+    } else if (user) {
       Utils.logger.warn(`User ${username} tried to logged in with a locked account`);
-      res.status(403).send("TooManyAttempts");
-    }
-    else {
-      res.status(400).send("FailedToLogin");
+      res.status(403).send('TooManyAttempts');
+    } else {
+      res.status(400).send('FailedToLogin');
     }
   }
 
@@ -267,7 +268,7 @@ class Auth {
     const now = Date.now();
     const userAttempts: any = this._attempts[username].list;
 
-    for (let idx in userAttempts) {
+    for (const idx in userAttempts) {
       if (userAttempts.hasOwnProperty(idx)) {
         if (now - userAttempts[idx] >= Utils.loginAttemptsExpire) {
           userAttempts.splice(idx, 1);
