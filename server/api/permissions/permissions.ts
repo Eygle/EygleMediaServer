@@ -1,6 +1,7 @@
-import ConfigSchema from '../../schemas/Config.schema';
-import {ARoute} from '../../middlewares/Resty';
-import {RestyCallback} from '../../typings/resty.interface';
+import ConfigSchema from '../../core/schemas/Config.schema';
+import {ARoute} from '../../core/middlewares/Resty';
+import {RestyCallback} from '../../core/typings/resty.interface';
+import {Permission} from '../../core/models/Config';
 
 class Collection extends ARoute {
   /**
@@ -9,7 +10,7 @@ class Collection extends ARoute {
    */
   public get(next: RestyCallback): void {
     ConfigSchema.getPermissions()
-      .then((items: Array<IPermission>) => {
+      .then((items: Array<Permission>) => {
         next(items);
       })
       .catch((err: Error) => {

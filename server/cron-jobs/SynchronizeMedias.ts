@@ -4,22 +4,22 @@ import * as path from 'path';
 import * as _ from 'underscore';
 import * as ptn from 'parse-torrent-name';
 
-import AJob from '../AJob';
-import Utils from '../../config/Utils';
-import FileSchema from '../../schemas/File.schema';
-import TMDB, {ITMDBMovie} from '../../modules/TMDB';
-import MovieSchema from '../../schemas/Movie.schema';
-import ProposalSchema from '../../schemas/Proposal.schema';
-import TVDB, {ITVDBEpisode, ITVDBShow} from '../../modules/TVDB';
-import TVShowSchema from '../../schemas/TVShow.schema';
-import EpisodeSchema from '../../schemas/Episode.schema';
-import {EEnv} from '../../typings/enums';
-import {EygleFile} from '../../../commons/models/file';
-import {Episode} from '../../../commons/models/episode';
-import {LocalFile} from '../../../commons/models/localFile';
-import {Movie} from '../../../commons/models/movie';
-import {Proposal} from '../../../commons/models/proposal';
-import {TVShow} from '../../../commons/models/tvshow';
+import AJob from '../core/models/AJob';
+import Utils from '../core/config/Utils';
+import FileSchema from '../schemas/File.schema';
+import TMDB, {ITMDBMovie} from '../modules/TMDB';
+import MovieSchema from '../schemas/Movie.schema';
+import ProposalSchema from '../schemas/Proposal.schema';
+import TVDB, {ITVDBEpisode, ITVDBShow} from '../modules/TVDB';
+import TVShowSchema from '../schemas/TVShow.schema';
+import EpisodeSchema from '../schemas/Episode.schema';
+import {EEnv} from '../core/typings/server.enums';
+import {EygleFile} from '../../commons/models/File';
+import {Episode} from '../../commons/models/Episode';
+import {LocalFile} from '../../commons/models/LocalFile';
+import {Movie} from '../../commons/models/Movie';
+import {Proposal} from '../../commons/models/Proposal';
+import {TVShow} from '../../commons/models/TVShow';
 
 
 class SynchronizeMedias extends AJob {

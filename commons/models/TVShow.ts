@@ -1,5 +1,5 @@
-import {Episode} from './episode';
-import {AModel} from './model.abstract';
+import {Episode} from './Episode';
+import {AModel} from '../core/models/AModel';
 
 export class TVShow extends AModel {
   title: string;

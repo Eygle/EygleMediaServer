@@ -1,6 +1,6 @@
-import {AModel} from './model.abstract';
-import {Episode} from './episode';
-import {Movie} from './movie';
+import {AModel} from '../core/models/AModel';
+import {Episode} from './Episode';
+import {Movie} from './Movie';
 
 export class EygleFile extends AModel {
   filename: string;

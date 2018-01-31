@@ -1,5 +1,5 @@
-import {EygleFile} from './file';
-import {AModel} from './model.abstract';
+import {EygleFile} from './File';
+import {AModel} from '../core/models/AModel';
 
 export class Movie extends AModel {
   title: string;

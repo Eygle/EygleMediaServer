@@ -1,4 +1,4 @@
-import {EygleFile} from './file';
+import {EygleFile} from './File';
 
 export class LocalFile {
   filename: string;

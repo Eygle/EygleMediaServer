@@ -1,6 +1,6 @@
-import AJob from '../AJob';
-import TVDB from '../../modules/TVDB';
-import {EEnv} from '../../typings/enums';
+import AJob from '../core/models/AJob';
+import TVDB from '../modules/TVDB';
+import {EEnv} from '../core/typings/server.enums';
 
 
 class TestTVDBApi extends AJob {

@@ -8,8 +8,10 @@ const gnodemon = require('gulp-nodemon');
 const del = require('del');
 
 const paths = {
-  "root": "server",
+  "root": ".",
+  "server": "server",
   "commons": "commons",
+  "outRoot": "dist",
   "outDir": "dist/server"
 };
 
@@ -19,11 +21,16 @@ let nodemon = null;
  *  Default task launch the main optimization build task
  */
 gulp.task('server:build', [], function () {
+  const dConf = q.defer();
   const dMisc = q.defer();
   const dTpl = q.defer();
   const dFiles = q.defer();
 
   clean();
+
+  gulp.src(`${paths.root}/eygle-conf.json`)
+    .pipe(gulp.dest(`${paths.outRoot}`))
+    .on('end', () => dConf.resolve());
 
   gulp.src(`${paths.server}/templates/**/*`)
     .pipe(gulp.dest(`${paths.outDir}/templates`))
@@ -33,12 +40,14 @@ gulp.task('server:build', [], function () {
     .pipe(gulp.dest(`${paths.outDir}/misc`))
     .on('end', () => dMisc.resolve());
 
+
   gulp.src(`${paths.server}/files/**/*`)
     .pipe(gulp.dest(`${paths.outDir}/files`))
     .on('end', () => dFiles.resolve());
 
   return q.allSettled([
     transpiling(),
+    dConf.promise,
     dTpl.promise,
     dFiles.promise,
     dMisc.promise
@@ -49,7 +58,7 @@ gulp.task('server:build', [], function () {
  *  Run task launch the server
  */
 gulp.task('server:run', ['server:build'], function () {
-  gulp.watch(`${paths.root}/**/*.ts`, transpiling);
+  gulp.watch(`${paths.server}/**/*.ts`, transpiling);
 
   nodemon = gnodemon({
     script: `${paths.outDir}/server.js`,
@@ -72,7 +81,7 @@ function transpiling() {
   const defer = q.defer();
 
   task.start('transpiling');
-  gulp.src([`${paths.root}/**/*.ts`, `${paths.commons}/**/*.ts`])
+  gulp.src([`${paths.server}/**/*.ts`, `${paths.commons}/**/*.ts`], {follow: true})
     .pipe(ts({removeComments: false, target: 'es6', module: "commonjs"})).on('error', (err) => console.error(err))
     .pipe(gulp.dest(paths.outDir))
     .on('end', () => defer.resolve());

@@ -1,10 +1,10 @@
 import * as mongoose from 'mongoose';
-
-import DB from '../modules/DB';
-import ASchema from './ASchema.schema';
-import Utils from '../config/Utils';
 import * as q from 'q';
-import {AModel} from '../../commons/models/model.abstract';
+
+import DB from '../core/modules/DB';
+import ASchema from '../core/schemas/ASchema.schema';
+import Utils from '../core/config/Utils';
+import {AModel} from '../../commons/core/models/AModel';
 
 const _schema: mongoose.Schema = DB.createSchema({
   filename: String,

@@ -1,13 +1,13 @@
 import * as q from 'q';
 import * as _ from 'underscore';
 
-import Utils from '../../config/Utils';
+import Utils from '../../core/config/Utils';
 import MovieSchema from '../../schemas/Movie.schema';
 import FileSchema from '../../schemas/File.schema';
 import TMDB from '../../modules/TMDB';
-import {ARoute} from '../../middlewares/Resty';
-import {EPermission} from '../../typings/enums';
-import {RestyCallback} from '../../typings/resty.interface';
+import {ARoute} from '../../core/middlewares/Resty';
+import {EPermission} from '../../core/typings/server.enums';
+import {RestyCallback} from '../../core/typings/resty.interface';
 import {EygleFile} from '../../../commons/models/file';
 import {Movie} from '../../../commons/models/movie';
 
@@ -41,7 +41,7 @@ class Resource extends ARoute {
   public put(fid: string, next: RestyCallback): void {
     FileSchema.get(fid)
       .then((file: EygleFile) => {
-        TMDB.get(this.data.tmdbId, file)
+        TMDB.get(this.body.tmdbId, file)
           .then((movie: Movie) => {
             MovieSchema.findWithFileId(fid)
               .then((items: Array<Movie>) => {

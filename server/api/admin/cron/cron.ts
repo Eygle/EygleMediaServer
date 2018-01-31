@@ -1,9 +1,9 @@
-import {ARoute} from '../../../middlewares/Resty';
-import CronJobSchema from '../../../schemas/CronJob.schema';
-import {EHTTPStatus, EPermission} from '../../../typings/enums';
-import CronManager from '../../../cron/CronManager';
-import EdError from '../../../config/EdError';
-import {RestyCallback} from '../../../typings/resty.interface';
+import {ARoute} from '../../../core/middlewares/Resty';
+import CronJobSchema from '../../../core/schemas/CronJob.schema';
+import {EHTTPStatus, EPermission} from '../../../core/typings/server.enums';
+import CronManager from '../../../core/modules/CronManager';
+import EdError from '../../../core/config/EdError';
+import {RestyCallback} from '../../../core/typings/resty.interface';
 
 /**
  * Collection class
@@ -29,15 +29,15 @@ class Collection extends ARoute {
    * @param next
    */
   public post(next: RestyCallback): void {
-    switch (this.data.action) {
+    switch (this.body.action) {
       case 'run':
-        CronManager.runJob(this.data.job);
+        CronManager.runJob(this.body.job);
         break;
       case 'schedule':
-        CronManager.scheduleJob(this.data.job);
+        CronManager.scheduleJob(this.body.job);
         break;
       case 'un-schedule':
-        CronManager.unScheduleJob(this.data.job);
+        CronManager.unScheduleJob(this.body.job);
         break;
       default:
         next(new EdError(EHTTPStatus.BadRequest));

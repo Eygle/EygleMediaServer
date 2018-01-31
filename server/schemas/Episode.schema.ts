@@ -2,12 +2,12 @@ import * as mongoose from 'mongoose';
 import * as q from 'q';
 import * as _ from 'underscore';
 
-import DB from '../modules/DB';
-import ASchema from './ASchema.schema';
+import DB from '../core/modules/DB';
+import ASchema from '../core/schemas/ASchema.schema';
 import {ITVDBEpisode} from '../modules/TVDB';
-import {EygleFile} from '../../commons/models/file';
-import {Episode} from '../../commons/models/episode';
-import {TVShow} from '../../commons/models/tvshow';
+import {EygleFile} from '../../commons/models/File';
+import {Episode} from '../../commons/models/Episode';
+import {TVShow} from '../../commons/models/TVShow';
 
 const _schema: mongoose.Schema = DB.createSchema({
   title: String,
