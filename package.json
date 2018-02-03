@@ -8,7 +8,8 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "ln -fs `pwd`/../EygleCore/server/core ./server/core && ln -fs `pwd`/../EygleCore/commons/core ./commons/core"
   },
   "private": true,
   "dependencies": {
