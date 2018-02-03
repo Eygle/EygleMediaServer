@@ -1,5 +1,6 @@
 {
   "server": {
+    "appName": "Eygle Media Server",
     "port": 4646,
     "dbName": "eygle",
     "debug": false,
