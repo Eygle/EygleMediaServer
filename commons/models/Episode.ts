@@ -1,6 +1,6 @@
-import {EygleFile} from './file';
+import {EygleFile} from './File';
 import {AModel} from '../core/models/AModel';
-import {TVShow} from './tvshow';
+import {TVShow} from './TVShow';
 
 export class Episode extends AModel {
   title: string;

@@ -1,10 +1,15 @@
 {
   "server": {
     "appName": "Eygle Media Server",
-    "port": 4646,
-    "dbName": "eygle",
+    "port": 4242,
+    "dbName": "EygleDownloads",
     "debug": false,
     "sessionCookieName": "eygle-connect.sid",
+    "implementsAuth": true,
+    "includeCronManager": true,
+    "includeEmailUnsubscribe": true,
+    "activateCSRFSecurity": true,
+
     "environments": {
       "production": {
         "logger": {
@@ -15,7 +20,8 @@
         }
       },
       "development": {
-        "filesRoot": "/../../../files"
+        "filesRoot": "/../../../files",
+        "activateCSRFSecurity": false
       }
     }
   }

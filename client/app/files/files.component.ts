@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FilesService} from '../services/files.service';
-import {EygleFile} from '../../../commons/models/file';
+import {EygleFile} from '../../../commons/models/File';
 import {MatSort, MatTableDataSource} from '@angular/material';
 
 import * as _ from 'underscore';

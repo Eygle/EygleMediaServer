@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 
-import {User} from '../../../commons/models/user';
+import {User} from '../../../commons/core/models/User';
 import {catchError, tap} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 import {CookieService} from 'ngx-cookie-service';
@@ -40,7 +40,7 @@ export class AuthService {
     return this.http.post<User>('/login', {
       username: username,
       password: password
-    }, httpOptions)
+    }, <{}>httpOptions)
       .pipe(
         tap(() => {
           this.user = JSON.parse(this.cookie.get('user'));
