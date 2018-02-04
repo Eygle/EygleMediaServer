@@ -1,7 +1,7 @@
 import * as q from 'q';
 import * as _ from 'underscore';
 
-import Utils from '../../core/config/Utils';
+import Utils from '../../../commons/core/utils/Utils';
 import MovieSchema from '../../schemas/Movie.schema';
 import FileSchema from '../../schemas/File.schema';
 import TMDB from '../../modules/TMDB';

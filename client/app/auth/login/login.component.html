@@ -4,7 +4,7 @@
 
     <form (submit)="logIn($event)">
       <mat-form-field>
-        <input matInput placeholder="{{'AUTH.INPUT.USERNAME' | translate}}" [(ngModel)]="username" name="username"
+        <input matInput placeholder="{{'AUTH.INPUT.USERNAME_EMAIL' | translate}}" [(ngModel)]="email" name="email"
                required>
       </mat-form-field>
 
@@ -12,6 +12,10 @@
         <input type="password" matInput placeholder="{{'AUTH.INPUT.PASSWORD' | translate}}" [(ngModel)]="password"
                name="password" required>
       </mat-form-field>
+
+      <div>
+        <a routerLink="/auth/register" [translate]="'AUTH.LOGIN.REGISTER_LINK'"></a>
+      </div>
 
       <button mat-raised-button>{{'AUTH.LOGIN.ACTION' | translate}}</button>
     </form>

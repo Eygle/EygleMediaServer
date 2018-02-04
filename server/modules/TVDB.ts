@@ -3,7 +3,7 @@ import * as _ from 'underscore';
 import * as NodeTVDB from 'node-tvdb';
 
 import ALimitedApi from './ALimitedApi';
-import Utils from '../core/config/Utils';
+import Utils from '../../commons/core/utils/Utils';
 
 class TVDB extends ALimitedApi {
   constructor() {

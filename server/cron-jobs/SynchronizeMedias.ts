@@ -5,7 +5,7 @@ import * as _ from 'underscore';
 import * as ptn from 'parse-torrent-name';
 
 import AJob from '../core/models/AJob';
-import Utils from '../core/config/Utils';
+import ProjectConfig from '../core/config/ProjectConfig';
 import FileSchema from '../schemas/File.schema';
 import TMDB, {ITMDBMovie} from '../modules/TMDB';
 import MovieSchema from '../schemas/Movie.schema';
@@ -83,7 +83,7 @@ class SynchronizeMedias extends AJob {
     this.scheduleRule = '* * * * *';
     this.environments = [EEnv.Prod];
 
-    this._dumpPath = `${Utils.filesRoot}/dl-files-dump.json`;
+    this._dumpPath = `${ProjectConfig.filesRoot}/dl-files-dump.json`;
     this._videoExtensions = ['.avi', '.mkv', '.webm', '.flv', '.vob', '.ogg', '.ogv', '.mov', '.qt',
       '.wmv', '.mp4', '.m4p', '.m4v', '.mpg', '.mp2', '.mpeg', '.mpe', '.mpv'];
   }
@@ -114,8 +114,8 @@ class SynchronizeMedias extends AJob {
    */
   private _synchronize() {
     const defer = q.defer();
-    const previous = EEnv.Dev === Utils.env ? [] : this._load();
-    const files: Array<LocalFile> = EEnv.Dev === Utils.env ? this._load() : this._listDirectory(`${Utils.filesRoot}/downloads`);
+    const previous = EEnv.Dev === ProjectConfig.env ? [] : this._load();
+    const files: Array<LocalFile> = EEnv.Dev === ProjectConfig.env ? this._load() : this._listDirectory(`${ProjectConfig.filesRoot}/downloads`);
 
     this._dump(files); // dump as soon as possible to avoid having two time the same task running on the same medias
     for (const f of files) {

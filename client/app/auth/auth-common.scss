@@ -26,5 +26,13 @@
         margin-top: 25px;
       }
     }
+
+    a {
+      color: $color-yellow;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }

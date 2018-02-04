@@ -3,7 +3,7 @@ import * as q from 'q';
 
 import DB from '../core/modules/DB';
 import ASchema from '../core/schemas/ASchema.schema';
-import Utils from '../core/config/Utils';
+import Utils from '../../commons/core/utils/Utils';
 import {AModel} from '../../commons/core/models/AModel';
 
 const _schema: mongoose.Schema = DB.createSchema({

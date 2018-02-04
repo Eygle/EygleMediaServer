@@ -34,11 +34,20 @@ export const locale = {
   'AUTH': {
     'LOGIN': {
       'TITLE': 'Connexion',
-      'ACTION': 'Se connecter'
+      'ACTION': 'Se connecter',
+      'REGISTER_LINK': 'Pas de compte ? Inscris toi'
+    },
+    'REGISTER': {
+      'TITLE': 'Inscription',
+      'ACTION': 'S\'inscrire',
+      'LOGIN_LINK': 'Déjà inscris ? Connecte-toi'
     },
     'INPUT': {
       'USERNAME': 'Nom d\'utilisateur',
-      'PASSWORD': 'Mot de passe'
+      'USERNAME_EMAIL': 'Nom d\'utilisateur ou email',
+      'PASSWORD': 'Mot de passe',
+      'CONFIRM_PASSWORD': 'Confirmer le mot de passe',
+      'EMAIL': 'Email'
     }
   }
 };

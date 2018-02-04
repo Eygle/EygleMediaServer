@@ -2,7 +2,8 @@
   "server": {
     "appName": "Eygle Media Server",
     "port": 4242,
-    "dbName": "EygleDownloads",
+    "dbName": "eygle",
+    "dbCollectionsPrefix": "EMS_",
     "debug": false,
     "sessionCookieName": "eygle-connect.sid",
     "implementsAuth": true,

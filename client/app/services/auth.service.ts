@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 
 import {User} from '../../../commons/core/models/User';
-import {EPermission, ERole} from '../../../commons/core/core.enums';
+import {ERole} from '../../../commons/core/core.enums';
 import {catchError, tap} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 import {CookieService} from 'ngx-cookie-service';
@@ -72,9 +72,27 @@ export class AuthService {
   /**
    * Log in action
    */
-  public logIn(username: string, password: string): Observable<User> {
-    console.log(username, password);
+  public logIn(email: string, password: string): Observable<User> {
     return this.http.post<User>('/login', {
+      email: email,
+      password: password
+    }, <{}>httpOptions)
+      .pipe(
+        tap(() => {
+          this.user = JSON.parse(this.cookie.get('user'));
+          console.log(this.user);
+          this.router.navigate(['files']);
+        }),
+        catchError(this._handleError<User>('login'))
+      );
+  }
+
+  /**
+   * Register action
+   */
+  public register(email: string, password: string, username: string): Observable<User> {
+    return this.http.post<User>('/register', {
+      email: email,
       username: username,
       password: password
     }, <{}>httpOptions)
