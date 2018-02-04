@@ -1,4 +1,6 @@
-<div fxLayout="column">
+<emsKeyEvents (onKeyDown)="keyEvents.setKeyDown($event)" (onKeyUp)="keyEvents.setKeyUp($event)"></emsKeyEvents>
+
+<div fxLayout="column" class="unselectable">
   <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
     <div class="breadcrumbs" fxLayout="row" fxLayoutAlign="start center">
       <span *ngIf="!root" [translate]="'FILES.TOOLBAR.ROOT'"></span>
@@ -17,7 +19,8 @@
   </div>
   <div class="content" fxFlex="flex">
     <mat-form-field class="search">
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{'FILES.SEARCH' | translate}}">
+      <input matInput [(ngModel)]="filterText" (keyup)="applyFilter(filterText); $event.stopPropagation()"
+             (keydown)="$event.stopPropagation()" placeholder="{{'FILES.SEARCH' | translate}}">
     </mat-form-field>
 
     <div class="loading" *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">

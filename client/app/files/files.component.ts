@@ -7,6 +7,8 @@ import {PerfectScrollbarDirective} from 'ngx-perfect-scrollbar';
 import {UrlsModalComponent} from "./modals/urls-modal/urls-modal.component";
 import {AuthService} from "../services/auth.service";
 import {EPermission} from "../../../commons/core/core.enums";
+import {KeyEvents} from "../utils/key-events";
+import {EKeyCode} from "../typings/client.enums";
 
 @Component({
   selector: 'ems-files',
@@ -36,6 +38,11 @@ export class FilesComponent implements OnInit {
   displayedColumns = ['icon', 'filename', 'size', 'mtime'];
 
   /**
+   * Table filter text
+   */
+  filterText: string = "";
+
+  /**
    * List of selected files
    */
   selected: EygleFile[];
@@ -45,7 +52,10 @@ export class FilesComponent implements OnInit {
    */
   isLoading: boolean;
 
-  permissions: EPermission;
+  /**
+   * Key event instance
+   */
+  keyEvents: KeyEvents;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(PerfectScrollbarDirective) directiveScroll: PerfectScrollbarDirective;
@@ -53,11 +63,15 @@ export class FilesComponent implements OnInit {
   constructor(private dialog: MatDialog,
               private filesService: FilesService,
               private Auth: AuthService) {
+    this.keyEvents = new KeyEvents();
     this.dataSource = new MatTableDataSource();
     this.selected = [];
     this.bc = [];
     this.root = null;
     this.isLoading = false;
+
+    this.keyEvents.onSelectAll.subscribe(() => this.selectAll());
+    this.keyEvents.onCancel.subscribe(() => this.unselectAll());
   }
 
   ngOnInit() {
@@ -91,6 +105,23 @@ export class FilesComponent implements OnInit {
   select(file: EygleFile): void {
     file.selected = !file.selected;
     if (file.selected) {
+      if (this.keyEvents.isPressed(EKeyCode.SHIFT)) { // SELECT WITH SHIFT
+        const displayedList = (<any>this.dataSource)._renderData._value;
+        const prevItem = this.selected.length ? this.selected[this.selected.length - 1] : null;
+        const prevIdx = prevItem ? _.findIndex(displayedList, (f) => {
+          return f._id === prevItem._id;
+        }) + 1 : 0;
+        const selectIdx = _.findIndex(displayedList, (f) => {
+          return f._id === file._id;
+        });
+
+        for (let i = (prevIdx < selectIdx ? prevIdx : selectIdx); i < (prevIdx < selectIdx ? selectIdx : prevIdx); i++) {
+          if (!displayedList[i].selected) {
+            displayedList[i].selected = true;
+            this.selected.push(displayedList[i]);
+          }
+        }
+      }
       this.selected.push(file);
     } else {
       this.selected = _.without(this.selected, file);
@@ -112,6 +143,8 @@ export class FilesComponent implements OnInit {
       this.refresh();
     }
     this.selected = [];
+    this.filterText = "";
+    this.applyFilter(this.filterText);
   }
 
   /**
@@ -172,5 +205,27 @@ export class FilesComponent implements OnInit {
     }
 
     return false;
+  }
+
+  /**
+   * Select all
+   */
+  selectAll(): void {
+    this.selected = [];
+    for (const f of this.dataSource.data) {
+      f.selected = true;
+      this.selected.push(f);
+    }
+  }
+
+  /**
+   * Unselect all
+   */
+  unselectAll(): void {
+    for (const f of this.selected) {
+      f.selected = false;
+    }
+
+    this.selected = [];
   }
 }

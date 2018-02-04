@@ -32,6 +32,7 @@ import {AuthService} from './services/auth.service';
 import {FilesService} from './services/files.service';
 import {FormatSizePipe} from './pipes/format-size.pipe';
 import {UrlsModalComponent} from './files/modals/urls-modal/urls-modal.component';
+import {KeyEventsDirective} from './directives/key-events.directive';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -43,8 +44,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SidenavComponent,
     FilesComponent,
     LoginComponent,
+    UrlsModalComponent,
     FormatSizePipe,
-    UrlsModalComponent
+    KeyEventsDirective
   ],
   imports: [
     BrowserModule,
