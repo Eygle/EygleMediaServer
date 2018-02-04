@@ -1,27 +1,34 @@
-# EygleMediaServer
+# Eygle Media Server
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.3.
+This project is inspired by [Plex](https://app.plex.tv/) but allow users to download media instead of streaming them.  
+*This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.3.*
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### Pre-requisits
++ NodeJs
++ Gulp `npm install -g gulp`
 
-## Code scaffolding
+### Run
+Run `nmp install` to install all project dependencies  
+Run `gulp server:run` to compile and launch the server.  
+Run `ng start` to compile and launch the client application. Navigate to [http://localhost:4200/](http://localhost:4200/). The app will automatically reload if you change any of the source files.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Production server
 
-## Build
+### Pre-requisits
++ NodeJs
++ Gulp `npm install -g gulp`
++ Nginx `sudo apt-get install nginx`
++ pm2 `npm install -g pm2`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Deploy
+Run `nmp install` to install all project dependencies  
+Run `gulp server:build` to compile the server.  
+Run `ng build` to compile the client application.  
+  
+__First launch:__  
+Run `pm2 start tools/project.json`  
+  
+__Other launch:__  
+Run `pm2 gracefulReload EygleMediaServer`  
