@@ -1,10 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FilesService} from '../services/files.service';
 import {EygleFile} from '../../../commons/models/File';
-import {MatSort, MatTableDataSource} from '@angular/material';
-
+import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import * as _ from 'underscore';
 import {PerfectScrollbarDirective} from 'ngx-perfect-scrollbar';
+import {UrlsModalComponent} from "./modals/urls-modal/urls-modal.component";
+import {AuthService} from "../services/auth.service";
+import {EPermission} from "../../../commons/core/core.enums";
 
 @Component({
   selector: 'ems-files',
@@ -43,10 +45,14 @@ export class FilesComponent implements OnInit {
    */
   isLoading: boolean;
 
+  permissions: EPermission;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(PerfectScrollbarDirective) directiveScroll: PerfectScrollbarDirective;
 
-  constructor(private filesService: FilesService) {
+  constructor(private dialog: MatDialog,
+              private filesService: FilesService,
+              private Auth: AuthService) {
     this.dataSource = new MatTableDataSource();
     this.selected = [];
     this.bc = [];
@@ -69,7 +75,6 @@ export class FilesComponent implements OnInit {
   refresh(): void {
     this.isLoading = true;
     this.selected = [];
-    console.log('refresh with root id', this.root ? this.root._id : null);
     this.filesService.getChildren(this.root ? this.root._id : null)
       .subscribe((res: EygleFile[]) => {
         this.dataSource.data = res;
@@ -129,5 +134,43 @@ export class FilesComponent implements OnInit {
     if (file.directory)
       return 'folder';
     return '';
+  }
+
+  /**
+   * Calculate sife of given files
+   * @param {[EygleFile]} files
+   * @returns {number}
+   */
+  getTotalSize(files: [EygleFile]): number {
+    let size = 0;
+
+    for (const f of files) {
+      size += f.size;
+    }
+
+    return size;
+  }
+
+  /**
+   * Open modal that list selected files's urls
+   */
+  openUrlModal(): void {
+    this.dialog.open(UrlsModalComponent, {
+      data: {files: this.selected}
+    });
+  }
+
+  /**
+   * Can user do given action
+   * @param {string} action
+   * @returns {boolean}
+   */
+  canUser(action: string): boolean {
+    switch (action) {
+      case 'delete':
+        return this.Auth.authorize(EPermission.DeleteFiles);
+    }
+
+    return false;
   }
 }

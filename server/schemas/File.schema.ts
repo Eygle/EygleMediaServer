@@ -40,6 +40,17 @@ const _schema: mongoose.Schema = DB.createSchema({
   parent: {type: String, ref: 'File'},
   episode: {type: String, ref: 'MovieSchema'},
   movie: {type: String, ref: 'MovieSchema'},
+}, true, {
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
+});
+
+_schema.virtual('url').get(function () {
+  return `${Utils.dlURL}/${this._id}`;
 });
 
 _schema.pre('save', function (next) {

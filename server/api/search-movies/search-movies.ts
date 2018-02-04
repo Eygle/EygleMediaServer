@@ -1,6 +1,6 @@
 import TMDB, {ITMDBMovie} from '../../modules/TMDB';
 import {ARoute} from '../../core/middlewares/Resty';
-import {EPermission} from '../../core/typings/server.enums';
+import {EPermission} from '../../../commons/core/core.enums';
 import {RestyCallback} from '../../core/typings/resty.interface';
 
 /**

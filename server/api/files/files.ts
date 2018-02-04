@@ -1,8 +1,8 @@
 import FileSchema from '../../schemas/File.schema';
 import {ARoute} from '../../core/middlewares/Resty';
-import {EPermission} from '../../core/typings/server.enums';
+import {EPermission} from '../../../commons/core/core.enums';
 import {RestyCallback} from '../../core/typings/resty.interface';
-import {EygleFile} from '../../../commons/models/file';
+import {EygleFile} from '../../../commons/models/File';
 
 /**
  * Collection class

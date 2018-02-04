@@ -24,6 +24,9 @@ export const locale = {
       'SIZE': 'Taille',
       'TYPE': 'Type',
       'LAST_MODIFICATION': 'Modifié',
+    },
+    'DIALOG': {
+      'URLS': 'Liens des {{nbr}} fichiers sélectionnés'
     }
   },
 

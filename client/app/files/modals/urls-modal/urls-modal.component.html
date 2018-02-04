@@ -1,0 +1,7 @@
+<h1 mat-dialog-title [translate]="'FILES.DIALOG.URLS'" [translateParams]="{nbr: data.files.length}"></h1>
+<div mat-dialog-content>
+  <pre>{{formatUrlsList()}}</pre>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="" cdkFocusInitial>Close</button>
+</div>

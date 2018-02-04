@@ -5,7 +5,7 @@ import * as moviedb from 'moviedb';
 import Utils from '../core/config/Utils';
 import MovieSchema from '../schemas/Movie.schema';
 import ALimitedApi from './ALimitedApi';
-import {Movie} from '../../commons/models/movie';
+import {Movie} from '../../commons/models/Movie';
 
 class TMDB extends ALimitedApi {
 

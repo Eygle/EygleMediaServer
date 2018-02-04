@@ -5,10 +5,10 @@ import MovieSchema from '../../../schemas/Movie.schema';
 import FileSchema from '../../../schemas/File.schema';
 import TMDB from '../../../modules/TMDB';
 import {ARoute} from '../../../core/middlewares/Resty';
-import {EPermission} from '../../../core/typings/server.enums';
+import {EPermission} from '../../../../commons/core/core.enums';
 import {RestyCallback} from '../../../core/typings/resty.interface';
-import {Movie} from '../../../../commons/models/movie';
-import {Proposal} from '../../../../commons/models/proposal';
+import {Movie} from '../../../../commons/models/Movie';
+import {Proposal} from '../../../../commons/models/Proposal';
 
 /**
  * Resource class

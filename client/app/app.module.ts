@@ -5,6 +5,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {
   MatButtonModule,
   MatCheckboxModule,
+  MatDialogModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
@@ -30,6 +31,7 @@ import {ConfigService} from './services/config.service';
 import {AuthService} from './services/auth.service';
 import {FilesService} from './services/files.service';
 import {FormatSizePipe} from './pipes/format-size.pipe';
+import {UrlsModalComponent} from './files/modals/urls-modal/urls-modal.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -41,7 +43,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SidenavComponent,
     FilesComponent,
     LoginComponent,
-    FormatSizePipe
+    FormatSizePipe,
+    UrlsModalComponent
   ],
   imports: [
     BrowserModule,
@@ -57,8 +60,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MatButtonModule, MatCheckboxModule, MatInputModule, MatFormFieldModule,
     MatIconModule, MatTooltipModule,
     MatTableModule, MatSortModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule
   ],
+  entryComponents: [UrlsModalComponent],
   providers: [
     ConfigService,
     AuthService,

@@ -1,6 +1,7 @@
 import {ARoute} from '../../../core/middlewares/Resty';
 import CronJobSchema from '../../../core/schemas/CronJob.schema';
-import {EHTTPStatus, EPermission} from '../../../core/typings/server.enums';
+import {EHTTPStatus} from '../../../core/typings/server.enums';
+import {EPermission} from '../../../../commons/core/core.enums';
 import CronManager from '../../../core/modules/CronManager';
 import EdError from '../../../core/config/EdError';
 import {RestyCallback} from '../../../core/typings/resty.interface';

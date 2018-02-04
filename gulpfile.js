@@ -12,7 +12,8 @@ const paths = {
   "server": "server",
   "commons": "commons",
   "outRoot": "dist",
-  "outDir": "dist/server"
+  "outServer": "dist/server",
+  "outCommons": "dist/commons"
 };
 
 let nodemon = null;
@@ -33,16 +34,16 @@ gulp.task('server:build', [], function () {
     .on('end', () => dConf.resolve());
 
   gulp.src(`${paths.server}/templates/**/*`)
-    .pipe(gulp.dest(`${paths.outDir}/templates`))
+    .pipe(gulp.dest(`${paths.outServer}/templates`))
     .on('end', () => dTpl.resolve());
 
   gulp.src(`${paths.server}/misc/**/*`)
-    .pipe(gulp.dest(`${paths.outDir}/misc`))
+    .pipe(gulp.dest(`${paths.outServer}/misc`))
     .on('end', () => dMisc.resolve());
 
 
   gulp.src(`${paths.server}/files/**/*`)
-    .pipe(gulp.dest(`${paths.outDir}/files`))
+    .pipe(gulp.dest(`${paths.outServer}/files`))
     .on('end', () => dFiles.resolve());
 
   return q.allSettled([
@@ -61,8 +62,8 @@ gulp.task('server:run', ['server:build'], function () {
   gulp.watch(`${paths.server}/**/*.ts`, transpiling);
 
   nodemon = gnodemon({
-    script: `${paths.outDir}/server.js`,
-    watch: [`${paths.outDir}/server.js`],
+    script: `${paths.outServer}/server.js`,
+    watch: [`${paths.outServer}/server.js`],
     ext: 'html js',
     env: {'NODE_ENV': 'development'},
     delay: 1
@@ -73,21 +74,26 @@ gulp.task('server:run', ['server:build'], function () {
 
 function clean() {
   task.start('clean');
-  del.sync(`./${paths.outDir}`);
+  del.sync(`./${paths.outServer}`);
   task.finished('clean');
 }
 
 function transpiling() {
-  const defer = q.defer();
+  const d1 = q.defer();
+  const d2 = q.defer();
 
   task.start('transpiling');
-  gulp.src([`${paths.server}/**/*.ts`, `${paths.commons}/**/*.ts`], {follow: true})
+  gulp.src([`${paths.server}/**/*.ts`], {follow: true})
     .pipe(ts({removeComments: false, target: 'es6', module: "commonjs"})).on('error', (err) => console.error(err))
-    .pipe(gulp.dest(paths.outDir))
-    .on('end', () => defer.resolve());
-  task.finished('transpiling');
+    .pipe(gulp.dest(paths.outServer))
+    .on('end', () => d1.resolve());
 
-  return defer.promise;
+  gulp.src([`${paths.commons}/**/*.ts`], {follow: true})
+    .pipe(ts({removeComments: false, target: 'es6', module: "commonjs"})).on('error', (err) => console.error(err))
+    .pipe(gulp.dest(paths.outCommons))
+    .on('end', () => d2.resolve());
+
+  return q.allSettled([d1.promise, d2.promise]).then(() => task.finished('transpiling'));
 }
 
 // endregion

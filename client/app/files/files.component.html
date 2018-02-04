@@ -4,15 +4,15 @@
       <span *ngIf="!root" [translate]="'FILES.TOOLBAR.ROOT'"></span>
       <mat-icon (click)="open()" *ngIf="root">storage</mat-icon>
       <span *ngIf="root">{{root.filename}}</span>
-      <span class="boxed" *ngIf="dataSource.data.length && !isLoading">{{dataSource.data.length}}</span>
+      <span class="boxed" *ngIf="dataSource.data.length && !isLoading">{{dataSource.data.length}} - {{getTotalSize(dataSource.data) | formatSize}}</span>
     </div>
     <div class="actions" fxLayout="row" fxLayoutAlign="start center">
-      <span class="boxed" *ngIf="selected.length">{{selected.length}}</span>
+      <span class="boxed" *ngIf="selected.length">{{selected.length}} - {{getTotalSize(selected) | formatSize}}</span>
       <mat-icon *ngIf="selected.length">file_download</mat-icon>
-      <mat-icon *ngIf="selected.length">insert_link</mat-icon>
-      <mat-icon *ngIf="selected.length">delete</mat-icon>
+      <mat-icon *ngIf="selected.length" (click)="openUrlModal()">insert_link</mat-icon>
+      <mat-icon *ngIf="canUser('delete') && selected.length">delete</mat-icon>
       <mat-icon (click)="refresh()">refresh</mat-icon>
-      <mat-icon>info_outline</mat-icon>
+      <mat-icon *ngIf="canUser('seeInfo')">info_outline</mat-icon>
     </div>
   </div>
   <div class="content" fxFlex="flex">

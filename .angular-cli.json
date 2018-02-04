@@ -7,6 +7,9 @@
     {
       "root": "client",
       "outDir": "dist/client",
+      "include": [
+        "commons"
+      ],
       "assets": [
         "assets",
         "favicon.ico"
@@ -56,14 +59,22 @@
   "defaults": {
     "styleExt": "scss",
     "component": {
-      "spec": {
-        "default": false
-      },
-      "service": {
-        "spec": {
-          "default": false
-        }
-      }
+      "spec": false
+    },
+    "directive": {
+      "spec": false
+    },
+    "guard": {
+      "spec": false
+    },
+    "pipe": {
+      "spec": false
+    },
+    "service": {
+      "spec": false
+    },
+    "build": {
+      "preserveSymlinks": true
     }
   }
 }

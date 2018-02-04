@@ -6,10 +6,10 @@ import MovieSchema from '../../schemas/Movie.schema';
 import FileSchema from '../../schemas/File.schema';
 import TMDB from '../../modules/TMDB';
 import {ARoute} from '../../core/middlewares/Resty';
-import {EPermission} from '../../core/typings/server.enums';
+import {EPermission} from '../../../commons/core/core.enums';
 import {RestyCallback} from '../../core/typings/resty.interface';
-import {EygleFile} from '../../../commons/models/file';
-import {Movie} from '../../../commons/models/movie';
+import {EygleFile} from '../../../commons/models/File';
+import {Movie} from '../../../commons/models/Movie';
 
 /**
  * Resource class

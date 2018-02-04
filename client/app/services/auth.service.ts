@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 
 import {User} from '../../../commons/core/models/User';
+import {EPermission, ERole} from '../../../commons/core/core.enums';
 import {catchError, tap} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 import {CookieService} from 'ngx-cookie-service';
@@ -20,9 +21,17 @@ export class AuthService {
    */
   user: User;
 
+  /**
+   * List of permissions
+   */
+  private _allPermissions: [any];
+
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router) {
     const json = this.cookie.get('user');
+    const permission = this.cookie.get('permissions');
+
     this.user = json ? JSON.parse(json) : null;
+    this._allPermissions = permission ? JSON.parse(permission) : null;
   }
 
   /**
@@ -31,6 +40,34 @@ export class AuthService {
   public isLogged(): boolean {
     return !!this.user;
   }
+
+  /**
+   * Does user has requested permission
+   * @param accessLevel
+   * @param {User} user
+   * @return {boolean}
+   */
+  public authorize = (accessLevel, user: User = null) => {
+    const memberRights = user && user.roles ? user.roles : this.user.roles || [ERole.Public];
+
+    if (!!~memberRights.indexOf(ERole.Admin)) {
+      return true;
+    }
+    if (!this._allPermissions || !this._allPermissions.length) {
+      return false;
+    }
+
+    for (const perm of this._allPermissions) {
+      if (perm.name === accessLevel) {
+        for (const m of memberRights) {
+          if (!!~perm.roles.indexOf(m)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  };
 
   /**
    * Log in action
