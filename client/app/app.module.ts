@@ -23,17 +23,20 @@ import {CookieService} from 'ngx-cookie-service';
 import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 
 import {AppComponent} from './app.component';
-import {FilesComponent} from './files/files.component';
+import {FilesComponent} from './content/medias/files/files.component';
 import {AppRoutingModule} from './app-routing.module';
-import {SidenavComponent} from './sidenav/sidenav.component';
-import {LoginComponent} from './auth/login/login.component';
+import {SidenavComponent} from './content/sidenav/sidenav.component';
+import {LoginComponent} from './content/auth/login/login.component';
 import {ConfigService} from './services/config.service';
+import {CronService} from './services/cron.service';
 import {AuthService} from './services/auth.service';
 import {FilesService} from './services/files.service';
 import {FormatSizePipe} from './pipes/format-size.pipe';
-import {UrlsModalComponent} from './files/modals/urls-modal/urls-modal.component';
+import {UrlsModalComponent} from './content/medias/files/modals/urls-modal/urls-modal.component';
 import {KeyEventsDirective} from './directives/key-events.directive';
-import {RegisterComponent} from './auth/register/register.component';
+import {RegisterComponent} from './content/auth/register/register.component';
+import {HomeComponent} from './content/home/home.component';
+import {CronComponent} from './content/admin-panel/cron/cron.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -48,7 +51,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     UrlsModalComponent,
     FormatSizePipe,
     KeyEventsDirective,
-    RegisterComponent
+    RegisterComponent,
+    HomeComponent,
+    CronComponent
   ],
   imports: [
     BrowserModule,
@@ -69,10 +74,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   entryComponents: [UrlsModalComponent],
   providers: [
-    ConfigService,
     AuthService,
-    FilesService,
+    ConfigService,
     CookieService,
+    CronService,
+    FilesService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

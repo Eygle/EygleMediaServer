@@ -1,17 +1,7 @@
 import {NgModule} from '@angular/core';
-import {NavigationEnd, Router, RouterEvent, RouterModule, Routes} from '@angular/router';
-
-import {FilesComponent} from './files/files.component';
-import {LoginComponent} from './auth/login/login.component';
-import {RegisterComponent} from "./auth/register/register.component";
+import {NavigationEnd, Router, RouterEvent, RouterModule} from '@angular/router';
 import {AuthService} from './services/auth.service';
-
-const routes: Routes = [
-  // { path: '', redirectTo: '/files', pathMatch: 'full' },
-  {path: 'files', component: FilesComponent},
-  {path: 'auth/login', component: LoginComponent},
-  {path: 'auth/register', component: RegisterComponent},
-];
+import {routes} from "./routes";
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

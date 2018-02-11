@@ -1,18 +1,14 @@
 import {Component} from '@angular/core';
-import {AuthService} from "../../services/auth.service";
-import {ConfigService} from "../../services/config.service";
+import {ConfigService} from '../../../services/config.service';
+import {AuthService} from '../../../services/auth.service';
+import {User} from '../../../../../commons/core/models/User';
 
 @Component({
-  selector: 'ems-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  selector: 'ems-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
-export class RegisterComponent {
-  /**
-   * User name input
-   */
-  username: string;
-
+export class LoginComponent {
   /**
    * User name input
    */
@@ -33,11 +29,11 @@ export class RegisterComponent {
   }
 
   /**
-   * Register action
+   * Login action
    */
-  public register(event: Event) {
+  public logIn(event: Event) {
     event.preventDefault();
-    this.auth.register(this.email, this.password, this.username)
+    this.auth.logIn(this.email, this.password)
       .subscribe((user: User) => {
         console.log(user);
       });

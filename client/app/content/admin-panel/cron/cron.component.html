@@ -1,0 +1,54 @@
+<div class="content" fxFlex="flex">
+  <div class="loading" *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDirection="asc">
+    <!-- Jon Column -->
+    <ng-container matColumnDef="job">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'ADMIN_PANEL.CRON.TABLE.JOB' | translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.name}}</mat-cell>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="110px">{{'ADMIN_PANEL.CRON.TABLE.STATUS' |
+        translate}}
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" fxFlex="110px"> {{getStatusLabel(row) | translate}}</mat-cell>
+    </ng-container>
+
+    <!-- Last run Column -->
+    <ng-container matColumnDef="lastRun">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="120px">{{'ADMIN_PANEL.CRON.TABLE.LAST_RUN' |
+        translate}}
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" fxFlex="120px"> {{row.lastRun | date}}</mat-cell>
+    </ng-container>
+
+    <!-- Schedule rule Column -->
+    <ng-container matColumnDef="scheduleRule">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="130px">{{'ADMIN_PANEL.CRON.TABLE.SCHEDULE_RULE' |
+        translate}}
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" fxFlex="130px"> {{row.scheduleRule}}</mat-cell>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef fxFlex="60px">{{'ADMIN_PANEL.CRON.TABLE.ACTIONS' |
+        translate}}
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" fxFlex="60px">
+        <mat-icon class="action" *ngIf="!row.isRunning" (click)="run(row)">directions_run</mat-icon>
+        <mat-icon class="action" *ngIf="!row.isScheduled" (click)="schedule(row)">alarm</mat-icon>
+        <mat-icon class="action" *ngIf="row.isScheduled" (click)="unSchedule(row)">alarm_off</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"
+             [ngClass]="{'running': row.isRunning, 'unscheduled': !row.isRunning && !row.isScheduled}">
+    </mat-row>
+  </mat-table>
+</div>

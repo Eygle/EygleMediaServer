@@ -8,6 +8,7 @@ import {catchError, tap} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 import {CookieService} from 'ngx-cookie-service';
 import {Router} from '@angular/router';
+import {environment} from "../../environments/environment";
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'}),
@@ -27,11 +28,19 @@ export class AuthService {
   private _allPermissions: [any];
 
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router) {
-    const json = this.cookie.get('user');
-    const permission = this.cookie.get('permissions');
+    this.user = this._getObjectFromCookie('user');
+    this._allPermissions = this._getObjectFromCookie('permissions');
 
-    this.user = json ? JSON.parse(json) : null;
-    this._allPermissions = permission ? JSON.parse(permission) : null;
+    if (!environment.production) {
+      // If not in prod express is not used to serve the client and thus the 'user' and 'permissions' cookies are not transmitted in the index.html page
+      this.http.get('/api/permissions')
+        .subscribe((permissions: [any]) => {
+          this._allPermissions = permissions;
+          this.cookie.set('permissions', JSON.stringify(permissions));
+          // The 'permissions' route return user as cookie in DEV mode
+          this.user = this._getObjectFromCookie('user');
+        });
+    }
   }
 
   /**
@@ -42,13 +51,20 @@ export class AuthService {
   }
 
   /**
+   * User is guest
+   */
+  public isGuest(): boolean {
+    return this.isLogged() && this.user.roles.length === 1 && this.user.roles[0] === ERole.Guest;
+  }
+
+  /**
    * Does user has requested permission
    * @param accessLevel
    * @param {User} user
    * @return {boolean}
    */
   public authorize = (accessLevel, user: User = null) => {
-    const memberRights = user && user.roles ? user.roles : this.user.roles || [ERole.Public];
+    const memberRights = user && user.roles ? user.roles : this.user.roles || [ERole.Guest];
 
     if (!!~memberRights.indexOf(ERole.Admin)) {
       return true;
@@ -124,5 +140,16 @@ export class AuthService {
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
+  }
+
+  /**
+   * Get object from cookie
+   * @param {string} key
+   * @private
+   */
+  private _getObjectFromCookie(key: string) {
+    const json = this.cookie.get(key);
+
+    return json ? JSON.parse(json) : null;
   }
 }

@@ -8,7 +8,8 @@ const PROXY_CONFIG = [
       "/forgot-password",
       "/change-password",
       "/unlock-user",
-      "/unsubscribe"
+      "/unsubscribe",
+      "/dl"
     ],
     target: "http://localhost:4242",
     secure: false

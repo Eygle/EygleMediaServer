@@ -49,10 +49,6 @@ const _schema: mongoose.Schema = DB.createSchema({
   }
 });
 
-_schema.virtual('url').get(function () {
-  return `${Utils.dlURL}/${this._id}`;
-});
-
 _schema.pre('save', function (next) {
   if (this.isNew) {
     this.normalized = Utils.normalize(this.filename);
@@ -72,7 +68,7 @@ class FileSchema extends ASchema {
 
   /**
    * Get children
-   * @return {Promise<IModel>}
+   * @return {Promise<AModel>}
    */
   public getChildren(parent: string = null) {
     const defer = <q.Deferred<Array<AModel>>>q.defer();
@@ -81,6 +77,24 @@ class FileSchema extends ASchema {
       .where('parent').equals(parent)
       .select('filename mtime size ext directory movie tvshow')
       .sort({mtime: -1})
+      .exec((err, items) => {
+        if (err) return defer.reject(err);
+        defer.resolve(items);
+      });
+
+    return defer.promise;
+  }
+
+  /**
+   * Get all that matches given ids list
+   * @param {[string]} ids
+   * @returns {Q.Promise<Array<AModel>>}
+   */
+  public getAllByIds(ids: [string]) {
+    const defer = <q.Deferred<Array<AModel>>>q.defer();
+
+    this._model.find()
+      .where('_id').in(ids)
       .exec((err, items) => {
         if (err) return defer.reject(err);
         defer.resolve(items);

@@ -1,7 +1,7 @@
 import {ARoute} from '../../../core/middlewares/Resty';
 import CronJobSchema from '../../../core/schemas/CronJob.schema';
 import {EHTTPStatus} from '../../../core/typings/server.enums';
-import {EPermission} from '../../../../commons/core/core.enums';
+import {ECronJobAction, EPermission} from '../../../../commons/core/core.enums';
 import CronManager from '../../../core/modules/CronManager';
 import EdError from '../../../core/config/EdError';
 import {RestyCallback} from '../../../core/typings/resty.interface';
@@ -31,13 +31,13 @@ class Collection extends ARoute {
    */
   public post(next: RestyCallback): void {
     switch (this.body.action) {
-      case 'run':
+      case ECronJobAction.Run:
         CronManager.runJob(this.body.job);
         break;
-      case 'schedule':
+      case ECronJobAction.Schedule:
         CronManager.scheduleJob(this.body.job);
         break;
-      case 'un-schedule':
+      case ECronJobAction.UnSchedule:
         CronManager.unScheduleJob(this.body.job);
         break;
       default:

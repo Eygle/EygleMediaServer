@@ -20,6 +20,8 @@ import {LocalFile} from '../../commons/models/LocalFile';
 import {Movie} from '../../commons/models/Movie';
 import {Proposal} from '../../commons/models/Proposal';
 import {TVShow} from '../../commons/models/TVShow';
+import FileUtils from "../../commons/FileUtils";
+import EMSUtils from "../utils/EMSUtils";
 
 
 class SynchronizeMedias extends AJob {
@@ -83,9 +85,13 @@ class SynchronizeMedias extends AJob {
     this.scheduleRule = '* * * * *';
     this.environments = [EEnv.Prod];
 
-    this._dumpPath = `${ProjectConfig.filesRoot}/dl-files-dump.json`;
+    this._dumpPath = EEnv.Dev === ProjectConfig.env ? `${ProjectConfig.filesRoot}/../dl-files-dump.json` : `${ProjectConfig.filesRoot}/dl-files-dump.json`;
     this._videoExtensions = ['.avi', '.mkv', '.webm', '.flv', '.vob', '.ogg', '.ogv', '.mov', '.qt',
       '.wmv', '.mp4', '.m4p', '.m4v', '.mpg', '.mp2', '.mpeg', '.mpe', '.mpv'];
+
+    if (!fs.existsSync(ProjectConfig.filesRoot)) {
+      fs.mkdirSync(ProjectConfig.filesRoot);
+    }
   }
 
   /**
@@ -115,7 +121,7 @@ class SynchronizeMedias extends AJob {
   private _synchronize() {
     const defer = q.defer();
     const previous = EEnv.Dev === ProjectConfig.env ? [] : this._load();
-    const files: Array<LocalFile> = EEnv.Dev === ProjectConfig.env ? this._load() : this._listDirectory(`${ProjectConfig.filesRoot}/downloads`);
+    const files: Array<LocalFile> = this._listDirectory(EMSUtils.mediasRoot);
 
     this._dump(files); // dump as soon as possible to avoid having two time the same task running on the same medias
     for (const f of files) {
@@ -164,7 +170,7 @@ class SynchronizeMedias extends AJob {
       if (f.directory && f.children) {
         this._identifyMedias(f.children, f.model);
       } else {
-        if (this._isVideo(f.filename)) {
+        if (FileUtils.isVideo(f.filename)) {
           if (!f.mediaInfo) {
             f.mediaInfo = ptn(f.filename);
           }
@@ -509,7 +515,6 @@ class SynchronizeMedias extends AJob {
   /**
    * List directory files
    * @param dir
-   * @param {any} parent
    * @param {any} filePath
    * @return {LocalFile[]} full hierarchy
    * @private

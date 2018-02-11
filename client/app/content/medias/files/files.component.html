@@ -10,7 +10,7 @@
     </div>
     <div class="actions" fxLayout="row" fxLayoutAlign="start center">
       <span class="boxed" *ngIf="selected.length">{{selected.length}} - {{getTotalSize(selected) | formatSize}}</span>
-      <mat-icon *ngIf="selected.length">file_download</mat-icon>
+      <mat-icon *ngIf="selected.length" (click)="download()">file_download</mat-icon>
       <mat-icon *ngIf="selected.length" (click)="openUrlModal()">insert_link</mat-icon>
       <mat-icon *ngIf="canUser('delete') && selected.length">delete</mat-icon>
       <mat-icon (click)="refresh()">refresh</mat-icon>
@@ -33,7 +33,7 @@
       <ng-container matColumnDef="icon">
         <mat-header-cell *matHeaderCellDef fxFlex="30px"></mat-header-cell>
         <mat-cell *matCellDef="let row" fxFlex="30px">
-          <mat-icon>{{getIcon(row)}}</mat-icon>
+          <mat-icon [ngClass]="{'link': row.directory}">{{getIcon(row)}}</mat-icon>
         </mat-cell>
       </ng-container>
 
@@ -42,12 +42,6 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header>{{'FILES.TABLE.NAME' | translate}}</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.filename}}</mat-cell>
       </ng-container>
-
-      <!--&lt;!&ndash; Type Column &ndash;&gt;-->
-      <!--<ng-container matColumnDef="type">-->
-      <!--<mat-header-cell *matHeaderCellDef mat-sort-header>{{'FILES.TABLE.TYPE' | translate}}</mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let row"> {{row.type}}%</mat-cell>-->
-      <!--</ng-container>-->
 
       <!-- Size Column -->
       <ng-container matColumnDef="size">

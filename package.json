@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
     "@ngx-translate/core": "^9.1.1",
+    "async": "^2.6.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "clamscan": "^0.8.4",
@@ -37,6 +38,7 @@
     "email-templates": "^3.3.2",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
+    "express-zip": "^2.0.1",
     "fs": "0.0.1-security",
     "hammerjs": "^2.0.8",
     "handlebars": "^4.0.11",
@@ -62,6 +64,7 @@
     "tracer": "^0.8.11",
     "twig": "^1.10.5",
     "underscore": "^1.8.3",
+    "zip-stream": "^1.2.0",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {

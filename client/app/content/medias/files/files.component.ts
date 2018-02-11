@@ -1,14 +1,15 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FilesService} from '../services/files.service';
-import {EygleFile} from '../../../commons/models/File';
+import {FilesService} from '../../../services/files.service';
+import {EygleFile} from '../../../../../commons/models/File';
 import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import * as _ from 'underscore';
 import {PerfectScrollbarDirective} from 'ngx-perfect-scrollbar';
 import {UrlsModalComponent} from "./modals/urls-modal/urls-modal.component";
-import {AuthService} from "../services/auth.service";
-import {EPermission} from "../../../commons/core/core.enums";
-import {KeyEvents} from "../utils/key-events";
-import {EKeyCode} from "../typings/client.enums";
+import {AuthService} from "../../../services/auth.service";
+import {EPermission} from "../../../../../commons/core/core.enums";
+import {KeyEvents} from "../../../utils/key-events";
+import {EKeyCode} from "../../../typings/client.enums";
+import FileUtils from "../../../../../commons/FileUtils";
 
 @Component({
   selector: 'ems-files',
@@ -19,7 +20,7 @@ export class FilesComponent implements OnInit {
   /**
    * Breadcrumbs
    */
-  bc: EygleFile[];
+  bc: [EygleFile];
 
   /**
    * Current root file
@@ -45,7 +46,7 @@ export class FilesComponent implements OnInit {
   /**
    * List of selected files
    */
-  selected: EygleFile[];
+  selected: [EygleFile];
 
   /**
    * Is loading data from API
@@ -65,13 +66,13 @@ export class FilesComponent implements OnInit {
               private Auth: AuthService) {
     this.keyEvents = new KeyEvents();
     this.dataSource = new MatTableDataSource();
-    this.selected = [];
-    this.bc = [];
+    this.selected = <[EygleFile]>[];
+    this.bc = <[EygleFile]>[];
     this.root = null;
     this.isLoading = false;
 
     this.keyEvents.onSelectAll.subscribe(() => this.selectAll());
-    this.keyEvents.onCancel.subscribe(() => this.unselectAll());
+    this.keyEvents.onCancel.subscribe(() => this.unSelectAll());
   }
 
   ngOnInit() {
@@ -88,9 +89,9 @@ export class FilesComponent implements OnInit {
 
   refresh(): void {
     this.isLoading = true;
-    this.selected = [];
+    this.selected = <[EygleFile]>[];
     this.filesService.getChildren(this.root ? this.root._id : null)
-      .subscribe((res: EygleFile[]) => {
+      .subscribe((res: [EygleFile]) => {
         this.dataSource.data = res;
         this.isLoading = false;
         this.directiveScroll.update();
@@ -134,7 +135,7 @@ export class FilesComponent implements OnInit {
    */
   open(dir: EygleFile = null): void {
     if (!dir) {
-      this.bc = [];
+      this.bc = <[EygleFile]>[];
       this.root = null;
       this.refresh();
     } else if (dir.directory) {
@@ -142,7 +143,7 @@ export class FilesComponent implements OnInit {
       this.root = dir;
       this.refresh();
     }
-    this.selected = [];
+    this.selected = <[EygleFile]>[];
     this.filterText = "";
     this.applyFilter(this.filterText);
   }
@@ -166,6 +167,14 @@ export class FilesComponent implements OnInit {
   getIcon(file: EygleFile): string {
     if (file.directory)
       return 'folder';
+    if (FileUtils.isVideo(file.ext))
+      return 'videocam';
+    if (FileUtils.isMusic(file.ext))
+      return 'music_note';
+    if (FileUtils.isSubtitle(file.ext))
+      return 'subtitles';
+    if (FileUtils.isText(file.ext))
+      return 'short_text';
     return '';
   }
 
@@ -211,7 +220,7 @@ export class FilesComponent implements OnInit {
    * Select all
    */
   selectAll(): void {
-    this.selected = [];
+    this.selected = <[EygleFile]>[];
     for (const f of this.dataSource.data) {
       f.selected = true;
       this.selected.push(f);
@@ -219,13 +228,25 @@ export class FilesComponent implements OnInit {
   }
 
   /**
-   * Unselect all
+   * Un-select all
    */
-  unselectAll(): void {
+  unSelectAll(): void {
     for (const f of this.selected) {
       f.selected = false;
     }
 
-    this.selected = [];
+    this.selected = <[EygleFile]>[];
+  }
+
+  /**
+   * Download files
+   */
+  download() {
+    if (this.selected.length === 1 && !this.selected[0].directory)
+      this.filesService.download(this.selected[0]._id);
+    else
+      this.filesService.downloadMultiple(_.map(this.selected, (f: EygleFile) => {
+        return f._id
+      }));
   }
 }

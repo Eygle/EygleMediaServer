@@ -46,6 +46,19 @@ html {
       padding: 0;
     }
 
+    h2 {
+      font-family: "Open Sans", sans-serif;
+      color: #eee;
+    }
+
+    mat-icon.action {
+      cursor: pointer;
+
+      &:hover {
+        color: white;
+      }
+    }
+
     .unselectable {
       -webkit-user-select: none;
       -khtml-user-select: none;
@@ -108,38 +121,36 @@ html {
         font-family: $font-family;
         color: $font-color;
 
-        &.with-toolbar {
-          & > * > div {
-            height: 100%;
+        &.with-toolbar > * > div {
+          height: 100%;
 
-            & > .toolbar {
-              width: 100%;
-              height: $toolbar-height;
-              background-color: $bg-darken;
-              padding: 0 25px;
+          & > .toolbar {
+            width: 100%;
+            height: $toolbar-height;
+            background-color: $bg-darken;
+            padding: 0 25px;
 
-              & > * {
-                * {
-                  margin: 0 5px;
+            & > * {
+              * {
+                margin: 0 5px;
 
-                  &.mat-icon:hover {
-                    color: white;
-                    cursor: pointer;
-                  }
+                &.mat-icon:hover {
+                  color: white;
+                  cursor: pointer;
                 }
               }
             }
+          }
 
-            & > .content {
-              position: relative;
-              max-height: calc(100% - 60px);
-              padding: $space-around;
-            }
+          & > .content {
+            position: relative;
+            max-height: calc(100% - 60px);
+            padding: $space-around;
           }
         }
 
         &:not(.with-toolbar) {
-          padding: $space-around;
+          padding: $space-around !important;
         }
       }
     }
@@ -209,4 +220,5 @@ html {
     }
 
   }
+
 }

@@ -1,4 +1,4 @@
-@import "../../common";
+@import "../../../../common";
 
 .toolbar {
   & > .actions > .boxed {
@@ -23,6 +23,10 @@ mat-table {
 
     mat-cell {
       cursor: default;
+
+      mat-icon.link {
+        color: transparentize($color-yellow, 0.2);
+      }
     }
   }
 }

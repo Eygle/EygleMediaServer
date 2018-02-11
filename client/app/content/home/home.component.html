@@ -1,0 +1,25 @@
+<!-- User page -->
+<ng-container *ngIf="!isGuest()">
+  <div fxLayout="column" class="unselectable">
+    <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+      <div class="breadcrumbs" fxLayout="row" fxLayoutAlign="start center">
+        <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+        </div>
+      </div>
+    </div>
+    <div class="content" fxFlex="flex">
+      <h2 [translate]="'HOME.WORK_IN_PROGRESS.TITLE'"></h2>
+      <p [translate]="'HOME.WORK_IN_PROGRESS.LABEL'"></p>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Guest page -->
+<ng-container *ngIf="isGuest()">
+  <div class="content" fxFlex="flex">
+    <h2 [translate]="'HOME.GUEST_VIEW.TITLE'"></h2>
+    <p class="main" [translate]="'HOME.GUEST_VIEW.MAIN_INFO'"></p>
+    <p [translate]="'HOME.GUEST_VIEW.CONTACT'"></p>
+    <p></p>
+  </div>
+</ng-container>

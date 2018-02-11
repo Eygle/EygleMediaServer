@@ -2,14 +2,34 @@ export const locale = {
   // GLOBAL
   'APP_TITLE': 'Eygle Media Server',
 
+  'NAVBAR': {
+    'MEDIAS': 'Médias',
+    'PROFILE': 'Profil',
+    'ADMIN_PANEL': 'Panneau d\'administration',
+  },
+
   // HOME
   'HOME': {
-    'TITLE': 'Accueil'
+    'TITLE': 'Accueil',
+    'WORK_IN_PROGRESS': {
+      'TITLE': 'Page en cours de création',
+      'LABEL': 'Va sur la page des téléchargements acceder aux médias'
+    },
+    'GUEST_VIEW': {
+      'TITLE': 'Bienvenue sur mon serveur privé',
+      'MAIN_INFO': "Tu n'as pas encore accès aux contenus du site, il faut d'abord que je valide ton compte",
+      'CONTACT': "N'hésite pas à me contacter si tu veux accelérer les choses."
+    }
   },
 
   // MOVIES
   'MOVIES': {
     'TITLE': 'Films'
+  },
+
+  // TV SHOWS
+  'TV_SHOWS': {
+    'TITLE': 'Séries'
   },
 
   // ALL DOWNLOADS
@@ -28,6 +48,16 @@ export const locale = {
     'DIALOG': {
       'URLS': 'Liens des {{nbr}} fichiers sélectionnés'
     }
+  },
+
+  // ACCOUNT
+  'ACCOUNT': {
+    'TITLE': 'Mon compte'
+  },
+
+  // SETTINGS
+  'SETTINGS': {
+    'TITLE': 'Paramètres'
   },
 
   // AUTH
@@ -49,5 +79,26 @@ export const locale = {
       'CONFIRM_PASSWORD': 'Confirmer le mot de passe',
       'EMAIL': 'Email'
     }
+  },
+
+  'ADMIN_PANEL': {
+    'USERS': {
+      'TITLE': 'Utilisateurs'
+    },
+    'CRON': {
+      'TITLE': 'Cron manager',
+      'TABLE': {
+        'JOB': 'Nom',
+        'STATUS': 'Status',
+        'LAST_RUN': 'Dernière exécution',
+        'SCHEDULE_RULE': 'Règle de réccurence',
+        'ACTIONS': 'Actions'
+      },
+      'STATUS': {
+        'RUNNING': 'En cours...',
+        'SCHEDULED': 'Programmé',
+        'UN_SCHEDULED': 'Déprogrammé'
+      }
+    },
   }
 };

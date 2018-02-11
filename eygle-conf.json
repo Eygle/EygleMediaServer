@@ -21,7 +21,7 @@
         }
       },
       "development": {
-        "filesRoot": "/../../../files",
+        "filesRoot": "{{root}}/../files",
         "activateCSRFSecurity": false
       }
     }
