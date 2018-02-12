@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {EygleFile} from '../../../commons/models/File';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
-const httpOptions = {
-  headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'}),
-  responseType: 'text'
-};
+// const httpOptions = {
+//   headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'}),
+//   responseType: 'text'
+// };
 
 @Injectable()
 export class FilesService {
@@ -40,7 +40,7 @@ export class FilesService {
    * @param {string} id
    */
   download(id: string) {
-    window.open(`${this._dlUrl}/${id}`, '_blank');
+    this._dlFileProgramatically(`${this._dlUrl}/${id}`);
   }
 
   /**
@@ -48,9 +48,27 @@ export class FilesService {
    * @param {[EygleFile]} files
    */
   downloadMultiple(files: [EygleFile]) {
-    this.http.post(`${this._dlUrl}/`, {files: files}, <{}>httpOptions)
+    this.http.post(`${this._dlUrl}/`, {files: files})
       .subscribe((data: any) => {
-        window.open(data.url, '_blank');
+        this._dlFileProgramatically(data.url);
       });
+  }
+
+  /**
+   * Create an 'a' tag and click on it programatically
+   * @param url
+   * @private
+   */
+  private _dlFileProgramatically(url: string) {
+    const linkElement = document.createElement('a');
+    const clickEvent = new MouseEvent("click", {
+      "view": window,
+      "bubbles": true,
+      "cancelable": false
+    });
+
+    linkElement.setAttribute('href', url);
+    linkElement.setAttribute('target', '_blank');
+    linkElement.dispatchEvent(clickEvent);
   }
 }

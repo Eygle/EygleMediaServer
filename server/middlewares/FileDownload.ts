@@ -1,15 +1,17 @@
+import * as fs from "fs";
+import * as uniqid from 'uniqid'
+import * as zipstream from 'zip-stream';
+import * as _ from 'underscore';
+import * as async from 'async';
+import * as path from "path";
+
 import FileSchema from "../schemas/File.schema";
 import {EygleFile} from "../../commons/models/File";
-import * as fs from "fs";
 import EMSUtils from "../utils/EMSUtils";
 import {CustomEdError} from '../core/config/EdError';
 import Utils from '../../commons/core/utils/Utils';
 import {EHTTPStatus} from '../core/typings/server.enums';
 import Cache from '../core/modules/Cache';
-import * as uniqid from 'uniqid'
-import * as zipstream from 'zip-stream';
-import * as _ from 'underscore';
-import * as async from 'async';
 
 class FileDownload {
 
@@ -41,12 +43,17 @@ class FileDownload {
         .then((files: [EygleFile]) => {
           const paths = [];
           for (const file of files) {
-            paths.push({path: EMSUtils.getFileRealPath(file), name: file.filename, size: file.size});
+            paths.push({
+              path: EMSUtils.getFileRealPath(file),
+              name: file.filename,
+              size: file.size,
+              directory: file.directory
+            });
           }
 
           // Create a uniq id to store the list of files to download and store it in the cache for an hour
           const id = uniqid();
-          Cache.set(`dl-${id}`, paths, 3600);
+          Cache.set(`dl-${id}`, paths, 600);
 
           res.send({url: `/dl/zip/${id}`});
         }).catch(err => next(err));
@@ -59,7 +66,7 @@ class FileDownload {
    */
   getMultipleFileMiddleware() {
     return (req, res, next) => {
-      const files = Cache.get(`dl-${req.params.id}`);
+      const files = this._loadAllFiles(Cache.get(`dl-${req.params.id}`));
       Cache.remove(`dl-${req.params.id}`);
 
       if (files) {
@@ -69,7 +76,7 @@ class FileDownload {
         }, 0));
 
         res.header('Content-Type', 'application/zip');
-        res.header('Content-Disposition', `attachment; filename="'${files.length} files - ${size}'"`);
+        res.header('Content-Disposition', `attachment; filename="${files.length} files - ${size}"`);
         zip.pipe(res); // res is a writable stream
 
         const addFile = function (file, cb) {
@@ -79,7 +86,6 @@ class FileDownload {
         async.forEachSeries(files, addFile, function (err) {
           if (err) return next(err);
           zip.finalize();
-          // next(null, zip.getBytesWritten());
         });
       } else {
         next(new CustomEdError("Invalid link", EHTTPStatus.NotFound))
@@ -87,7 +93,38 @@ class FileDownload {
     };
   }
 
-  private _
+  /**
+   * Load all files from paths including directory files
+   * @param files
+   * @private
+   */
+  private _loadAllFiles(files) {
+    let res = [];
+
+    for (const f of files) {
+      if (f.directory) {
+        const childs = [];
+
+        for (const childName of fs.readdirSync(f.path)) {
+          const childPath = path.join(f.path, childName);
+          const stats: any = fs.statSync(childPath);
+
+          childs.push({
+            path: childPath,
+            name: childName,
+            size: stats.size,
+            directory: stats.isDirectory()
+          });
+        }
+
+        res = res.concat(this._loadAllFiles(childs));
+      } else {
+        res.push(f);
+      }
+    }
+
+    return res;
+  }
 }
 
 export default new FileDownload();
