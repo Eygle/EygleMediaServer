@@ -216,6 +216,12 @@ export class FilesComponent implements OnInit {
     return false;
   }
 
+  canSeeLinkIcon(): boolean {
+    return this.selected.length && !!~_.findIndex(this.selected, (f: EygleFile) => {
+      return !f.directory;
+    });
+  }
+
   /**
    * Select all
    */

@@ -37,6 +37,8 @@ import {KeyEventsDirective} from './directives/key-events.directive';
 import {RegisterComponent} from './content/auth/register/register.component';
 import {HomeComponent} from './content/home/home.component';
 import {CronComponent} from './content/admin-panel/cron/cron.component';
+import {UsersComponent} from './content/admin-panel/users/users.component';
+import {UsersService} from './services/users.service';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -53,7 +55,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     KeyEventsDirective,
     RegisterComponent,
     HomeComponent,
-    CronComponent
+    CronComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
@@ -79,6 +82,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CookieService,
     CronService,
     FilesService,
+    UsersService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

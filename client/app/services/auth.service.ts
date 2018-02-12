@@ -9,6 +9,7 @@ import {of} from 'rxjs/observable/of';
 import {CookieService} from 'ngx-cookie-service';
 import {Router} from '@angular/router';
 import {environment} from "../../environments/environment";
+import {ApiRoute} from "../utils/api-route";
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'}),
@@ -17,6 +18,7 @@ const httpOptions = {
 
 @Injectable()
 export class AuthService {
+
   /**
    * Current logged user
    */
@@ -27,13 +29,19 @@ export class AuthService {
    */
   private _allPermissions: [any];
 
+  /**
+   * Permissions API
+   */
+  private _permApi: ApiRoute;
+
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router) {
     this.user = this._getObjectFromCookie('user');
     this._allPermissions = this._getObjectFromCookie('permissions');
+    this._permApi = new ApiRoute(this.http, '/permissions');
 
     if (!environment.production) {
       // If not in prod express is not used to serve the client and thus the 'user' and 'permissions' cookies are not transmitted in the index.html page
-      this.http.get('/api/permissions')
+      this._permApi.get()
         .subscribe((permissions: [any]) => {
           this._allPermissions = permissions;
           this.cookie.set('permissions', JSON.stringify(permissions));

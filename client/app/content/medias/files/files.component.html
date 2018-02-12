@@ -11,7 +11,7 @@
     <div class="actions" fxLayout="row" fxLayoutAlign="start center">
       <span class="boxed" *ngIf="selected.length">{{selected.length}} - {{getTotalSize(selected) | formatSize}}</span>
       <mat-icon *ngIf="selected.length" (click)="download()">file_download</mat-icon>
-      <mat-icon *ngIf="selected.length" (click)="openUrlModal()">insert_link</mat-icon>
+      <mat-icon *ngIf="canSeeLinkIcon()" (click)="openUrlModal()">insert_link</mat-icon>
       <mat-icon *ngIf="canUser('delete') && selected.length">delete</mat-icon>
       <mat-icon (click)="refresh()">refresh</mat-icon>
       <mat-icon *ngIf="canUser('seeInfo')">info_outline</mat-icon>
@@ -40,7 +40,10 @@
       <!-- Name Column -->
       <ng-container matColumnDef="filename">
         <mat-header-cell *matHeaderCellDef mat-sort-header>{{'FILES.TABLE.NAME' | translate}}</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.filename}}</mat-cell>
+        <mat-cell *matCellDef="let row">
+          <span *ngIf="row.directory">{{row.filename}}</span>
+          <a *ngIf="!row.directory" [href]="'/dl/' + row._id" target="_blank" onclick="event.stopPropagation()">{{row.filename}}</a>
+        </mat-cell>
       </ng-container>
 
       <!-- Size Column -->
