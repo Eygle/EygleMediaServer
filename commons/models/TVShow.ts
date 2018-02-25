@@ -1,5 +1,5 @@
 import {Episode} from './Episode';
-import {AModel} from '../core/models/AModel';
+import {AModel} from 'eygle-core/commons/models/AModel';
 
 export class TVShow extends AModel {
   title: string;

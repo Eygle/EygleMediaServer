@@ -1,6 +1,6 @@
-import AJob from '../core/models/AJob';
+import AJob from 'eygle-core/server/models/AJob';
 import TVDB from '../modules/TVDB';
-import {EEnv} from '../core/typings/server.enums';
+import {EEnv} from 'eygle-core/server/typings/server.enums';
 
 
 class TestTVDBApi extends AJob {

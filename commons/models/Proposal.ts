@@ -1,5 +1,5 @@
 import {EygleFile} from './File';
-import {AModel} from '../core/models/AModel';
+import {AModel} from 'eygle-core/commons/models/AModel';
 
 export class Proposal extends AModel {
   title: string;

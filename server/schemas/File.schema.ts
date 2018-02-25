@@ -1,10 +1,10 @@
 import * as mongoose from 'mongoose';
 import * as q from 'q';
 
-import DB from '../core/modules/DB';
-import ASchema from '../core/schemas/ASchema.schema';
-import Utils from '../../commons/core/utils/Utils';
-import {AModel} from '../../commons/core/models/AModel';
+import DB from 'eygle-core/server/modules/DB';
+import ASchema from 'eygle-core/server/schemas/ASchema.schema';
+import Utils from 'eygle-core/commons/utils/Utils';
+import {AModel} from 'eygle-core/commons/models/AModel';
 
 const _schema: mongoose.Schema = DB.createSchema({
   filename: String,

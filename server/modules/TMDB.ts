@@ -2,7 +2,7 @@ import * as q from 'q';
 import * as _ from 'underscore';
 import * as moviedb from 'moviedb';
 
-import Utils from '../../commons/core/utils/Utils';
+import Utils from 'eygle-core/commons/utils/Utils';
 import MovieSchema from '../schemas/Movie.schema';
 import ALimitedApi from './ALimitedApi';
 import {Movie} from '../../commons/models/Movie';

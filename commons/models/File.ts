@@ -1,4 +1,4 @@
-import {AModel} from '../core/models/AModel';
+import {AModel} from 'eygle-core/commons/models/AModel';
 import {Episode} from './Episode';
 import {Movie} from './Movie';
 

@@ -2,9 +2,9 @@
  * Node entry point
  */
 
-import {ExpressServer} from './core/ExpressServer';
+import {ExpressServer} from 'eygle-core/server/ExpressServer';
 import FileDownload from "./middlewares/FileDownload";
-import {CustomRoute} from "./core/models/CustomRoute"
+import {CustomRoute} from "eygle-core/server/models/CustomRoute"
 
 new ExpressServer()
   .setRoutes([<CustomRoute>{

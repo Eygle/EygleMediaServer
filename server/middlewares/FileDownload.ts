@@ -8,10 +8,10 @@ import * as path from "path";
 import FileSchema from "../schemas/File.schema";
 import {EygleFile} from "../../commons/models/File";
 import EMSUtils from "../utils/EMSUtils";
-import {CustomEdError} from '../core/config/EdError';
-import Utils from '../../commons/core/utils/Utils';
-import {EHTTPStatus} from '../core/typings/server.enums';
-import Cache from '../core/modules/Cache';
+import {CustomEdError} from 'eygle-core/server/config/EdError';
+import Utils from 'eygle-core/commons/utils/Utils';
+import {EHTTPStatus} from 'eygle-core/server/typings/server.enums';
+import Cache from 'eygle-core/server/modules/Cache';
 
 class FileDownload {
 

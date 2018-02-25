@@ -1,7 +1,7 @@
 import TMDB, {ITMDBMovie} from '../../modules/TMDB';
-import {ARoute} from '../../core/middlewares/Resty';
-import {EPermission} from '../../../commons/core/core.enums';
-import {RestyCallback} from '../../core/typings/resty.interface';
+import {ARoute} from 'eygle-core/server/middlewares/Resty';
+import {EPermission} from 'eygle-core/commons/core.enums';
+import {RestyCallback} from 'eygle-core/server/typings/resty.interface';
 
 /**
  * Resource class

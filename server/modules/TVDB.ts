@@ -3,7 +3,7 @@ import * as _ from 'underscore';
 import * as NodeTVDB from 'node-tvdb';
 
 import ALimitedApi from './ALimitedApi';
-import Utils from '../../commons/core/utils/Utils';
+import Utils from 'eygle-core/commons/utils/Utils';
 
 class TVDB extends ALimitedApi {
   constructor() {

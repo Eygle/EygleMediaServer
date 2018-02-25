@@ -2,8 +2,8 @@ import * as mongoose from 'mongoose';
 import * as q from 'q';
 import * as _ from 'underscore';
 
-import DB from '../core/modules/DB';
-import ASchema from '../core/schemas/ASchema.schema';
+import DB from 'eygle-core/server/modules/DB';
+import ASchema from 'eygle-core/server/schemas/ASchema.schema';
 import Episode from './Episode.schema';
 import {ITVDBShow} from '../modules/TVDB';
 

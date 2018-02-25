@@ -1,5 +1,5 @@
-import ProjectConfig from "../core/config/ProjectConfig";
-import {EEnv} from '../core/typings/server.enums';
+import ProjectConfig from "eygle-core/server/config/ProjectConfig";
+import {EEnv} from 'eygle-core/server/typings/server.enums';
 import * as path from "path";
 import {EygleFile} from "../../commons/models/File";
 

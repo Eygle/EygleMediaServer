@@ -1,10 +1,10 @@
-import {ARoute} from '../../../core/middlewares/Resty';
-import CronJobSchema from '../../../core/schemas/CronJob.schema';
-import {EHTTPStatus} from '../../../core/typings/server.enums';
-import {ECronJobAction, EPermission} from '../../../../commons/core/core.enums';
-import CronManager from '../../../core/modules/CronManager';
-import EdError from '../../../core/config/EdError';
-import {RestyCallback} from '../../../core/typings/resty.interface';
+import {ARoute} from 'eygle-core/server/middlewares/Resty';
+import CronJobSchema from 'eygle-core/server/schemas/CronJob.schema';
+import {EHTTPStatus} from 'eygle-core/server/typings/server.enums';
+import {ECronJobAction, EPermission} from 'eygle-core/commons/core.enums';
+import CronManager from 'eygle-core/server/modules/CronManager';
+import EdError from 'eygle-core/server/config/EdError';
+import {RestyCallback} from 'eygle-core/server/typings/resty.interface';
 
 /**
  * Collection class
