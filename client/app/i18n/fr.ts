@@ -17,8 +17,8 @@ export const locale = {
     },
     'GUEST_VIEW': {
       'TITLE': 'Bienvenue sur mon serveur privé',
-      'MAIN_INFO': "Tu n'as pas encore accès aux contenus du site, il faut d'abord que je valide ton compte",
-      'CONTACT': "N'hésite pas à me contacter si tu veux accelérer les choses."
+      'MAIN_INFO': 'Tu n\'as pas encore accès aux contenus du site, il faut d\'abord que je valide ton compte',
+      'CONTACT': 'N\'hésite pas à me contacter si tu veux accelérer les choses.'
     }
   },
 

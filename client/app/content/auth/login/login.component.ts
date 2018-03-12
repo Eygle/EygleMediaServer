@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {ConfigService} from '../../../services/config.service';
 import {AuthService} from '../../../services/auth.service';
-import {User} from '../../../../../commons/core/models/User';
+import {User} from 'eygle-core/commons/models/User';
 
 @Component({
   selector: 'ems-login',

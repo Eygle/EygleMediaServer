@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {AuthService} from "../../../services/auth.service";
-import {ConfigService} from "../../../services/config.service";
-import {User} from "../../../../../commons/core/models/User";
+import {AuthService} from '../../../services/auth.service';
+import {ConfigService} from '../../../services/config.service';
+import {User} from 'eygle-core/commons/models/User';
 
 @Component({
   selector: 'ems-register',

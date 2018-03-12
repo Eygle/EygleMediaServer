@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {CronService} from "../../../services/cron.service";
-import {MatSort, MatTableDataSource} from "@angular/material";
-import {CronJob} from "../../../../../commons/core/models/CronJob";
-import {ConfigService} from "../../../services/config.service";
+import {CronService} from '../../../services/cron.service';
+import {MatSort, MatTableDataSource} from '@angular/material';
+import {ConfigService} from '../../../services/config.service';
+import {CronJob} from 'eygle-core/commons/models/CronJob';
 
 @Component({
   selector: 'ems-cron',
@@ -57,7 +57,7 @@ export class CronComponent implements OnInit {
    * @param {} job
    */
   getStatusLabel(job: CronJob) {
-    return `ADMIN_PANEL.CRON.STATUS.${job.isRunning ? 'RUNNING' : job.isScheduled ? 'SCHEDULED' : 'UN_SCHEDULED'}`
+    return `ADMIN_PANEL.CRON.STATUS.${job.isRunning ? 'RUNNING' : job.isScheduled ? 'SCHEDULED' : 'UN_SCHEDULED'}`;
   }
 
   /**

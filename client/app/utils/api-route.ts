@@ -122,7 +122,7 @@ export class ApiRoute {
 
     let url = this._endPoint;
 
-    for (let i in params) {
+    for (const i in params) {
       if (params.hasOwnProperty(i)) {
         url = url.replace(`:${i}`, params[i]);
       }

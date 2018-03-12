@@ -1,4 +1,4 @@
-import {EPermission} from "../../../commons/core/core.enums";
+import {EPermission} from 'eygle-core/commons/core.enums';
 
 export class MenuItem {
   translate: string;

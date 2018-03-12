@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {NavigationEnd, Router, RouterEvent, RouterModule} from '@angular/router';
 import {AuthService} from './services/auth.service';
-import {routes} from "./routes";
+import {routes} from './routes';
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

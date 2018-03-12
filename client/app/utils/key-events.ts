@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {EKeyCode} from "../typings/client.enums";
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {EKeyCode} from '../typings/client.enums';
 
 @Injectable()
 export class KeyEvents {
@@ -79,7 +79,7 @@ export class KeyEvents {
    * Is current device a Mac
    * @type {boolean}
    */
-  private _isMac: boolean = false;
+  private _isMac = false;
 
   constructor() {
     this.onValidate = new BehaviorSubject(null);
@@ -102,32 +102,32 @@ export class KeyEvents {
    * @param key
    * @returns {boolean}
    */
-  public isPressed = (key) => {
-    for (let code of this._pressed) {
-      if (key == code) {
+  public isPressed(key) {
+    for (const code of this._pressed) {
+      if (key === code) {
         return true;
       }
     }
     return false;
-  };
+  }
 
   /**
    * Check if CTRL or MAC CMD is pressed to catch shortcuts
    * @returns {boolean}
    */
-  public isHoldingCmdKey = () => {
+  public isHoldingCmdKey() {
     if (this._isMac) {
       return this.isPressed(EKeyCode.OSX_L) || this.isPressed(EKeyCode.OSX_R);
     }
     return this.isPressed(EKeyCode.CTRL);
-  };
+  }
 
   /**
    * Called when keydown event is triggered
    * This MUST be set and bind to directive key-events
    * @param code
    */
-  public setKeyDown = (code) => {
+  public setKeyDown(code) {
     switch (code) {
       case EKeyCode.ESCAPE:
         this.onCancel.next(null);
@@ -191,18 +191,18 @@ export class KeyEvents {
         }
         break;
     }
-  };
+  }
 
   /**
    * Called when keyup event is triggered
    * This MUST be set and bind to directive key-events
    * @param code
    */
-  public setKeyUp = (code) => {
+  public setKeyUp(code) {
     for (let idx = 0; idx < this._pressed.length; idx++) {
-      if (this._pressed[idx] == code) {
+      if (this._pressed[idx] === code) {
         this._pressed.splice(idx, 1);
       }
     }
-  };
+  }
 }

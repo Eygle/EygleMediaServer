@@ -2,14 +2,14 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 
-import {User} from '../../../commons/core/models/User';
-import {ERole} from '../../../commons/core/core.enums';
 import {catchError, tap} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 import {CookieService} from 'ngx-cookie-service';
 import {Router} from '@angular/router';
-import {environment} from "../../environments/environment";
-import {ApiRoute} from "../utils/api-route";
+import {User} from 'eygle-core/commons/models/User';
+import {ApiRoute} from '../utils/api-route';
+import {environment} from '../../environments/environment';
+import {ERole} from 'eygle-core/commons/core.enums';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'}),
@@ -40,7 +40,8 @@ export class AuthService {
     this._permApi = new ApiRoute(this.http, '/permissions');
 
     if (!environment.production) {
-      // If not in prod express is not used to serve the client and thus the 'user' and 'permissions' cookies are not transmitted in the index.html page
+      // If not in prod express is not used to serve the client and thus
+      // the 'user' and 'permissions' cookies are not transmitted in the index.html page
       this._permApi.get()
         .subscribe((permissions: [any]) => {
           this._allPermissions = permissions;
@@ -91,7 +92,7 @@ export class AuthService {
       }
     }
     return false;
-  };
+  }
 
   /**
    * Log in action

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {AuthService} from "./auth.service";
-import {EPermission} from "../../../commons/core/core.enums";
+import {AuthService} from './auth.service';
+import {EPermission} from 'eygle-core/commons/core.enums';
 
 @Injectable()
 export class UsersService {

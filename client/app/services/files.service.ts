@@ -47,7 +47,7 @@ export class FilesService {
    * Download multiple files
    * @param {[EygleFile]} files
    */
-  downloadMultiple(files: EygleFile[] | string) {
+  downloadMultiple(files: EygleFile[] | string[]) {
     this.http.post(`${this._dlUrl}/`, {files: files})
       .subscribe((data: any) => {
         this._dlFileProgramatically(data.url);

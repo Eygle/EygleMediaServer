@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
-import {CronJob} from "../../../commons/core/models/CronJob";
-import {ECronJobAction} from "../../../commons/core/core.enums";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {CronJob} from 'eygle-core/commons/models/CronJob';
+import {ECronJobAction} from 'eygle-core/commons/core.enums';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'}),
@@ -17,7 +17,7 @@ export class CronService {
   private _api: string;
 
   constructor(private http: HttpClient) {
-    this._api = '/api/admin/cron'
+    this._api = '/api/admin/cron';
   }
 
   getAll(): Observable<[CronJob]> {

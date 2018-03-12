@@ -1,10 +1,10 @@
-import {FilesComponent} from "./content/medias/files/files.component";
-import {LoginComponent} from "./content/auth/login/login.component";
-import {HomeComponent} from "./content/home/home.component";
-import {RegisterComponent} from "./content/auth/register/register.component";
-import {EPermission} from "../../commons/core/core.enums";
-import {CronComponent} from "./content/admin-panel/cron/cron.component";
-import {UsersComponent} from "./content/admin-panel/users/users.component";
+import {FilesComponent} from './content/medias/files/files.component';
+import {LoginComponent} from './content/auth/login/login.component';
+import {HomeComponent} from './content/home/home.component';
+import {RegisterComponent} from './content/auth/register/register.component';
+import {CronComponent} from './content/admin-panel/cron/cron.component';
+import {UsersComponent} from './content/admin-panel/users/users.component';
+import {EPermission} from 'eygle-core/commons/core.enums';
 
 export const routes: [IRouteItem] = [
   {
