@@ -3,14 +3,14 @@ import * as _ from 'underscore';
 import * as moviedb from 'moviedb';
 
 import Utils from 'eygle-core/commons/utils/Utils';
-import MovieSchema from '../schemas/Movie.schema';
+import MovieDB from '../db/MovieDB';
 import ALimitedApi from './ALimitedApi';
 import {Movie} from '../../commons/models/Movie';
 
 class TMDB extends ALimitedApi {
 
   /**
-   * ConfigSchema object
+   * ConfigDB object
    */
   public config: { images: { base_url: { base_url: string } } };
 
@@ -32,7 +32,7 @@ class TMDB extends ALimitedApi {
     const defer = q.defer();
 
     // Check if we already have a movie with this tmdbId
-    MovieSchema.findOneByTMDBId(tmdbId)
+    MovieDB.findOneByTMDBId(tmdbId)
       .then((movie: Movie) => {
         if (!movie) {
           // Fetch movie using API
@@ -41,7 +41,7 @@ class TMDB extends ALimitedApi {
             language: 'fr',
             append_to_response: 'credits,videos'
           })
-            .then((res: ITMDBMovie) => defer.resolve(MovieSchema.createFromTMDB(res, file)))
+            .then((res: ITMDBMovie) => defer.resolve(MovieDB.createFromTMDB(res, file)))
             .catch(defer.reject);
         } else {
           file.movie = movie._id;

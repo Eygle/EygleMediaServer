@@ -3,21 +3,14 @@
  */
 
 import {EygleServer} from 'eygle-core/server/EygleServer';
-import FileDownload from "./middlewares/FileDownload";
-import {CustomRoute} from "eygle-core/server/models/CustomRoute"
+import FileDownload from './middlewares/FileDownload';
+import {ICustomRoute} from 'eygle-core/server/typings/customs.interface';
+import {config} from '../commons/eygle-conf';
 
-new EygleServer()
-  .setRoutes([<CustomRoute>{
-    path: '/dl/:id',
-    method: 'get',
-    middleware: [FileDownload.getSingleFileMiddleware()]
-  }, {
-    path: '/dl',
-    method: 'post',
-    middleware: [FileDownload.getMultipleFileLinkGeneratorMiddleware()]
-  }, {
-    path: '/dl/zip/:id',
-    method: 'get',
-    middleware: [FileDownload.getMultipleFileMiddleware()]
-  }])
+const root = `${__dirname}/..`;
+
+new EygleServer(root, config)
+  .addRoute(<ICustomRoute>{path: '/dl/:id', method: 'get', middleware: [FileDownload.getSingleFileMiddleware()]})
+  .addRoute({path: '/dl', method: 'post', middleware: [FileDownload.getMultipleFileLinkGeneratorMiddleware()]})
+  .addRoute({path: '/dl/zip/:id', method: 'get', middleware: [FileDownload.getMultipleFileMiddleware()]})
   .start();

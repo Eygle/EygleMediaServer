@@ -1,4 +1,4 @@
-import FileSchema from '../../schemas/File.schema';
+import FileDB from '../../db/FileDB';
 import {ARoute} from 'eygle-core/server/middlewares/Resty';
 import {EPermission} from 'eygle-core/commons/core.enums';
 import {RestyCallback} from 'eygle-core/server/typings/resty.interface';
@@ -18,7 +18,7 @@ class Collection extends ARoute {
    * @param next
    */
   public get(next: RestyCallback): void {
-    FileSchema.getChildren()
+    FileDB.getChildren()
       .then((items: Array<EygleFile>) => next(items))
       .catch(next);
   }
@@ -39,7 +39,7 @@ class Resource extends ARoute {
    * @param next
    */
   public get(pId: string, next: RestyCallback): void {
-    FileSchema.getChildren(pId)
+    FileDB.getChildren(pId)
       .then((items: Array<EygleFile>) => next(items))
       .catch(next);
   }

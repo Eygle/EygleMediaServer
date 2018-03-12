@@ -5,23 +5,23 @@ import * as _ from 'underscore';
 import * as ptn from 'parse-torrent-name';
 
 import AJob from 'eygle-core/server/models/AJob';
-import ProjectConfig from 'eygle-core/server/config/ProjectConfig';
-import FileSchema from '../schemas/File.schema';
+import FileDB from '../db/FileDB';
 import TMDB, {ITMDBMovie} from '../modules/TMDB';
-import MovieSchema from '../schemas/Movie.schema';
-import ProposalSchema from '../schemas/Proposal.schema';
+import MovieDB from '../db/MovieDB';
+import ProposalDB from '../db/ProposalDB';
 import TVDB, {ITVDBEpisode, ITVDBShow} from '../modules/TVDB';
-import TVShowSchema from '../schemas/TVShow.schema';
-import EpisodeSchema from '../schemas/Episode.schema';
-import {EEnv} from 'eygle-core/server/typings/server.enums';
+import TVShowDB from '../db/TVShowDB';
+import EpisodeDB from '../db/EpisodeDB';
 import {EygleFile} from '../../commons/models/File';
 import {Episode} from '../../commons/models/Episode';
 import {LocalFile} from '../../commons/models/LocalFile';
 import {Movie} from '../../commons/models/Movie';
 import {Proposal} from '../../commons/models/Proposal';
 import {TVShow} from '../../commons/models/TVShow';
-import FileUtils from "../../commons/FileUtils";
-import EMSUtils from "../utils/EMSUtils";
+import FileUtils from '../../commons/FileUtils';
+import EMSUtils from '../utils/EMSUtils';
+import ServerConfig from 'eygle-core/server/utils/ServerConfig';
+import {EEnv} from 'eygle-core/commons/core.enums';
 
 
 class SynchronizeMedias extends AJob {
@@ -85,12 +85,13 @@ class SynchronizeMedias extends AJob {
     this.scheduleRule = '* * * * *';
     this.environments = [EEnv.Prod];
 
-    this._dumpPath = EEnv.Dev === ProjectConfig.env ? `${ProjectConfig.filesRoot}/../dl-files-dump.json` : `${ProjectConfig.filesRoot}/dl-files-dump.json`;
+    this._dumpPath = EEnv.Dev === ServerConfig.env ? `${ServerConfig.filesRoot}/../dl-files-dump.json`
+      : `${ServerConfig.filesRoot}/dl-files-dump.json`;
     this._videoExtensions = ['.avi', '.mkv', '.webm', '.flv', '.vob', '.ogg', '.ogv', '.mov', '.qt',
       '.wmv', '.mp4', '.m4p', '.m4v', '.mpg', '.mp2', '.mpeg', '.mpe', '.mpv'];
 
-    if (!fs.existsSync(ProjectConfig.filesRoot)) {
-      fs.mkdirSync(ProjectConfig.filesRoot);
+    if (!fs.existsSync(ServerConfig.filesRoot)) {
+      fs.mkdirSync(ServerConfig.filesRoot);
     }
   }
 
@@ -120,7 +121,7 @@ class SynchronizeMedias extends AJob {
    */
   private _synchronize() {
     const defer = q.defer();
-    const previous = EEnv.Dev === ProjectConfig.env ? [] : this._load();
+    const previous = EEnv.Dev === ServerConfig.env ? [] : this._load();
     const files: Array<LocalFile> = this._listDirectory(EMSUtils.mediasRoot);
 
     this._dump(files); // dump as soon as possible to avoid having two time the same task running on the same medias
@@ -166,7 +167,7 @@ class SynchronizeMedias extends AJob {
   private _identifyMedias(list = this._filesToAdd, parent: EygleFile = null) {
     for (const f of list) {
       f.parent = parent ? parent._id.toString() : null;
-      f.model = FileSchema.create(f);
+      f.model = FileDB.create(f);
       if (f.directory && f.children) {
         this._identifyMedias(f.children, f.model);
       } else {
@@ -228,20 +229,20 @@ class SynchronizeMedias extends AJob {
       let movie, tvShow = null;
 
       q.allSettled([
-        FileSchema.remove(f.model),
-        MovieSchema.findWithFileId(f.model._id).then(res => {
+        <any>FileDB.remove(f.model),
+        MovieDB.findWithFileId(f.model._id).then(res => {
           movie = res;
         }),
-        TVShowSchema.findWithFileId(f.model._id).then(res => {
+        TVShowDB.findWithFileId(f.model._id).then(res => {
           tvShow = res;
         })
       ]).then(() => {
         if (movie) {
-          MovieSchema.setDeletedById(movie)
+          MovieDB.setDeletedById(movie)
             .then(() => defer.resolve())
             .catch((err) => defer.reject(err));
         } else if (tvShow) {
-          TVShowSchema.setDeletedById(movie)
+          TVShowDB.setDeletedById(movie)
             .then(() => defer.resolve())
             .catch((err) => defer.reject(err));
         } else {
@@ -330,7 +331,7 @@ class SynchronizeMedias extends AJob {
   }
 
   /**
-   * Add TVShowSchema
+   * Add TVShowDB
    * @param {string} title
    * @param show
    * @return {Q.Promise<any>}
@@ -343,12 +344,12 @@ class SynchronizeMedias extends AJob {
     TVDB.searchByTitle(title)
       .then((res: Array<ITVDBShow>) => {
         if (res.length === 1) {
-          // insert unique TVShowSchema & all episodes
+          // insert unique TVShowDB & all episodes
           TVDB.get(res[0].id)
             .then(res2 => {
-              TVShowSchema.createOrUpdateFromTVDBResult(res2)
+              TVShowDB.createOrUpdateFromTVDBResult(res2)
                 .then((item: TVShow) => {
-                  TVShowSchema.save(item)
+                  TVShowDB.save(item)
                     .then(() => {
                       this.logger.log(`Added/updated TVShow: ${item.title}`);
                       this._nbrTVShowsAdded++;
@@ -402,9 +403,9 @@ class SynchronizeMedias extends AJob {
               const d = q.defer();
               promises.push(d.promise);
 
-              EpisodeSchema.createOrUpdateFromTVDBResult(show, ep, filesPerSeasons[season][episode])
+              EpisodeDB.createOrUpdateFromTVDBResult(show, ep, filesPerSeasons[season][episode])
                 .then((res: Episode) => {
-                  EpisodeSchema.save(res)
+                  EpisodeDB.save(res)
                     .then(() => {
                       this.logger.log(`Added S${res.season}E${res.number}`);
                       d.resolve();
@@ -457,14 +458,14 @@ class SynchronizeMedias extends AJob {
     const defer = q.defer();
 
     TMDB.get(tmdbId, file.model).then((res: ITMDBMovie) => {
-      MovieSchema.save(res)
+      MovieDB.save(res)
         .then((movie: Movie) => {
-          this.logger.log((movie.files.length === 1 ? 'MovieSchema added' : 'Linked to existed movie') + ` ${movie.title}`);
+          this.logger.log((movie.files.length === 1 ? 'MovieDB added' : 'Linked to existed movie') + ` ${movie.title}`);
           this._nbrMoviesAdded++;
           defer.resolve();
         })
         .catch((err) => {
-          this.logger.error('[MovieSchema] save error', err);
+          this.logger.error('[MovieDB] save error', err);
           defer.reject(null);
         });
     });
@@ -482,10 +483,10 @@ class SynchronizeMedias extends AJob {
     const promises = [];
 
     for (const r of results) {
-      promises.push(ProposalSchema.save(ProposalSchema.createFromTMDBResult(r, file.model))
+      promises.push(ProposalDB.save(ProposalDB.createFromTMDBResult(r, file.model))
         .then((proposal: Proposal) =>
           this.logger.log(`Add proposal: ${proposal.title}${proposal.date ? ` (${proposal.date.getFullYear()})` : ''}`))
-        .catch(err => this.logger.error('[ProposalSchema] save error', err)));
+        .catch(err => this.logger.error('[ProposalDB] save error', err)));
     }
 
     return q.allSettled(promises);
@@ -501,7 +502,7 @@ class SynchronizeMedias extends AJob {
 
     for (const f of files) {
       if (f.model) {
-        promises.push(FileSchema.save(f.model));
+        promises.push(FileDB.save(f.model));
         this._nbrFilesAdded++;
       }
       if (f.children) {

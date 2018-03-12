@@ -1,24 +1,24 @@
-import ProjectConfig from "eygle-core/server/config/ProjectConfig";
-import {EEnv} from 'eygle-core/server/typings/server.enums';
-import * as path from "path";
-import {EygleFile} from "../../commons/models/File";
+import * as path from 'path';
+import {EygleFile} from '../../commons/models/File';
+import {EEnv} from 'eygle-core/commons/core.enums';
+import ServerConfig from 'eygle-core/server/utils/ServerConfig';
 
 class EMSUtils {
   public mediasRoot: string;
 
   constructor() {
-    this.mediasRoot = path.normalize(EEnv.Dev === ProjectConfig.env ? `${ProjectConfig.root}/../medias` : `${ProjectConfig.filesRoot}/medias`);
+    this.mediasRoot = path.normalize(EEnv.Dev === ServerConfig.env ? `${ServerConfig.root}/../medias` : `${ServerConfig.filesRoot}/medias`);
   }
 
   public getFileRealPath(file: EygleFile) {
-    let path = this.mediasRoot;
+    let filePath = this.mediasRoot;
 
     if (file.path) {
-      path += `/${file.path}`;
+      filePath += `/${file.path}`;
     }
-    path += `/${file.filename}`;
+    filePath += `/${file.filename}`;
 
-    return path;
+    return filePath;
   }
 }
 

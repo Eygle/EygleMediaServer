@@ -1,14 +1,14 @@
-import * as fs from "fs";
-import * as uniqid from 'uniqid'
+import * as fs from 'fs';
+import * as uniqid from 'uniqid';
 import * as zipstream from 'zip-stream';
 import * as _ from 'underscore';
 import * as async from 'async';
-import * as path from "path";
+import * as path from 'path';
 
-import FileSchema from "../schemas/File.schema";
-import {EygleFile} from "../../commons/models/File";
-import EMSUtils from "../utils/EMSUtils";
-import {CustomEdError} from 'eygle-core/server/config/EdError';
+import FileDB from '../db/FileDB';
+import {EygleFile} from '../../commons/models/File';
+import EMSUtils from '../utils/EMSUtils';
+import {CustomEdError} from 'eygle-core/server/utils/EdError';
 import Utils from 'eygle-core/commons/utils/Utils';
 import {EHTTPStatus} from 'eygle-core/server/typings/server.enums';
 import Cache from 'eygle-core/server/modules/Cache';
@@ -21,7 +21,7 @@ class FileDownload {
    */
   getSingleFileMiddleware() {
     return (req, res, next) => {
-      FileSchema.get(req.params.id)
+      FileDB.get(req.params.id)
         .then((file: EygleFile) => {
           const localFile = EMSUtils.getFileRealPath(file);
           if (fs.existsSync(localFile)) {
@@ -39,7 +39,7 @@ class FileDownload {
    */
   getMultipleFileLinkGeneratorMiddleware() {
     return (req, res, next) => {
-      FileSchema.getAllByIds(req.body.files)
+      FileDB.getAllByIds(req.body.files)
         .then((files: [EygleFile]) => {
           const paths = [];
           for (const file of files) {
@@ -72,7 +72,7 @@ class FileDownload {
       if (files) {
         const zip = zipstream({level: 1});
         const size = Utils.formatSize(_.reduce(files, function (total, f) {
-          return total + f.size
+          return total + f.size;
         }, 0));
 
         res.header('Content-Type', 'application/zip');
@@ -88,7 +88,7 @@ class FileDownload {
           zip.finalize();
         });
       } else {
-        next(new CustomEdError("Invalid link", EHTTPStatus.NotFound))
+        next(new CustomEdError('Invalid link', EHTTPStatus.NotFound));
       }
     };
   }

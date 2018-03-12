@@ -2,8 +2,8 @@ import * as q from 'q';
 import * as _ from 'underscore';
 
 import Utils from 'eygle-core/commons/utils/Utils';
-import MovieSchema from '../../schemas/Movie.schema';
-import FileSchema from '../../schemas/File.schema';
+import MovieDB from '../../db/MovieDB';
+import FileDB from '../../db/FileDB';
 import TMDB from '../../modules/TMDB';
 import {ARoute} from 'eygle-core/server/middlewares/Resty';
 import {EPermission} from 'eygle-core/commons/core.enums';
@@ -28,7 +28,7 @@ class Resource extends ARoute {
    * @param next
    */
   public get(id: string, next: RestyCallback): void {
-    MovieSchema.get(id, {populate: 'files'})
+    MovieDB.get(id, {populate: 'files'})
       .then(next)
       .catch(next);
   }
@@ -39,11 +39,11 @@ class Resource extends ARoute {
    * @param next
    */
   public put(fid: string, next: RestyCallback): void {
-    FileSchema.get(fid)
+    FileDB.get(fid)
       .then((file: EygleFile) => {
         TMDB.get(this.body.tmdbId, file)
           .then((movie: Movie) => {
-            MovieSchema.findWithFileId(fid)
+            MovieDB.findWithFileId(fid)
               .then((items: Array<Movie>) => {
                 const promises = [];
 
@@ -56,8 +56,8 @@ class Resource extends ARoute {
                 q.allSettled(promises)
                   .then(() => {
                     q.allSettled([
-                      FileSchema.save(file),
-                      MovieSchema.save(movie)
+                      FileDB.save(file),
+                      MovieDB.save(movie)
                     ])
                       .then(() => next())
                       .catch(next);
@@ -90,8 +90,8 @@ class Resource extends ARoute {
 
         f.movie = null;
         q.allSettled([
-          FileSchema.save(f),
-          MovieSchema.save(movie)
+          FileDB.save(f),
+          MovieDB.save(movie)
         ])
           .then(defer.resolve)
           .catch(defer.reject);
@@ -101,13 +101,13 @@ class Resource extends ARoute {
     } else if (movie.files.length === 1) {
       (<EygleFile>movie.files[0]).movie = null;
       q.allSettled([
-        FileSchema.save(movie.files[0]),
-        MovieSchema.setDeleted(movie)
+        FileDB.save(movie.files[0]),
+        MovieDB.setDeleted(movie)
       ])
         .then(defer.resolve)
         .catch(defer.reject);
     } else {
-      MovieSchema.setDeleted(movie)
+      MovieDB.setDeleted(movie)
         .then(defer.resolve)
         .catch(defer.reject);
     }
@@ -130,7 +130,7 @@ class Collection extends ARoute {
    * @param next
    */
   public get(next: RestyCallback): void {
-    MovieSchema.getAll({
+    MovieDB.getAll({
       select: {title: 1, date: 1, posterThumb: 1, files: 1},
       populate: {path: 'files', select: 'mtime'}
     })

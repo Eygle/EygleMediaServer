@@ -1,39 +1,21 @@
-import * as mongoose from 'mongoose';
 import * as q from 'q';
 import * as _ from 'underscore';
 
-import DB from 'eygle-core/server/modules/DB';
-import ASchema from 'eygle-core/server/schemas/ASchema.schema';
 import {ITVDBEpisode} from '../modules/TVDB';
 import {EygleFile} from '../../commons/models/File';
 import {Episode} from '../../commons/models/Episode';
 import {TVShow} from '../../commons/models/TVShow';
+import {episodeSchema} from '../schemas/Episode.schema';
+import ADBModel from 'eygle-core/server/db/ADBModel';
 
-const _schema: mongoose.Schema = DB.createSchema({
-  title: String,
-
-  tvdbId: Number,
-  tvdbSeasonId: Number,
-
-  number: Number,
-  season: Number,
-
-  date: Date,
-
-  overview: String,
-
-  tvShow: {type: String, ref: 'TVShowSchema'},
-  files: [{type: String, ref: 'File'}]
-});
-
-class EpisodeSchema extends ASchema {
+export default class EpisodeDB extends ADBModel {
 
   /**
    * Find all episodes by tvshow id
    * @param {string} tid
    * @return {Q.Promise<any>}
    */
-  public findAllByTVShowId(tid: string) {
+  public static findAllByTVShowId(tid: string) {
     const defer = q.defer();
 
     this._model.find()
@@ -54,7 +36,7 @@ class EpisodeSchema extends ASchema {
    * @param files
    * @return {Q.Promise<any>}
    */
-  public createOrUpdateFromTVDBResult(show: TVShow, res: ITVDBEpisode, files: Array<EygleFile>) {
+  public static createOrUpdateFromTVDBResult(show: TVShow, res: ITVDBEpisode, files: Array<EygleFile>) {
     const defer = q.defer();
 
     this._model.findOne()
@@ -89,17 +71,7 @@ class EpisodeSchema extends ASchema {
       });
     return defer.promise;
   }
-
-  /**
-   * Schema getter
-   * @return {mongoose.Schema}
-   */
-  getSchema(): mongoose.Schema {
-    return _schema;
-  }
 }
 
-const instance = new EpisodeSchema();
-
-module.exports.schema = instance;
-export default instance;
+EpisodeDB.init(episodeSchema);
+module.exports.schema = EpisodeDB; // Used by MongoDB models loader (need require)

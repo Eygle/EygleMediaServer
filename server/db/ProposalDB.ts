@@ -1,31 +1,17 @@
-import * as mongoose from 'mongoose';
 import * as q from 'q';
-
-import DB from 'eygle-core/server/modules/DB';
-import ASchema from 'eygle-core/server/schemas/ASchema.schema';
 import TMDB, {ITMDBMovie} from '../modules/TMDB';
 import {EygleFile} from '../../commons/models/File';
+import ADBModel from 'eygle-core/server/db/ADBModel';
+import {movieSchema} from '../schemas/Movie.schema';
 
-const _schema: mongoose.Schema = DB.createSchema({
-  title: String,
-  originalTitle: String,
-  date: Date,
-  overview: String,
-  poster: String,
-
-  tmdbId: Number,
-
-  file: {type: String, ref: 'File'}
-}, false);
-
-class ProposalSchema extends ASchema {
+export default class ProposalDB extends ADBModel {
 
   /**
    * Return all linked to a given file id
    * @param fid
    * @return {Q.Promise<any>}
    */
-  public getAllByFileId(fid) {
+  public static getAllByFileId(fid) {
     const defer = q.defer();
 
     this._model.find()
@@ -43,7 +29,7 @@ class ProposalSchema extends ASchema {
    * @param m
    * @param {EygleFile} file
    */
-  public createFromTMDBResult(m: ITMDBMovie, file: EygleFile) {
+  public static createFromTMDBResult(m: ITMDBMovie, file: EygleFile) {
     return this.create({
       title: m.title,
       originalTitle: m.original_title,
@@ -54,17 +40,7 @@ class ProposalSchema extends ASchema {
       file: file ? file._id : null
     });
   }
-
-  /**
-   * Schema getter
-   * @return {mongoose.Schema}
-   */
-  getSchema(): mongoose.Schema {
-    return _schema;
-  }
 }
 
-const instance = new ProposalSchema();
-
-module.exports.schema = instance;
-export default instance;
+ProposalDB.init(movieSchema);
+module.exports.schema = ProposalDB; // Used by MongoDB models loader (need require)

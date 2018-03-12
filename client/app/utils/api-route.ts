@@ -1,8 +1,8 @@
-import * as path from "path";
-import {catchError} from "rxjs/operators";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
-import {of} from "rxjs/observable/of";
+import * as path from 'path';
+import {catchError} from 'rxjs/operators';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {of} from 'rxjs/observable/of';
 
 export class ApiRoute {
 
@@ -36,7 +36,7 @@ export class ApiRoute {
   public get<T>(params: any = null) {
     const url = this._formatUrl(params);
 
-    return this.http.get<T>(url, this.httpOptions['put'])
+    return this.http.get<T>(url, this.httpOptions['get'])
       .pipe(
         catchError(this._handleError<T>('GET', url))
       );
@@ -66,7 +66,7 @@ export class ApiRoute {
   public delete<T>(params: any = null, body: any) {
     const url = this._formatUrl(params);
 
-    return this.http.post<T>(url, body, this.httpOptions['put'])
+    return this.http.post<T>(url, body, this.httpOptions['delete'])
       .pipe(
         catchError(this._handleError<T>('DELETE', url))
       );
@@ -81,7 +81,7 @@ export class ApiRoute {
   public post<T>(params: any = null, body: any) {
     const url = this._formatUrl(params);
 
-    return this.http.post<T>(url, body, this.httpOptions['put'])
+    return this.http.post<T>(url, body, this.httpOptions['post'])
       .pipe(
         catchError(this._handleError<T>('POST', url))
       );

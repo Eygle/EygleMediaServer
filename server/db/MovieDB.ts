@@ -1,62 +1,16 @@
-import * as mongoose from 'mongoose';
 import * as q from 'q';
 import * as _ from 'underscore';
-
-import DB from 'eygle-core/server/modules/DB';
-import ASchema from 'eygle-core/server/schemas/ASchema.schema';
 import TMDB, {ITMDBMovie} from '../modules/TMDB';
 import {EygleFile} from '../../commons/models/File';
+import ADBModel from 'eygle-core/server/db/ADBModel';
+import {movieSchema} from '../schemas/Movie.schema';
 
-const _schema: mongoose.Schema = DB.createSchema({
-  title: String,
-  originalTitle: String,
-  date: Date,
-  countries: [{type: String}],
-  genres: [{type: String}],
-  overview: String,
-  budget: Number,
-  revenue: Number,
-  originalLanguage: String,
-  runtime: Number,
-
-  poster: String,
-  posterThumb: String,
-  backdrop: String,
-
-  cast: [{
-    tmdbId: Number,
-    name: String,
-    character: String,
-    image: String
-  }],
-  crew: [{
-    tvdbId: Number,
-    name: String,
-    job: String,
-    image: String,
-  }],
-
-  videos: [{
-    id: String,
-    lang: String,
-    key: String,
-    name: String,
-    site: String,
-    size: Number,
-    videoType: String
-  }],
-
-  tmdbId: Number,
-
-  files: [{type: String, ref: 'File'}]
-});
-
-class MovieSchema extends ASchema {
+export default class MovieDB extends ADBModel {
   /**
    * Find one by tmdbId
    * @param {number} tmdbId
    */
-  public findOneByTMDBId(tmdbId: number) {
+  public static findOneByTMDBId(tmdbId: number) {
     const defer = q.defer();
 
     this._model.findOne()
@@ -74,7 +28,7 @@ class MovieSchema extends ASchema {
    * @param fid
    * @return {Q.Promise<any>}
    */
-  public findWithFileId(fid): q.Promise<any> {
+  public static findWithFileId(fid): q.Promise<any> {
     const defer = q.defer();
 
     this._model.find()
@@ -94,7 +48,7 @@ class MovieSchema extends ASchema {
    * @param {EygleFile} file
    * @returns {Movie}
    */
-  public createFromTMDB(m: ITMDBMovie, file: EygleFile = null) {
+  public static createFromTMDB(m: ITMDBMovie, file: EygleFile = null) {
     const movie: any = this.create({
       title: m.title,
       originalTitle: m.original_title,
@@ -160,17 +114,7 @@ class MovieSchema extends ASchema {
 
     return movie;
   }
-
-  /**
-   * Schema getter
-   * @return {mongoose.Schema}
-   */
-  getSchema(): mongoose.Schema {
-    return _schema;
-  }
 }
 
-const instance = new MovieSchema();
-
-module.exports.schema = instance;
-export default instance;
+MovieDB.init(movieSchema);
+module.exports.schema = MovieDB; // Used by MongoDB models loader (need require)

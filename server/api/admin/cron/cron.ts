@@ -1,9 +1,9 @@
 import {ARoute} from 'eygle-core/server/middlewares/Resty';
-import CronJobSchema from 'eygle-core/server/schemas/CronJob.schema';
+import CronJobDB from 'eygle-core/server/db/CronJobDB';
 import {EHTTPStatus} from 'eygle-core/server/typings/server.enums';
 import {ECronJobAction, EPermission} from 'eygle-core/commons/core.enums';
 import CronManager from 'eygle-core/server/modules/CronManager';
-import EdError from 'eygle-core/server/config/EdError';
+import EdError from 'eygle-core/server/utils/EdError';
 import {RestyCallback} from 'eygle-core/server/typings/resty.interface';
 
 /**
@@ -20,7 +20,7 @@ class Collection extends ARoute {
    * @param next
    */
   public get(next: RestyCallback): void {
-    CronJobSchema.getAll()
+    CronJobDB.getAll()
       .then(next)
       .catch(next);
   }

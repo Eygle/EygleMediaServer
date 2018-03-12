@@ -22,14 +22,14 @@ export class FilesService {
 
   constructor(private http: HttpClient) {
     this._api = '/api/files';
-    this._dlUrl = '/dl'
+    this._dlUrl = '/dl';
   }
 
   /**
    * Get all [[EygleFile]]'s children
    * @returns {Observable<[EygleFile]>}
    */
-  getChildren(parent: string = null): Observable<[EygleFile]> {
+  getChildren(parent: string = null): Observable<EygleFile[]> {
     const url = parent ? `${this._api}/${parent}` : this._api;
 
     return this.http.get<[EygleFile]>(url);
@@ -47,7 +47,7 @@ export class FilesService {
    * Download multiple files
    * @param {[EygleFile]} files
    */
-  downloadMultiple(files: [EygleFile]) {
+  downloadMultiple(files: EygleFile[] | string) {
     this.http.post(`${this._dlUrl}/`, {files: files})
       .subscribe((data: any) => {
         this._dlFileProgramatically(data.url);
@@ -61,10 +61,10 @@ export class FilesService {
    */
   private _dlFileProgramatically(url: string) {
     const linkElement = document.createElement('a');
-    const clickEvent = new MouseEvent("click", {
-      "view": window,
-      "bubbles": true,
-      "cancelable": false
+    const clickEvent = new MouseEvent('click', {
+      'view': window,
+      'bubbles': true,
+      'cancelable': false
     });
 
     linkElement.setAttribute('href', url);

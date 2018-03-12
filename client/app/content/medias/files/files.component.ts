@@ -4,12 +4,12 @@ import {EygleFile} from '../../../../../commons/models/File';
 import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import * as _ from 'underscore';
 import {PerfectScrollbarDirective} from 'ngx-perfect-scrollbar';
-import {UrlsModalComponent} from "./modals/urls-modal/urls-modal.component";
-import {AuthService} from "../../../services/auth.service";
-import {EPermission} from "../../../../../commons/core/core.enums";
-import {KeyEvents} from "../../../utils/key-events";
-import {EKeyCode} from "../../../typings/client.enums";
-import FileUtils from "../../../../../commons/FileUtils";
+import {UrlsModalComponent} from './modals/urls-modal/urls-modal.component';
+import {AuthService} from '../../../services/auth.service';
+import {KeyEvents} from '../../../utils/key-events';
+import {EKeyCode} from '../../../typings/client.enums';
+import FileUtils from '../../../../../commons/FileUtils';
+import {EPermission} from 'eygle-core/commons/core.enums';
 
 @Component({
   selector: 'ems-files',
@@ -20,7 +20,7 @@ export class FilesComponent implements OnInit {
   /**
    * Breadcrumbs
    */
-  bc: [EygleFile];
+  bc: EygleFile[];
 
   /**
    * Current root file
@@ -41,12 +41,12 @@ export class FilesComponent implements OnInit {
   /**
    * Table filter text
    */
-  filterText: string = "";
+  filterText = '';
 
   /**
    * List of selected files
    */
-  selected: [EygleFile];
+  selected: EygleFile[];
 
   /**
    * Is loading data from API
@@ -107,7 +107,7 @@ export class FilesComponent implements OnInit {
     file.selected = !file.selected;
     if (file.selected) {
       if (this.keyEvents.isPressed(EKeyCode.SHIFT)) { // SELECT WITH SHIFT
-        const displayedList = (<any>this.dataSource)._renderData._value;
+        const displayedList: EygleFile[] = (<any>this.dataSource)._renderData._value;
         const prevItem = this.selected.length ? this.selected[this.selected.length - 1] : null;
         const prevIdx = prevItem ? _.findIndex(displayedList, (f) => {
           return f._id === prevItem._id;
@@ -144,7 +144,7 @@ export class FilesComponent implements OnInit {
       this.refresh();
     }
     this.selected = <[EygleFile]>[];
-    this.filterText = "";
+    this.filterText = '';
     this.applyFilter(this.filterText);
   }
 
@@ -252,7 +252,7 @@ export class FilesComponent implements OnInit {
       this.filesService.download(this.selected[0]._id);
     else
       this.filesService.downloadMultiple(_.map(this.selected, (f: EygleFile) => {
-        return f._id
+        return f._id;
       }));
   }
 }

@@ -1,8 +1,8 @@
 import * as q from 'q';
 
-import ProposalSchema from '../../../schemas/Proposal.schema';
-import MovieSchema from '../../../schemas/Movie.schema';
-import FileSchema from '../../../schemas/File.schema';
+import ProposalDB from '../../../db/ProposalDB';
+import MovieDB from '../../../db/MovieDB';
+import FileDB from '../../../db/FileDB';
 import TMDB from '../../../modules/TMDB';
 import {ARoute} from 'eygle-core/server/middlewares/Resty';
 import {EPermission} from 'eygle-core/commons/core.enums';
@@ -25,7 +25,7 @@ class Resource extends ARoute {
    * @param next
    */
   public put(id: string, next: RestyCallback): void {
-    ProposalSchema.get(id, {
+    ProposalDB.get(id, {
       select: {tmdbId: 1, file: 1},
       populate: 'file'
     })
@@ -33,8 +33,8 @@ class Resource extends ARoute {
         TMDB.get(proposal.tmdbId, proposal.file)
           .then((movie: Movie) => {
             q.allSettled([
-              FileSchema.save(proposal.file),
-              MovieSchema.save(movie),
+              FileDB.save(proposal.file),
+              MovieDB.save(movie),
               this._deleteAllProposalsLinkedToFile(proposal.file._id)
             ])
               .then(next)
@@ -66,12 +66,12 @@ class Resource extends ARoute {
   private _deleteAllProposalsLinkedToFile(fid) {
     const defer = q.defer();
 
-    ProposalSchema.getAllByFileId(fid.toString())
+    ProposalDB.getAllByFileId(fid.toString())
       .then((items: Array<Proposal>) => {
         const promises = [];
 
         for (const item of items) {
-          promises.push(ProposalSchema.remove(item));
+          promises.push(ProposalDB.remove(item));
         }
 
         q.allSettled(promises)
@@ -98,7 +98,7 @@ class Collection extends ARoute {
    * @param next
    */
   public get(next: RestyCallback): void {
-    ProposalSchema.getAll({
+    ProposalDB.getAll({
       select: {file: 1, date: 1, title: 1, originalTitle: 1, poster: 1},
       populate: 'file'
     })

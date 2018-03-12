@@ -1,4 +1,4 @@
-import TVShowSchema from '../../schemas/TVShow.schema';
+import TVShowDB from '../../db/TVShowDB';
 import {ARoute} from 'eygle-core/server/middlewares/Resty';
 import {EPermission} from 'eygle-core/commons/core.enums';
 import {RestyCallback} from 'eygle-core/server/typings/resty.interface';
@@ -18,7 +18,7 @@ class Resource extends ARoute {
    * @param next
    */
   public get(id: string, next: RestyCallback): void {
-    TVShowSchema.getFull(id)
+    TVShowDB.getFull(id)
       .then(next)
       .catch(next);
   }
@@ -38,7 +38,7 @@ class Collection extends ARoute {
    * @param next
    */
   public get(next: RestyCallback): void {
-    TVShowSchema.getAll()
+    TVShowDB.getAll()
       .then(next)
       .catch(next);
   }

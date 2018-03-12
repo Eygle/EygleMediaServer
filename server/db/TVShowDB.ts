@@ -1,54 +1,24 @@
-import * as mongoose from 'mongoose';
 import * as q from 'q';
 import * as _ from 'underscore';
-
-import DB from 'eygle-core/server/modules/DB';
-import ASchema from 'eygle-core/server/schemas/ASchema.schema';
-import Episode from './Episode.schema';
+import EpisodeDB from './EpisodeDB';
 import {ITVDBShow} from '../modules/TVDB';
+import {tvShowSchema} from '../schemas/tvShow.schema';
+import ADBModel from 'eygle-core/server/db/ADBModel';
 
-const _schema: mongoose.Schema = DB.createSchema({
-  title: String,
-
-  tvdbId: Number,
-  imdbId: String,
-
-  banner: String,
-  poster: String,
-  posterThumb: String,
-  genres: [{type: String}],
-  overview: String,
-
-  actors: [{
-    tvdbId: Number,
-    name: String,
-    character: String,
-    image: String
-  }],
-
-  seasons: Number,
-  episodes: Number,
-  start: Date,
-  end: Date,
-  runtime: Number,
-  status: String,
-  network: String,
-});
-
-class TVShowSchema extends ASchema {
+export default class TVShowDB extends ADBModel {
   /**
-   * Get full TVShowSchema with episodes list
+   * Get full TVShowDB with episodes list
    * @param {string} id
    * @return {Q.Promise<any>}
    */
-  public getFull(id: string) {
+  public static getFull(id: string) {
     const defer = q.defer();
 
     this.get(id)
       .then((tvShow: any) => {
         if (tvShow) {
           tvShow = tvShow.toObject();
-          Episode.findAllByTVShowId(tvShow._id.toString())
+          EpisodeDB.findAllByTVShowId(tvShow._id.toString())
             .then(items => {
               tvShow.episodesList = items;
               defer.resolve(tvShow);
@@ -68,7 +38,7 @@ class TVShowSchema extends ASchema {
    * @param fid
    * @return {Q.Promise<any>}
    */
-  public findWithFileId(fid): q.Promise<any> {
+  public static findWithFileId(fid): q.Promise<any> {
     const defer = q.defer();
 
     this._model.find()
@@ -82,7 +52,7 @@ class TVShowSchema extends ASchema {
     return defer.promise;
   }
 
-  public createOrUpdateFromTVDBResult(t: ITVDBShow) {
+  public static createOrUpdateFromTVDBResult(t: ITVDBShow) {
     const defer = q.defer();
 
     this._model.findOne()
@@ -124,17 +94,7 @@ class TVShowSchema extends ASchema {
 
     return defer.promise;
   }
-
-  /**
-   * Schema getter
-   * @return {mongoose.Schema}
-   */
-  getSchema(): mongoose.Schema {
-    return _schema;
-  }
 }
 
-const instance = new TVShowSchema();
-
-module.exports.schema = instance;
-export default instance;
+TVShowDB.init(tvShowSchema);
+module.exports.schema = TVShowDB; // Used by MongoDB models loader (need require)
