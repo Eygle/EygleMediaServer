@@ -56,7 +56,7 @@ export class AuthService {
    * User is logged
    */
   public isLogged(): boolean {
-    return !!this.user;
+    return !!(this.user && this.user._id);
   }
 
   /**

@@ -2,6 +2,7 @@ import * as _ from 'underscore';
 
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {EygleFile} from '../../../../../../../commons/models/File';
 
 @Component({
   selector: 'ems-urls-modal',
@@ -21,7 +22,7 @@ export class UrlsModalComponent {
   private _host: string;
 
   constructor(public dialogRef: MatDialogRef<UrlsModalComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+              @Inject(MAT_DIALOG_DATA) public data: { files: EygleFile[] }) {
     const urlParts = window.location.href.split('/');
     this._host = `${urlParts[0]}//${urlParts[2]}`;
 
