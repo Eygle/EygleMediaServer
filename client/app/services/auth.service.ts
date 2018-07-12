@@ -35,8 +35,8 @@ export class AuthService {
   private _permApi: ApiRoute;
 
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router) {
-    this.user = this._getObjectFromCookie('user');
-    this._allPermissions = this._getObjectFromCookie('permissions');
+    this.user = this._getObjectFromCookie('ey-user', {});
+    this._allPermissions = this._getObjectFromCookie('ey-permissions', []);
     this._permApi = new ApiRoute(this.http, '/permissions');
 
     if (!environment.production) {
@@ -45,9 +45,9 @@ export class AuthService {
       this._permApi.get()
         .subscribe((permissions: [any]) => {
           this._allPermissions = permissions;
-          this.cookie.set('permissions', JSON.stringify(permissions));
+          this.cookie.set('ey-permissions', JSON.stringify(permissions));
           // The 'permissions' route return user as cookie in DEV mode
-          this.user = this._getObjectFromCookie('user');
+          this.user = this._getObjectFromCookie('ey-user', {});
         });
     }
   }
@@ -56,7 +56,7 @@ export class AuthService {
    * User is logged
    */
   public isLogged(): boolean {
-    return !!(this.user && this.user._id);
+    return !!this.user._id;
   }
 
   /**
@@ -72,7 +72,7 @@ export class AuthService {
    * @param {User} user
    * @return {boolean}
    */
-  public authorize = (accessLevel, user: User = null) => {
+  public authorize(accessLevel, user: User = null) {
     const memberRights = user && user.roles ? user.roles : this.user.roles || [ERole.Guest];
 
     if (!!~memberRights.indexOf(ERole.Admin)) {
@@ -104,7 +104,7 @@ export class AuthService {
     }, <{}>httpOptions)
       .pipe(
         tap(() => {
-          this.user = JSON.parse(this.cookie.get('user'));
+          this.user = this._getObjectFromCookie('ey-user', {});
           console.log(this.user);
           this.router.navigate(['files']);
         }),
@@ -123,8 +123,7 @@ export class AuthService {
     }, <{}>httpOptions)
       .pipe(
         tap(() => {
-          this.user = JSON.parse(this.cookie.get('user'));
-          console.log(this.user);
+          this.user = this._getObjectFromCookie('ey-user', {});
           this.router.navigate(['files']);
         }),
         catchError(this._handleError<User>('login'))
@@ -154,11 +153,12 @@ export class AuthService {
   /**
    * Get object from cookie
    * @param {string} key
+   * @param defaultValue
    * @private
    */
-  private _getObjectFromCookie(key: string) {
+  private _getObjectFromCookie(key: string, defaultValue: any = null) {
     const json = this.cookie.get(key);
 
-    return json ? JSON.parse(json) : null;
+    return json ? JSON.parse(json) : defaultValue;
   }
 }
