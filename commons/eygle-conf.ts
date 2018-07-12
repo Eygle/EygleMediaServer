@@ -1,7 +1,7 @@
 import {ELoggerLvl} from 'eygle-core/commons/core.enums';
 
 
-export const config: any = {
+const config: any = {
   'appName': 'Eygle Media Server',
 
   implementsAuth: true,
@@ -22,3 +22,5 @@ export const config: any = {
     }
   }
 };
+
+module.exports = config;
