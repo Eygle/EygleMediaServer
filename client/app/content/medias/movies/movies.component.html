@@ -1,0 +1,19 @@
+<emsKeyEvents (onKeyDown)="keyEvents.setKeyDown($event)" (onKeyUp)="keyEvents.setKeyUp($event)"></emsKeyEvents>
+
+<div fxLayout="column" class="unselectable">
+  <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon (click)="refresh()">refresh</mat-icon>
+    </div>
+  </div>
+
+  <div class="content" fxFlex="flex" fxLayout="row" fxLayoutAlign="center stretch">
+    <div class="loading" *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="movie" *ngFor="let movie of movies">
+
+    </div>
+  </div>
+</div>

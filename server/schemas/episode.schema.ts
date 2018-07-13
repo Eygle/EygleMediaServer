@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 
 import DB from 'eygle-core/server/modules/DB';
+import ServerConfig from 'eygle-core/server/utils/ServerConfig';
 
 export const episodeSchema: mongoose.Schema = DB.createSchema({
   title: String,
@@ -15,6 +16,6 @@ export const episodeSchema: mongoose.Schema = DB.createSchema({
 
   overview: String,
 
-  tvShow: {type: String, ref: 'TVShowDB'},
-  files: [{type: String, ref: 'File'}]
+  tvShow: {type: String, ref: ServerConfig.dbCollectionsPrefix + 'TVShowDB'},
+  files: [{type: String, ref: ServerConfig.dbCollectionsPrefix + 'File'}]
 });

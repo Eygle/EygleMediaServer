@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FilesService} from '../../../services/files.service';
+import {FilesService} from './files.service';
 import {EygleFile} from '../../../../../commons/models/File';
 import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import * as _ from 'underscore';

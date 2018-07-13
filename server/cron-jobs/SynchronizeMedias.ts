@@ -85,7 +85,7 @@ class SynchronizeMedias extends AJob {
     this.scheduleRule = '* * * * *';
     this.environments = [EEnv.Prod];
 
-    this._dumpPath = EEnv.Dev === ServerConfig.env ? `${ServerConfig.filesRoot}/../dl-files-dump.json`
+    this._dumpPath = EEnv.Dev === ServerConfig.env ? `${ServerConfig.root}/../dl-files-dump.json`
       : `${ServerConfig.filesRoot}/dl-files-dump.json`;
     this._videoExtensions = ['.avi', '.mkv', '.webm', '.flv', '.vob', '.ogg', '.ogv', '.mov', '.qt',
       '.wmv', '.mp4', '.m4p', '.m4v', '.mpg', '.mp2', '.mpeg', '.mpe', '.mpv'];
@@ -171,7 +171,7 @@ class SynchronizeMedias extends AJob {
       if (f.directory && f.children) {
         this._identifyMedias(f.children, f.model);
       } else {
-        if (FileUtils.isVideo(f.filename)) {
+        if (FileUtils.isVideo(f.ext)) {
           if (!f.mediaInfo) {
             f.mediaInfo = ptn(f.filename);
           }
@@ -296,6 +296,7 @@ class SynchronizeMedias extends AJob {
 
     this.logger.log(`Process movie from file ${file.filename}`);
     if (file.mediaInfo.title) {
+      this.logger.trace(`TMDB search with title ${file.mediaInfo.title}`);
       TMDB.searchByTitle(file.mediaInfo.title).then((results: Array<ITMDBMovie>) => {
         if (results.length === 0) {
           defer.resolve();
@@ -376,7 +377,7 @@ class SynchronizeMedias extends AJob {
         }
       })
       .catch(err => {
-        this.logger.log('[TVDB] error:', err);
+        this.logger.log('[TVDB] error:', err.message);
         defer.reject(null);
       });
 
@@ -458,6 +459,7 @@ class SynchronizeMedias extends AJob {
     const defer = q.defer();
 
     TMDB.get(tmdbId, file.model).then((res: ITMDBMovie) => {
+      console.log('TMDB info res:', res);
       MovieDB.save(res)
         .then((movie: Movie) => {
           this.logger.log((movie.files.length === 1 ? 'MovieDB added' : 'Linked to existed movie') + ` ${movie.title}`);
@@ -468,6 +470,9 @@ class SynchronizeMedias extends AJob {
           this.logger.error('[MovieDB] save error', err);
           defer.reject(null);
         });
+    }).catch(err => {
+      this.logger.error(`Error during movie info fetching (tmdbid: ${tmdbId}`, err);
+      defer.reject(err);
     });
     return defer.promise;
   }

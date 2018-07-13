@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 
 import DB from 'eygle-core/server/modules/DB';
+import ServerConfig from 'eygle-core/server/utils/ServerConfig';
 
 const proposalSchema: mongoose.Schema = DB.createSchema({
   title: String,
@@ -11,5 +12,5 @@ const proposalSchema: mongoose.Schema = DB.createSchema({
 
   tmdbId: Number,
 
-  file: {type: String, ref: 'File'}
+  file: {type: String, ref: ServerConfig.dbCollectionsPrefix + 'File'}
 }, false);

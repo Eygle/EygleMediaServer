@@ -132,6 +132,7 @@ html {
           & > .toolbar {
             width: 100%;
             height: $toolbar-height;
+            min-height: $toolbar-height;
             background-color: $bg-darken;
             padding: 0 25px;
 

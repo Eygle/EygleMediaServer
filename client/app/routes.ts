@@ -5,6 +5,7 @@ import {RegisterComponent} from './content/auth/register/register.component';
 import {CronComponent} from './content/admin-panel/cron/cron.component';
 import {UsersComponent} from './content/admin-panel/users/users.component';
 import {EPermission} from 'eygle-core/commons/core.enums';
+import {MoviesComponent} from './content/medias/movies/movies.component';
 
 export const routes: [IRouteItem] = [
   {
@@ -17,14 +18,14 @@ export const routes: [IRouteItem] = [
   },
 
   // Medias
-  // {
-  //   path: 'movies',
-  //   component: HomeComponent,
-  //   translate: 'MOVIES.TITLE',
-  //   icon: 'movie',
-  //   access: EPermission.SeeMovies,
-  //   category: 'MEDIAS'
-  // },
+  {
+    path: 'movies',
+    component: MoviesComponent,
+    translate: 'MOVIES.TITLE',
+    icon: 'movie',
+    access: EPermission.SeeMovies,
+    category: 'MEDIAS'
+  },
   // {
   //   path: 'tv-shows',
   //   component: HomeComponent,

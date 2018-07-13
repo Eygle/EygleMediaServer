@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 
 import DB from 'eygle-core/server/modules/DB';
 import Utils from 'eygle-core/commons/utils/Utils';
+import ServerConfig from 'eygle-core/server/utils/ServerConfig';
 
 export const fileSchema: mongoose.Schema = DB.createSchema({
   filename: String,
@@ -34,9 +35,9 @@ export const fileSchema: mongoose.Schema = DB.createSchema({
     }]
   },
 
-  parent: {type: String, ref: 'File'},
-  episode: {type: String, ref: 'MovieDB'},
-  movie: {type: String, ref: 'MovieDB'},
+  parent: {type: String, ref: ServerConfig.dbCollectionsPrefix + 'File'},
+  episode: {type: String, ref: ServerConfig.dbCollectionsPrefix + 'TVShow'},
+  movie: {type: String, ref: ServerConfig.dbCollectionsPrefix + 'Movie'},
 }, true, {
   toObject: {
     virtuals: true

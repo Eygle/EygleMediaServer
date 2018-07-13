@@ -17,12 +17,6 @@ class TMDB extends ALimitedApi {
   constructor() {
     super(true);
     this.api = moviedb(Utils.tmdbToken);
-  }
-
-  /**
-   * Initialize lib
-   */
-  public init() {
     this.api.configuration((err, res) => {
       this.config = res;
     });

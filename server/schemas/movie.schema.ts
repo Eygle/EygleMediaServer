@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 
 import DB from 'eygle-core/server/modules/DB';
+import ServerConfig from 'eygle-core/server/utils/ServerConfig';
 
 export const movieSchema: mongoose.Schema = DB.createSchema({
   title: String,
@@ -43,5 +44,5 @@ export const movieSchema: mongoose.Schema = DB.createSchema({
 
   tmdbId: Number,
 
-  files: [{type: String, ref: 'File'}]
+  files: [{type: String, ref: ServerConfig.dbCollectionsPrefix + 'File'}]
 });

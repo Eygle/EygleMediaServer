@@ -28,9 +28,9 @@ import {AppRoutingModule} from './app-routing.module';
 import {SidenavComponent} from './content/sidenav/sidenav.component';
 import {LoginComponent} from './content/auth/login/login.component';
 import {ConfigService} from './services/config.service';
-import {CronService} from './services/cron.service';
+import {CronService} from './content/admin-panel/cron/cron.service';
 import {AuthService} from './services/auth.service';
-import {FilesService} from './services/files.service';
+import {FilesService} from './content/medias/files/files.service';
 import {FormatSizePipe} from './pipes/format-size.pipe';
 import {UrlsModalComponent} from './content/medias/files/modals/urls-modal/urls-modal.component';
 import {KeyEventsDirective} from './directives/key-events.directive';
@@ -39,6 +39,8 @@ import {HomeComponent} from './content/home/home.component';
 import {CronComponent} from './content/admin-panel/cron/cron.component';
 import {UsersComponent} from './content/admin-panel/users/users.component';
 import {UsersService} from './services/users.service';
+import {MoviesComponent} from './content/medias/movies/movies.component';
+import {MoviesService} from './content/medias/movies/movies.service';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -49,6 +51,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppComponent,
     SidenavComponent,
     FilesComponent,
+    MoviesComponent,
     LoginComponent,
     UrlsModalComponent,
     FormatSizePipe,
@@ -82,6 +85,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CookieService,
     CronService,
     FilesService,
+    MoviesService,
     UsersService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,

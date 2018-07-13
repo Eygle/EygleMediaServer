@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {EygleFile} from '../../../commons/models/File';
 import {HttpClient} from '@angular/common/http';
+import {EygleFile} from '../../../../../commons/models/File';
 
 // const httpOptions = {
 //   headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'}),
