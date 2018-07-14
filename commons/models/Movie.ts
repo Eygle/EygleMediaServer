@@ -1,10 +1,8 @@
 import {EygleFile} from './File';
-import {AModel} from 'eygle-core/commons/models/AModel';
+import {Media} from "./Media";
 
-export class Movie extends AModel {
-  title: string;
+export class Movie extends Media {
   originalTitle: string;
-  date: Date;
   countries: [{ type: string }];
   genres: { type: string }[];
   overview: string;
@@ -13,8 +11,6 @@ export class Movie extends AModel {
   originalLanguage: string;
   runtime: number;
 
-  poster: string;
-  posterThumb: string;
   backdrop: string;
 
   cast: Cast[];
@@ -25,7 +21,7 @@ export class Movie extends AModel {
   tmdbId: number;
   imdbId: string;
 
-  files: Array<EygleFile | string>;
+  files: EygleFile[];
 }
 
 export class Cast {

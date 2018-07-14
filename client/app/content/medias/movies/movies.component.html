@@ -10,26 +10,6 @@
       <mat-spinner></mat-spinner>
     </div>
 
-    <div fxLayout="row wrap" fxLayoutGap="20px" *ngIf="!isLoading">
-      <div class="movie" *ngFor="let movie of movies">
-        <a routerLink="/movies/{{movie._id}}">
-          <div class="image-crop">
-            <img src="{{movie.posterThumb}}" *ngIf="movie.posterThumb" alt="{{movie.title}}"/>
-            <div class="placeholder" *ngIf="!movie.posterThumb" fxLayout="row" fxLayoutAlign="center center">
-              <mat-icon>movie</mat-icon>
-            </div>
-            <div class="image-hover">
-              <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon>search</mat-icon>
-              </div>
-            </div>
-          </div>
-          <div class="info">
-            <div class="title">{{movie.title}}</div>
-            <div class="subtitle">{{movie.date.getFullYear()}}</div>
-          </div>
-        </a>
-      </div>
-    </div>
+    <ems-media-list [media]="movies" route="movies" placeholderIcon="movie" *ngIf="!isLoading"></ems-media-list>
   </div>
 </div>

@@ -1,0 +1,73 @@
+@import "../../../common";
+
+.media {
+  width: 154px;
+  max-width: 154px;
+  margin-bottom: 20px;
+
+  .image-crop {
+    position: relative;
+    width: 100%;
+    height: 230px;
+    overflow: hidden;
+
+    &:hover > .image-hover {
+      display: block;
+    }
+
+    &:hover > .placeholder > mat-icon {
+      display: none;
+    }
+
+    img {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    .placeholder {
+      width: 100%;
+      height: 100%;
+      background-color: $bg-darken;
+
+      & > mat-icon {
+        $size: 50px;
+        height: $size;
+        width: $size;
+        font-size: $size;
+        color: rgba(255, 255, 255, 0.3);
+      }
+    }
+
+    .image-hover {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $bg-darken-full;
+      color: white;
+
+      & > div {
+        height: 100%;
+
+        & > mat-icon {
+          $size: 50px;
+          height: $size;
+          width: $size;
+          font-size: $size;
+        }
+      }
+    }
+  }
+
+  .info {
+    margin-top: 10px;
+
+    > .subtitle {
+      font-size: 0.8em;
+      color: $color-lighter;
+      margin-top: 5px;
+    }
+  }
+}

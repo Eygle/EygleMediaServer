@@ -132,7 +132,9 @@ class Collection extends ARoute {
   public get(next: RestyCallback): void {
     MovieDB.getAll({
       select: {title: 1, date: 1, posterThumb: 1, files: 1},
-      populate: {path: 'files', select: 'mtime'}
+      populate: {path: 'files', select: 'mtime'},
+      sort: {creationDate: -1},
+      limit: this.query.limit
     })
       .then(next)
       .catch(next);

@@ -3,6 +3,7 @@ import {MoviesService} from "../movies.service";
 import {Crew, Movie} from "../../../../../../commons/models/Movie";
 import {ActivatedRoute} from "@angular/router";
 import * as _ from "underscore";
+import {EygleFile} from "../../../../../../commons/models/File";
 
 @Component({
   selector: 'ems-movie',
@@ -31,6 +32,11 @@ export class MovieComponent implements OnInit {
    */
   public writers: Crew[];
 
+  /**
+   * Total size of all files
+   */
+  public filesSize: number;
+
   constructor(private moviesService: MoviesService, private route: ActivatedRoute) {
     this.isLoading = true;
   }
@@ -44,8 +50,11 @@ export class MovieComponent implements OnInit {
         return c.job === 'Director'
       });
       this.writers = _.filter(res.crew, c => {
-        return c.job === 'Writers'
+        return c.job === 'Writer'
       });
+      this.filesSize = _.reduce(<any>res.files, (s, f: EygleFile) => {
+        return s + f.size;
+      }, 0);
     });
   }
 

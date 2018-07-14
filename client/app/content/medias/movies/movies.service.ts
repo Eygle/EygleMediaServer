@@ -19,8 +19,9 @@ export class MoviesService {
    * Get all movies
    * @return {Observable<[Movie]>}
    */
-  public getAll() {
-    return this.http.get<[Movie]>(this._api).map(res => {
+  public getAll(limit: number = null) {
+    const url = limit ? `${this._api}/?limit=${limit}` : this._api;
+    return this.http.get<[Movie]>(url).map(res => {
       return this._formatApiData(res);
     });
   }

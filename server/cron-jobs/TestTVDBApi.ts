@@ -30,6 +30,10 @@ class TestTVDBApi extends AJob {
 
     this.end();
   }
+
+  public clean() {
+
+  }
 }
 
 module.exports = new TestTVDBApi();

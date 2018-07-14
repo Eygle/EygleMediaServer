@@ -15,6 +15,11 @@ export const movieSchema: mongoose.Schema = DB.createSchema({
   originalLanguage: String,
   runtime: Number,
 
+  productionCompanies: [{
+    id: Number,
+    name: String
+  }],
+
   poster: String,
   posterThumb: String,
   backdrop: String,

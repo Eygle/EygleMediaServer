@@ -90,7 +90,12 @@ export default class MovieDB extends ADBModel {
           image: v.profile_path ? TMDB.config.images.base_url + TMDB.getSizeCloseTo('c', 138) + v.profile_path : null
         };
       }),
-
+      productionCompanies: _.map(m.production_companies, v => {
+        return {
+          name: v.name,
+          id: v.id
+        }
+      }),
       videos: _.map(m.videos.results, (v) => {
         return {
           id: v.id,

@@ -1,0 +1,21 @@
+<div fxLayout="row wrap" fxLayoutGap="20px">
+  <div class="media" *ngFor="let m of media">
+    <a routerLink="/{{route}}/{{m._id}}">
+      <div class="image-crop">
+        <img *ngIf="m.posterThumb" src="{{m.posterThumb}}" alt="{{m.title}}"/>
+        <div class="placeholder" *ngIf="!m.posterThumb" fxLayout="row" fxLayoutAlign="center center">
+          <mat-icon>{{placeholderIcon}}</mat-icon>
+        </div>
+        <div class="image-hover">
+          <div fxLayout="row" fxLayoutAlign="center center">
+            <mat-icon>search</mat-icon>
+          </div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="title">{{m.title}}</div>
+        <div class="subtitle" *ngIf="m.date">{{m.date.getFullYear()}}</div>
+      </div>
+    </a>
+  </div>
+</div>

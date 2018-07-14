@@ -38,7 +38,10 @@ class Collection extends ARoute {
    * @param next
    */
   public get(next: RestyCallback): void {
-    TVShowDB.getAll()
+    TVShowDB.getAll({
+      sort: {creationDate: -1},
+      limit: this.query.limit
+    })
       .then(next)
       .catch(next);
   }

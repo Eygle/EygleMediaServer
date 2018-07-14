@@ -53,7 +53,15 @@ $padding: 20px;
       .label {
         color: $color-lighter;
         width: 120px;
+        min-width: 120px;
+        max-width: 120px;
         text-transform: uppercase;
+      }
+
+      a:not(:first-of-type) {
+        &:before {
+          content: ", ";
+        }
       }
     }
   }

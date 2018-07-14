@@ -11,10 +11,8 @@ export const locale = {
   // HOME
   'HOME': {
     'TITLE': 'Accueil',
-    'WORK_IN_PROGRESS': {
-      'TITLE': 'Page en cours de création',
-      'LABEL': 'Va sur la page des téléchargements acceder aux médias'
-    },
+    'LAST_MOVIES': 'Films récemment ajoutés',
+    'LAST_TV_SHOWS': 'Séries récemment ajoutées',
     'GUEST_VIEW': {
       'TITLE': 'Bienvenue sur mon serveur privé',
       'MAIN_INFO': 'Tu n\'as pas encore accès aux contenus du site, il faut d\'abord que je valide ton compte',
@@ -26,6 +24,9 @@ export const locale = {
   'MOVIES': {
     'TITLE': 'Films',
     'LABELS': {
+      'FILES': 'Fichiers',
+      'SIZE': 'Taille',
+      'DIRECTORY': 'Dossier',
       'DIRECTORS': 'Dirigé par',
       'WRITTERS': 'Ecrit par',
       'STUDIO': 'Studio',

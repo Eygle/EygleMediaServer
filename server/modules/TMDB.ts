@@ -121,6 +121,7 @@ export interface ITMDBMovie {
   backdrop_path: string;
   original_language: string;
   production_countries: Array<{ iso_3166_1: string }>;
+  production_companies: Array<{ name: string, id: number }>;
   credits: {
     cast: Array<{ id: number, name: string, character: string, profile_path: string, order: number }>,
     crew: Array<{ id: number, name: string, job: string, profile_path: string, department: string }>

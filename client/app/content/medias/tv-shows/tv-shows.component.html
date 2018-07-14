@@ -10,25 +10,6 @@
       <mat-spinner></mat-spinner>
     </div>
 
-    <div fxLayout="row wrap" fxLayoutGap="20px" *ngIf="!isLoading">
-      <div class="tv-show" *ngFor="let show of shows">
-        <a routerLink="/tv-show/{{show._id}}">
-          <div class="image-crop">
-            <img *ngIf="show.poster" src="{{show.posterThumb}}" alt="{{show.title}}"/>
-            <div class="placeholder" *ngIf="!show.posterThumb" fxLayout="row" fxLayoutAlign="center center">
-              <mat-icon>tv</mat-icon>
-            </div>
-            <div class="image-hover">
-              <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon>search</mat-icon>
-              </div>
-            </div>
-          </div>
-          <div class="info">
-            <div class="title">{{show.title}}</div>
-          </div>
-        </a>
-      </div>
-    </div>
+    <ems-media-list [media]="shows" route="tv-shows" placeholderIcon="tv" *ngIf="!isLoading"></ems-media-list>
   </div>
 </div>

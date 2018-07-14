@@ -1,15 +1,11 @@
 import {Episode} from './Episode';
-import {AModel} from 'eygle-core/commons/models/AModel';
+import {Media} from "./Media";
 
-export class TVShow extends AModel {
-  title: string;
-
+export class TVShow extends Media {
   tvdbId: number;
   imdbId: number;
 
   banner: string;
-  poster: string;
-  posterThumb: string;
   genres: [{ type: string }];
   overview: string;
 
