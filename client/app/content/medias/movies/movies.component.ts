@@ -10,7 +10,7 @@ import {Movie} from '../../../../../commons/models/Movie';
 export class MoviesComponent implements OnInit {
 
   /**
-   * Is page loadinf
+   * Is page loading
    */
   public isLoading: boolean;
 

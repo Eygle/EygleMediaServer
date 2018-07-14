@@ -5,7 +5,7 @@ import {ITVDBEpisode} from '../modules/TVDB';
 import {EygleFile} from '../../commons/models/File';
 import {Episode} from '../../commons/models/Episode';
 import {TVShow} from '../../commons/models/TVShow';
-import {episodeSchema} from '../schemas/Episode.schema';
+import {episodeSchema} from '../schemas/episode.schema';
 import ADBModel from 'eygle-core/server/db/ADBModel';
 
 export default class EpisodeDB extends ADBModel {

@@ -24,7 +24,13 @@ export const locale = {
 
   // MOVIES
   'MOVIES': {
-    'TITLE': 'Films'
+    'TITLE': 'Films',
+    'LABELS': {
+      'DIRECTORS': 'Dirigé par',
+      'WRITTERS': 'Ecrit par',
+      'STUDIO': 'Studio',
+      'MONEY': 'Gains'
+    }
   },
 
   // TV SHOWS

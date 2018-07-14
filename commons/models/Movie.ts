@@ -6,7 +6,7 @@ export class Movie extends AModel {
   originalTitle: string;
   date: Date;
   countries: [{ type: string }];
-  genres: [{ type: string }];
+  genres: { type: string }[];
   overview: string;
   budget: number;
   revenue: number;
@@ -14,35 +14,43 @@ export class Movie extends AModel {
   runtime: number;
 
   poster: string;
+  posterThumb: string;
   backdrop: string;
 
-  cast: [{
-    tvdbId: number,
-    name: string,
-    character: string,
-    image: string
-  }];
-  crew: [{
-    tvdbId: number,
-    name: string,
-    job: string,
-    image: string,
-  }];
+  cast: Cast[];
+  crew: Crew[];
 
-  videos: [{
-    id: string,
-    lang: string,
-    key: string,
-    name: string,
-    site: string,
-    size: number,
-    videoType: string
-  }];
+  videos: Video[];
 
   tmdbId: number;
   imdbId: string;
 
   files: Array<EygleFile | string>;
+}
+
+export class Cast {
+  tvdbId: number;
+  name: string;
+  character: string;
+  image: string;
+}
+
+export class Crew {
+  tvdbId: number;
+  name: string;
+  job: string;
+  image: string;
+}
+
+export class Video {
+  id: string;
+  lang: string;
+  key: string;
+  name: string;
+  site: string;
+  size: number;
+  videoType: string;
+
 }
 
 export class AutocompleteMovie {

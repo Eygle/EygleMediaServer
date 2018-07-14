@@ -6,6 +6,8 @@ import {CronComponent} from './content/admin-panel/cron/cron.component';
 import {UsersComponent} from './content/admin-panel/users/users.component';
 import {EPermission} from 'eygle-core/commons/core.enums';
 import {MoviesComponent} from './content/medias/movies/movies.component';
+import {TvShowsComponent} from "./content/medias/tv-shows/tv-shows.component";
+import {MovieComponent} from "./content/medias/movies/movie/movie.component";
 
 export const routes: [IRouteItem] = [
   {
@@ -26,14 +28,19 @@ export const routes: [IRouteItem] = [
     access: EPermission.SeeMovies,
     category: 'MEDIAS'
   },
-  // {
-  //   path: 'tv-shows',
-  //   component: HomeComponent,
-  //   translate: 'TV_SHOWS.TITLE',
-  //   icon: 'tv',
-  //   access: EPermission.SeeTVShows,
-  //   category: 'MEDIAS'
-  // },
+  {
+    path: 'movies/:id',
+    component: MovieComponent,
+    access: EPermission.SeeMovies
+  },
+  {
+    path: 'tv-shows',
+    component: TvShowsComponent,
+    translate: 'TV_SHOWS.TITLE',
+    icon: 'tv',
+    access: EPermission.SeeTVShows,
+    category: 'MEDIAS'
+  },
   {
     path: 'files',
     component: FilesComponent,

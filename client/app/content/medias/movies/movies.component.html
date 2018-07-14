@@ -1,19 +1,35 @@
-<emsKeyEvents (onKeyDown)="keyEvents.setKeyDown($event)" (onKeyUp)="keyEvents.setKeyUp($event)"></emsKeyEvents>
-
 <div fxLayout="column" class="unselectable">
   <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
     <div class="actions" fxLayout="row" fxLayoutAlign="start center">
-      <mat-icon (click)="refresh()">refresh</mat-icon>
+      <span class="boxed" *ngIf="!isLoading && movies">{{movies.length}}</span>
     </div>
   </div>
 
-  <div class="content" fxFlex="flex" fxLayout="row" fxLayoutAlign="center stretch">
+  <div class="content" fxFlex="flex" fxLayout="row" fxLayoutAlign="center stretch" [perfectScrollbar]="config">
     <div class="loading" *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
       <mat-spinner></mat-spinner>
     </div>
 
-    <div class="movie" *ngFor="let movie of movies">
-
+    <div fxLayout="row wrap" fxLayoutGap="20px" *ngIf="!isLoading">
+      <div class="movie" *ngFor="let movie of movies">
+        <a routerLink="/movies/{{movie._id}}">
+          <div class="image-crop">
+            <img src="{{movie.posterThumb}}" *ngIf="movie.posterThumb" alt="{{movie.title}}"/>
+            <div class="placeholder" *ngIf="!movie.posterThumb" fxLayout="row" fxLayoutAlign="center center">
+              <mat-icon>movie</mat-icon>
+            </div>
+            <div class="image-hover">
+              <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon>search</mat-icon>
+              </div>
+            </div>
+          </div>
+          <div class="info">
+            <div class="title">{{movie.title}}</div>
+            <div class="subtitle">{{movie.date.getFullYear()}}</div>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </div>

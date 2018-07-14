@@ -28,7 +28,7 @@
     </div>
 
     <mat-table [dataSource]="dataSource" matSort matSortActive="mtime" matSortDirection="desc"
-               [perfectScrollbar]="config">
+               [perfectScrollbar]="config" *ngIf="!isLoading">
       <!-- Icon Column -->
       <ng-container matColumnDef="icon">
         <mat-header-cell *matHeaderCellDef fxFlex="30px"></mat-header-cell>

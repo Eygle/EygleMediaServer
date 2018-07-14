@@ -1,0 +1,72 @@
+<div fxLayout="column" class="unselectable">
+  <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+      <div class="title" *ngIf="!isLoading && movie">{{movie.title}}</div>
+    </div>
+  </div>
+
+  <div class="content" fxFlex="flex" fxLayout="row" fxLayoutAlign="center stretch" [perfectScrollbar]="config">
+    <div class="loading" *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <div fxLayout="row" *ngIf="!isLoading && movie">
+      <div class="poster-container">
+        <img src="{{movie.poster}}" *ngIf="movie.poster" alt="{{movie.title}}"/>
+        <div class="placeholder" *ngIf="!movie.poster" fxLayout="row" fxLayoutAlign="center center">
+          <mat-icon>movie</mat-icon>
+        </div>
+      </div>
+      <div fxFlex class="info-container">
+        <div class="main">
+          <div fxLayout="row" fxLayoutAlign="start center"><h2>{{movie.title}}</h2>
+            <div class="original-title" *ngIf="movie.originalTitle && movie.originalTitle !== movie.title">
+              ({{movie.originalTitle}})
+            </div>
+          </div>
+          <div class="subtitle">{{movie.date.getFullYear()}}</div>
+          <div class="info" fxLayout="row" fxLayoutAlign="space-between center">
+            <div>
+              <span>{{formatDuration()}}</span>
+              <span class="separator">·</span>
+              <img *ngFor="let lang of movie.countries" src="/assets/images/flags/{{lang.toLowerCase()}}.png"
+                   alt="{{lang}}"/>
+            </div>
+            <div>{{movie.genres.join(', ')}}</div>
+          </div>
+        </div>
+        <div class="block">
+          <div class="line" fxLayout="row" *ngIf="directors.length">
+            <div class="label" translate="MOVIES.LABELS.DIRECTORS"></div>
+            <div><a *ngFor="let crew of directors">{{crew.name}}</a></div>
+          </div>
+          <div class="line" fxLayout="row" *ngIf="writers.length">
+            <div class="label" translate="MOVIES.LABELS.WRITTERS"></div>
+            <div><a *ngFor="let crew of writers">{{crew.name}}</a></div>
+          </div>
+          <div class="line" fxLayout="row" *ngIf="movie.revenue && movie.budget">
+            <div class="label" translate="MOVIES.LABELS.MONEY"></div>
+            <div>{{(movie.revenue - movie.budget) | currency:'USD':'symbol':'1.0-0'}}</div>
+          </div>
+        </div>
+
+        <!--<div class="block">-->
+        <!--<div class="line" fxLayout="row" *ngIf="directors.length">-->
+        <!--<div class="label" translate="MOVIES.LABELS.DIRECTORS"></div>-->
+        <!--<div><a *ngFor="let crew of directors">{{crew.name}}</a></div>-->
+        <!--</div>-->
+        <!--<div class="line" fxLayout="row" *ngIf="writers.length">-->
+        <!--<div class="label" translate="MOVIES.LABELS.WRITTERS"></div>-->
+        <!--<div><a *ngFor="let crew of writers">{{crew.name}}</a></div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <div class="block">
+          <div class="line">
+            {{movie.overview}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

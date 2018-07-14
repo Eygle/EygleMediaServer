@@ -1,6 +1,6 @@
 import * as q from 'q';
 import {AModel} from 'eygle-core/commons/models/AModel';
-import {fileSchema} from '../schemas/File.schema';
+import {fileSchema} from '../schemas/file.schema';
 import ADBModel from 'eygle-core/server/db/ADBModel';
 
 export default class FileDB extends ADBModel {

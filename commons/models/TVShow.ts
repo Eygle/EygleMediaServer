@@ -9,6 +9,7 @@ export class TVShow extends AModel {
 
   banner: string;
   poster: string;
+  posterThumb: string;
   genres: [{ type: string }];
   overview: string;
 

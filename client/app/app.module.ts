@@ -41,6 +41,9 @@ import {UsersComponent} from './content/admin-panel/users/users.component';
 import {UsersService} from './services/users.service';
 import {MoviesComponent} from './content/medias/movies/movies.component';
 import {MoviesService} from './content/medias/movies/movies.service';
+import {TvShowsComponent} from './content/medias/tv-shows/tv-shows.component';
+import {TvShowsService} from "./content/medias/tv-shows/tv-shows.service";
+import {MovieComponent} from './content/medias/movies/movie/movie.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -59,7 +62,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     RegisterComponent,
     HomeComponent,
     CronComponent,
-    UsersComponent
+    UsersComponent,
+    TvShowsComponent,
+    MovieComponent
   ],
   imports: [
     BrowserModule,
@@ -86,6 +91,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CronService,
     FilesService,
     MoviesService,
+    TvShowsService,
     UsersService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,

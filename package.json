@@ -31,6 +31,7 @@
     "eygle-core": "git+https://github.com/Eygle/EygleCore.git#v1",
     "fs": "0.0.1-security",
     "hammerjs": "^2.0.8",
+    "moment": "^2.22.2",
     "moviedb": "^0.2.10",
     "ngx-cookie-service": "^1.0.10",
     "ngx-perfect-scrollbar": "^5.3.1",

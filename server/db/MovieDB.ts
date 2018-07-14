@@ -3,7 +3,7 @@ import * as _ from 'underscore';
 import TMDB, {ITMDBMovie} from '../modules/TMDB';
 import {EygleFile} from '../../commons/models/File';
 import ADBModel from 'eygle-core/server/db/ADBModel';
-import {movieSchema} from '../schemas/Movie.schema';
+import {movieSchema} from '../schemas/movie.schema';
 
 export default class MovieDB extends ADBModel {
   /**
@@ -81,7 +81,7 @@ export default class MovieDB extends ADBModel {
         };
       }),
       crew: _.map(_.filter(m.credits.crew, (v) => {
-        return v.department === 'Directing' || v.department === 'Production';
+        return v.department === 'Directing' || v.department === 'Writing';
       }), (v) => {
         return {
           tmdbId: v.id,

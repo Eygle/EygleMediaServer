@@ -4,7 +4,6 @@ import {TVShow} from './TVShow';
 
 export class Episode extends AModel {
   title: string;
-
   tvdbId: number;
   tvdbSeasonId: number;
 

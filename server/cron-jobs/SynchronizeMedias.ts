@@ -113,6 +113,16 @@ class SynchronizeMedias extends AJob {
       .finally(() => this.end());
   }
 
+  public clean() {
+    this._filesToAdd = [];
+    this._movies = [];
+    this._tvShows = [];
+    this._nbrMoviesAdded = 0;
+    this._nbrTVShowsAdded = 0;
+    this._nbrFilesAdded = 0;
+    this._nbrFilesDeleted = 0;
+  }
+
   /**
    * Get full list of local files
    * Compare to previous list
@@ -459,7 +469,6 @@ class SynchronizeMedias extends AJob {
     const defer = q.defer();
 
     TMDB.get(tmdbId, file.model).then((res: ITMDBMovie) => {
-      console.log('TMDB info res:', res);
       MovieDB.save(res)
         .then((movie: Movie) => {
           this.logger.log((movie.files.length === 1 ? 'MovieDB added' : 'Linked to existed movie') + ` ${movie.title}`);

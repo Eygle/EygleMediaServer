@@ -2,7 +2,7 @@ import * as q from 'q';
 import TMDB, {ITMDBMovie} from '../modules/TMDB';
 import {EygleFile} from '../../commons/models/File';
 import ADBModel from 'eygle-core/server/db/ADBModel';
-import {movieSchema} from '../schemas/Movie.schema';
+import {movieSchema} from '../schemas/movie.schema';
 
 export default class ProposalDB extends ADBModel {
 

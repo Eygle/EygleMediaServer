@@ -1,0 +1,60 @@
+@import "../../../../../common";
+
+$padding: 20px;
+
+.poster-container {
+  width: 20%;
+
+  > img {
+    padding: $padding;
+    max-width: 100%;
+  }
+}
+
+.info-container {
+  padding: $padding;
+
+  .main {
+    padding-bottom: 30px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid $bg-darken-full;
+
+    h2 {
+      margin: 20px 0;
+    }
+
+    .original-title {
+      color: $color-lighter;
+      margin-left: 15px;
+    }
+
+    & > .info {
+      margin-top: 10px;
+      color: $color-lighter;
+
+      .separator {
+        padding: 0 10px;
+      }
+
+      img:not(:first-of-type) {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  .block {
+    margin-bottom: 30px;
+    max-width: 750px;
+
+    .line {
+      margin-bottom: 10px;
+      line-height: 1.4em;
+
+      .label {
+        color: $color-lighter;
+        width: 120px;
+        text-transform: uppercase;
+      }
+    }
+  }
+}

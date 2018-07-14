@@ -45,7 +45,9 @@ export class AuthService {
       this._permApi.get()
         .subscribe((permissions: [any]) => {
           this._allPermissions = permissions;
-          this.cookie.set('ey-permissions', JSON.stringify(permissions));
+          if (permissions) {
+            this.cookie.set('ey-permissions', JSON.stringify(permissions));
+          }
           // The 'permissions' route return user as cookie in DEV mode
           this.user = this._getObjectFromCookie('ey-user', {});
         });
