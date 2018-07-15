@@ -28,7 +28,7 @@ class Resource extends ARoute {
    * @param next
    */
   public get(id: string, next: RestyCallback): void {
-    MovieDB.get(id, {populate: 'files'})
+    MovieDB.get(id, {populate: {path: 'files', populate: {path: 'parent', select: 'filename'}}})
       .then(next)
       .catch(next);
   }

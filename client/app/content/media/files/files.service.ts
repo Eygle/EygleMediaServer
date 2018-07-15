@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
 import {EygleFile} from '../../../../../commons/models/File';
+import {ApiRoute} from "../../../utils/api-route";
 
 // const httpOptions = {
 //   headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'}),
@@ -10,19 +11,20 @@ import {EygleFile} from '../../../../../commons/models/File';
 
 @Injectable()
 export class FilesService {
+
   /**
-   * Api url
+   * File api
    */
-  private _api: string;
+  private _api: ApiRoute;
 
   /**
    * File downloading url
    */
-  private _dlUrl: string;
+  private _dlApi: ApiRoute;
 
-  constructor(private http: HttpClient) {
-    this._api = '/api/files';
-    this._dlUrl = '/dl';
+  constructor(http: HttpClient) {
+    this._api = new ApiRoute(http, '/api/files/:parent');
+    this._dlApi = new ApiRoute(http, '/dl/:id');
   }
 
   /**
@@ -30,9 +32,7 @@ export class FilesService {
    * @returns {Observable<[EygleFile]>}
    */
   getChildren(parent: string = null): Observable<EygleFile[]> {
-    const url = parent ? `${this._api}/${parent}` : this._api;
-
-    return this.http.get<[EygleFile]>(url);
+    return this._api.get<EygleFile[]>({parent: parent});
   }
 
   /**
@@ -40,7 +40,7 @@ export class FilesService {
    * @param {string} id
    */
   download(id: string) {
-    this._dlFileProgramatically(`${this._dlUrl}/${id}`);
+    this._dlFileProgramatically(this._dlApi.formatUrl({id: id}));
   }
 
   /**
@@ -48,7 +48,7 @@ export class FilesService {
    * @param {[EygleFile]} files
    */
   downloadMultiple(files: EygleFile[] | string[]) {
-    this.http.post(`${this._dlUrl}/`, {files: files})
+    this._dlApi.post(null, {files: files})
       .subscribe((data: any) => {
         this._dlFileProgramatically(data.url);
       });

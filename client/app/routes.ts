@@ -1,13 +1,13 @@
-import {FilesComponent} from './content/medias/files/files.component';
+import {FilesComponent} from './content/media/files/files.component';
 import {LoginComponent} from './content/auth/login/login.component';
 import {HomeComponent} from './content/home/home.component';
 import {RegisterComponent} from './content/auth/register/register.component';
 import {CronComponent} from './content/admin-panel/cron/cron.component';
 import {UsersComponent} from './content/admin-panel/users/users.component';
 import {EPermission} from 'eygle-core/commons/core.enums';
-import {MoviesComponent} from './content/medias/movies/movies.component';
-import {TvShowsComponent} from "./content/medias/tv-shows/tv-shows.component";
-import {MovieComponent} from "./content/medias/movies/movie/movie.component";
+import {MoviesComponent} from './content/media/movies/movies.component';
+import {TvShowsComponent} from "./content/media/tv-shows/tv-shows.component";
+import {MovieComponent} from "./content/media/movies/movie/movie.component";
 
 export const routes: [IRouteItem] = [
   {

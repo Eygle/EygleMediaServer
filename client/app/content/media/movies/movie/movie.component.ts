@@ -43,7 +43,7 @@ export class MovieComponent implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    this.moviesService.getById(id).subscribe((res: Movie) => {
+    this.moviesService.getById<Movie>(id).subscribe((res: Movie) => {
       this.isLoading = false;
       this.movie = res;
       this.directors = _.filter(res.crew, c => {

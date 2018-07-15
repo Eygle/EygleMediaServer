@@ -37,7 +37,7 @@ export class AuthService {
   constructor(private http: HttpClient, private cookie: CookieService, private router: Router) {
     this.user = this._getObjectFromCookie('ey-user', {});
     this._allPermissions = this._getObjectFromCookie('ey-permissions', []);
-    this._permApi = new ApiRoute(this.http, '/permissions');
+    this._permApi = new ApiRoute(this.http, '/api/permissions');
 
     if (!environment.production) {
       // If not in prod express is not used to serve the client and thus

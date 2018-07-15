@@ -24,7 +24,7 @@ export class TvShowsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.showService.getAll()
+    this.showService.getAll<TVShow>()
       .subscribe((res: TVShow[]) => {
         this.isLoading = false;
         this.shows = res;

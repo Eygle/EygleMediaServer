@@ -4,19 +4,35 @@
     <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
     </div>
     <div class="content" fxFlex="flex" fxLayout="column" [perfectScrollbar]="config">
-      <h2 translate="HOME.LAST_MOVIES"></h2>
-      <div class="loading" *ngIf="areLoading.movies" fxLayout="row" fxLayoutAlign="center center">
-        <mat-spinner></mat-spinner>
-      </div>
-      <ems-media-list [media]="movies" route="movies" placeholderIcon="movie"
-                      *ngIf="!areLoading.movies"></ems-media-list>
+      <div>
+        <h2 translate="HOME.LAST_MOVIES"></h2>
+        <div class="loading" *ngIf="areLoading.movies" fxLayout="row" fxLayoutAlign="center center">
+          <mat-spinner></mat-spinner>
+        </div>
 
-      <h2 translate="HOME.LAST_TV_SHOWS">TV Shows</h2>
-      <div class="loading" *ngIf="areLoading.tvShows" fxLayout="row" fxLayoutAlign="center center">
-        <mat-spinner></mat-spinner>
+        <ngu-carousel [inputs]="carousels" *ngIf="!areLoading.movies">
+          <ngu-item NguCarouselItem *ngFor="let movie of movies">
+            <ems-media [media]="movie" route="movies" placeholderIcon="movie"></ems-media>
+          </ngu-item>
+          <mat-icon NguCarouselPrev class='leftRs'>chevron_left</mat-icon>
+          <mat-icon NguCarouselNext class='rightRs'>chevron_right</mat-icon>
+        </ngu-carousel>
       </div>
-      <ems-media-list [media]="tvShows" route="tv-shows" placeholderIcon="tv"
-                      *ngIf="!areLoading.tvShows"></ems-media-list>
+
+      <div>
+        <h2 translate="HOME.LAST_TV_SHOWS">TV Shows</h2>
+        <div class="loading" *ngIf="areLoading.tvShows" fxLayout="row" fxLayoutAlign="center center">
+          <mat-spinner></mat-spinner>
+        </div>
+
+        <ngu-carousel [inputs]="carousels" *ngIf="!areLoading.tvShows">
+          <ngu-item NguCarouselItem *ngFor="let tvShow of tvShows">
+            <ems-media [media]="tvShow" route="tv-shows" placeholderIcon="tv"></ems-media>
+          </ngu-item>
+          <mat-icon NguCarouselPrev class='leftRs'>chevron_left</mat-icon>
+          <mat-icon NguCarouselNext class='rightRs'>chevron_right</mat-icon>
+        </ngu-carousel>
+      </div>
     </div>
   </div>
 </ng-container>

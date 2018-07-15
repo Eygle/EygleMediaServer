@@ -26,8 +26,8 @@ export class MoviesComponent implements OnInit {
   ngOnInit() {
     this.moviesService.getAll()
       .subscribe((res: Movie[]) => {
-        this.isLoading = false;
         this.movies = res;
+        this.isLoading = false;
       });
   }
 

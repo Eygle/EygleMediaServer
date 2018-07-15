@@ -126,15 +126,15 @@ class SynchronizeMedias extends AJob {
   /**
    * Get full list of local files
    * Compare to previous list
-   * Save new medias
-   * Remove deleted medias
+   * Save new media
+   * Remove deleted media
    */
   private _synchronize() {
     const defer = q.defer();
     const previous = EEnv.Dev === ServerConfig.env ? [] : this._load();
     const files: Array<LocalFile> = this._listDirectory(EMSUtils.mediasRoot);
 
-    this._dump(files); // dump as soon as possible to avoid having two time the same task running on the same medias
+    this._dump(files); // dump as soon as possible to avoid having two time the same task running on the same media
     for (const f of files) {
       const idx = _.findIndex(previous, (o: LocalFile) => {
         return o.filename === f.filename && o.size === f.size && o.path === f.path;
@@ -168,7 +168,7 @@ class SynchronizeMedias extends AJob {
   }
 
   /**
-   * Identify medias and create IFiles
+   * Identify media and create IFiles
    * @param {Array<LocalFile>} list
    * @param {EygleFile} parent
    * @return {any}
@@ -201,7 +201,7 @@ class SynchronizeMedias extends AJob {
   }
 
   /**
-   * Add all new files to database and extract medias if possible
+   * Add all new files to database and extract media if possible
    * Remove all files to delete
    * @return {Q.Promise<any>}
    * @private

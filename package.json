@@ -25,6 +25,7 @@
     "@angular/platform-browser": "^5.2.11",
     "@angular/platform-browser-dynamic": "^5.2.11",
     "@angular/router": "^5.2.11",
+    "@ngu/carousel": "^1.4.8",
     "@ngx-translate/core": "^9.1.1",
     "ajv": "^6.5.2",
     "async": "^2.6.1",

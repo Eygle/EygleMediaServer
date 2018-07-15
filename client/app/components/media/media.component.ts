@@ -2,11 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Media} from "../../../../commons/models/Media";
 
 @Component({
-  selector: 'ems-media-list',
-  templateUrl: './media-list.component.html',
-  styleUrls: ['./media-list.component.scss']
+  selector: 'ems-media',
+  templateUrl: './media.component.html',
+  styleUrls: ['./media.component.scss']
 })
-export class MediaListComponent implements OnInit {
+export class MediaComponent implements OnInit {
 
   @Input() media: Media;
 

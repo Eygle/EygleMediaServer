@@ -1,7 +1,7 @@
 <div fxLayout="column" class="unselectable">
   <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
     <div class="actions" fxLayout="row" fxLayoutAlign="start center">
-      <span class="boxed" *ngIf="!isLoading && shows">{{shows.length}}</span>
+      <span class="boxed" *ngIf="!isLoading && movies">{{movies.length}}</span>
     </div>
   </div>
 
@@ -10,6 +10,8 @@
       <mat-spinner></mat-spinner>
     </div>
 
-    <ems-media-list [media]="shows" route="tv-shows" placeholderIcon="tv" *ngIf="!isLoading"></ems-media-list>
+    <div fxLayout="row wrap" fxLayoutGap="20px" *ngIf="!isLoading">
+      <ems-media *ngFor="let movie of movies" [media]="movie" route="movies" placeholderIcon="movie"></ems-media>
+    </div>
   </div>
 </div>
