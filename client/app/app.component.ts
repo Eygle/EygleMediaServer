@@ -49,6 +49,5 @@ export class AppComponent {
       });
 
     this.routes = routes;
-    console.log(this.routes);
   }
 }
