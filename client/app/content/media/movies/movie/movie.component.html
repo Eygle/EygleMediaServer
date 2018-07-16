@@ -37,17 +37,17 @@
         </div>
 
         <div class="block">
-          <div class="line" fxLayout="row" *ngIf="movie.files">
+          <div class="line" fxLayout="row" *ngIf="movie.files.length">
             <div class="label" translate="MOVIES.LABELS.FILES"></div>
             <div>
               <div *ngFor="let file of movie.files"><a [href]="'/dl/' + file._id">{{file.filename}}</a></div>
             </div>
           </div>
-          <div class="line" fxLayout="row" *ngIf="movie.files">
+          <div class="line" fxLayout="row" *ngIf="movie.files.length">
             <div class="label" translate="MOVIES.LABELS.SIZE"></div>
             <div>{{filesSize | formatSize}}</div>
           </div>
-          <div class="line" fxLayout="row" *ngIf="movie.files && movie.files[0].parent">
+          <div class="line" fxLayout="row" *ngIf="movie.files.length && movie.files[0].parent">
             <div class="label" translate="MOVIES.LABELS.DIRECTORY"></div>
             <div><a routerLink="/files/{{movie.files[0].parent._id}}">{{movie.files[0].parent.filename}}</a></div>
           </div>
