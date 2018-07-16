@@ -1,11 +1,22 @@
 import {Injectable} from '@angular/core';
-import {AuthService} from './auth.service';
 import {EPermission} from 'eygle-core/commons/core.enums';
+import {Observable} from 'rxjs/Observable';
+import {HttpClient} from '@angular/common/http';
+import {AuthService} from 'eygle-core/client/services/auth.service';
+import {ApiService} from 'eygle-core/client/services/api.service';
+import {ApiRoute} from 'eygle-core/client/utils/api-route';
 
 @Injectable()
-export class UsersService {
+export class UsersService extends ApiService {
 
-  constructor(private auth: AuthService) {
+  /**
+   * Admin api
+   */
+  private _adminApi: ApiRoute;
+
+  constructor(private auth: AuthService, http: HttpClient) {
+    super('/api/users/:id', http);
+    this._adminApi = new ApiRoute(http, '/api/admin/users/:id');
   }
 
   /**
@@ -14,9 +25,9 @@ export class UsersService {
    */
   getAllAsAdmin() {
     if (!this.auth.authorize(EPermission.SeeUsers)) {
-      return null;
+      return new Observable();
     }
 
-
+    return this._adminApi.get();
   }
 }

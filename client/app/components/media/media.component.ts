@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Media} from "../../../../commons/models/Media";
+import {Media} from '../../../../commons/models/Media';
 
 @Component({
   selector: 'ems-media',

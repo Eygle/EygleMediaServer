@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
 import {EygleFile} from '../../../../../commons/models/File';
-import {ApiRoute} from "../../../utils/api-route";
+import {ApiRoute} from 'eygle-core/client/utils/api-route';
 
 // const httpOptions = {
 //   headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'}),

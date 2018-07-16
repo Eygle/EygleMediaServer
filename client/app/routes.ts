@@ -1,15 +1,14 @@
 import {FilesComponent} from './content/media/files/files.component';
-import {LoginComponent} from './content/auth/login/login.component';
 import {HomeComponent} from './content/home/home.component';
-import {RegisterComponent} from './content/auth/register/register.component';
 import {CronComponent} from './content/admin-panel/cron/cron.component';
 import {UsersComponent} from './content/admin-panel/users/users.component';
 import {EPermission} from 'eygle-core/commons/core.enums';
 import {MoviesComponent} from './content/media/movies/movies.component';
-import {TvShowsComponent} from "./content/media/tv-shows/tv-shows.component";
-import {MovieComponent} from "./content/media/movies/movie/movie.component";
+import {TvShowsComponent} from './content/media/tv-shows/tv-shows.component';
+import {MovieComponent} from './content/media/movies/movie/movie.component';
+import {eygleCoreRoutes, IRouteItem} from 'eygle-core/client/core-routes';
 
-export const routes: [IRouteItem] = [
+let res: IRouteItem[] = [
   {
     path: '',
     component: HomeComponent,
@@ -50,24 +49,6 @@ export const routes: [IRouteItem] = [
     category: 'MEDIAS'
   },
 
-  // Profile
-  // {
-  //   path: 'account',
-  //   component: HomeComponent,
-  //   translate: 'ACCOUNT.TITLE',
-  //   icon: 'account_circle',
-  //   access: EPermission.SeeAccount,
-  //   category: 'PROFILE'
-  // },
-  // {
-  //   path: 'settings',
-  //   component: HomeComponent,
-  //   translate: 'SETTINGS.TITLE',
-  //   icon: 'settings',
-  //   access: EPermission.SeeSettings,
-  //   category: 'PROFILE'
-  // },
-
   // Admin panel
   {
     path: 'admin/users',
@@ -84,21 +65,9 @@ export const routes: [IRouteItem] = [
     icon: 'schedule',
     access: EPermission.ManageCron,
     category: 'ADMIN_PANEL'
-  },
-
-  // Auth
-  {path: 'auth/login', component: LoginComponent},
-  {path: 'auth/register', component: RegisterComponent},
+  }
 ];
 
-export interface IRouteItem {
-  path: string;
-  component: any;
+res = res.concat(<any>eygleCoreRoutes);
 
-  translate?: string;
-  icon?: string;
-  category?: string;
-  access?: EPermission;
-  exactMatch?: boolean;
-  url?: string;
-}
+export const routes = res;

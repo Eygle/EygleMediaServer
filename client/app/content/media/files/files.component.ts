@@ -5,11 +5,11 @@ import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import * as _ from 'underscore';
 import {PerfectScrollbarDirective} from 'ngx-perfect-scrollbar';
 import {UrlsModalComponent} from './modals/urls-modal/urls-modal.component';
-import {AuthService} from '../../../services/auth.service';
 import {KeyEvents} from '../../../utils/key-events';
 import {EKeyCode} from '../../../typings/client.enums';
 import FileUtils from '../../../../../commons/FileUtils';
 import {EPermission} from 'eygle-core/commons/core.enums';
+import {AuthService} from 'eygle-core/client/services/auth.service';
 
 @Component({
   selector: 'ems-files',

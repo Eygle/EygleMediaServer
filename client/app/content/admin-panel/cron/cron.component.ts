@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CronService} from './cron.service';
 import {MatSort, MatTableDataSource} from '@angular/material';
-import {ConfigService} from '../../../services/config.service';
 import {CronJob} from 'eygle-core/commons/models/CronJob';
+import {ConfigService} from 'eygle-core/client/services/config.service';
 
 @Component({
   selector: 'ems-cron',

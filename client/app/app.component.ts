@@ -3,7 +3,9 @@ import {TranslateService} from '@ngx-translate/core';
 
 import {locale as en} from './i18n/en';
 import {locale as fr} from './i18n/fr';
-import {ConfigService} from './services/config.service';
+import {ConfigService} from 'eygle-core/client/services/config.service';
+import {IRouteItem} from 'eygle-core/client/core-routes';
+import {routes} from './routes';
 
 @Component({
   selector: 'ems-root',
@@ -20,6 +22,11 @@ export class AppComponent {
    * Do page include toolbar?
    */
   toolbar: boolean;
+
+  /**
+   * List of routes
+   */
+  routes: IRouteItem[];
 
   constructor(translate: TranslateService, config: ConfigService) {
     // Add languages
@@ -40,5 +47,8 @@ export class AppComponent {
         this.navbar = newSettings.layout.navbar;
         this.toolbar = newSettings.layout.toolbar;
       });
+
+    this.routes = routes;
+    console.log(this.routes);
   }
 }

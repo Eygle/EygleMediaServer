@@ -26,16 +26,11 @@ import {NguCarouselModule} from '@ngu/carousel';
 import {AppComponent} from './app.component';
 import {FilesComponent} from './content/media/files/files.component';
 import {AppRoutingModule} from './app-routing.module';
-import {SidenavComponent} from './content/sidenav/sidenav.component';
-import {LoginComponent} from './content/auth/login/login.component';
-import {ConfigService} from './services/config.service';
 import {CronService} from './content/admin-panel/cron/cron.service';
-import {AuthService} from './services/auth.service';
 import {FilesService} from './content/media/files/files.service';
 import {FormatSizePipe} from './pipes/format-size.pipe';
 import {UrlsModalComponent} from './content/media/files/modals/urls-modal/urls-modal.component';
 import {KeyEventsDirective} from './directives/key-events.directive';
-import {RegisterComponent} from './content/auth/register/register.component';
 import {HomeComponent} from './content/home/home.component';
 import {CronComponent} from './content/admin-panel/cron/cron.component';
 import {UsersComponent} from './content/admin-panel/users/users.component';
@@ -43,9 +38,12 @@ import {UsersService} from './services/users.service';
 import {MoviesComponent} from './content/media/movies/movies.component';
 import {MoviesService} from './content/media/movies/movies.service';
 import {TvShowsComponent} from './content/media/tv-shows/tv-shows.component';
-import {TvShowsService} from "./content/media/tv-shows/tv-shows.service";
+import {TvShowsService} from './content/media/tv-shows/tv-shows.service';
 import {MovieComponent} from './content/media/movies/movie/movie.component';
 import {MediaComponent} from './components/media/media.component';
+import {ConfigService} from 'eygle-core/client/services/config.service';
+import {EygleCoreModule} from 'eygle-core/client/core.module';
+import {AuthService} from 'eygle-core/client/services/auth.service';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -54,14 +52,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 @NgModule({
   declarations: [
     AppComponent,
-    SidenavComponent,
     FilesComponent,
     MoviesComponent,
-    LoginComponent,
     UrlsModalComponent,
     FormatSizePipe,
     KeyEventsDirective,
-    RegisterComponent,
     HomeComponent,
     CronComponent,
     UsersComponent,
@@ -71,6 +66,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   imports: [
     BrowserModule,
+    EygleCoreModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -89,8 +85,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   entryComponents: [UrlsModalComponent],
   providers: [
-    AuthService,
     ConfigService,
+    AuthService,
     CookieService,
     CronService,
     FilesService,

@@ -84,13 +84,21 @@ export const locale = {
       'USERNAME_EMAIL': 'Nom d\'utilisateur ou email',
       'PASSWORD': 'Mot de passe',
       'CONFIRM_PASSWORD': 'Confirmer le mot de passe',
+      'DESC': 'Qui est-tu ?',
       'EMAIL': 'Email'
     }
   },
 
   'ADMIN_PANEL': {
     'USERS': {
-      'TITLE': 'Utilisateurs'
+      'TITLE': 'Utilisateurs',
+      'TABLE': {
+        'EMAIL': 'Email',
+        'USERNAME': 'Pseudo',
+        'ROLES': 'Roles',
+        'DESC': 'Description',
+        'ACTIONS': 'Actions'
+      }
     },
     'CRON': {
       'TITLE': 'Cron manager',
