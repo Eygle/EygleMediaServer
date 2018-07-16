@@ -10,6 +10,7 @@ import {
   MatIconModule,
   MatInputModule,
   MatProgressSpinnerModule,
+  MatSelectModule,
   MatSidenavModule,
   MatSortModule,
   MatTableModule,
@@ -44,6 +45,7 @@ import {MediaComponent} from './components/media/media.component';
 import {ConfigService} from 'eygle-core/client/services/config.service';
 import {EygleCoreModule} from 'eygle-core/client/core.module';
 import {AuthService} from 'eygle-core/client/services/auth.service';
+import {UserComponent} from './content/admin-panel/users/user/user.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -62,7 +64,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     UsersComponent,
     TvShowsComponent,
     MovieComponent,
-    MediaComponent
+    MediaComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -77,7 +80,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NguCarouselModule,
 
     MatToolbarModule, MatSidenavModule,
-    MatButtonModule, MatCheckboxModule, MatInputModule, MatFormFieldModule,
+    MatButtonModule, MatCheckboxModule, MatInputModule, MatFormFieldModule, MatSelectModule,
     MatIconModule, MatTooltipModule,
     MatTableModule, MatSortModule,
     MatProgressSpinnerModule,

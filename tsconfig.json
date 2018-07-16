@@ -16,6 +16,9 @@
       "dom"
     ]
   },
+  "include": [
+    "commons/eygle-conf.ts"
+  ],
   "angularCompilerOptions": {
     "genDir": "release/",
     "strictMetadataEmit": true,

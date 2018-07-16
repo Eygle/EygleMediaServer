@@ -1,5 +1,5 @@
 <div class="media">
-  <a routerLink="/{{route}}/{{media._id}}">
+  <a routerLink="/{{route}}/details/{{media._id}}">
     <div class="image-crop">
       <img *ngIf="media.posterThumb" src="{{media.posterThumb}}" alt="{{media.title}}"/>
       <div class="placeholder" *ngIf="!media.posterThumb" fxLayout="row" fxLayoutAlign="center center">

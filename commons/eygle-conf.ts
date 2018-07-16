@@ -1,6 +1,5 @@
 import {ELoggerLvl} from 'eygle-core/commons/core.enums';
 
-
 const config: any = {
   'appName': 'Eygle Media Server',
 

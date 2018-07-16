@@ -6,33 +6,38 @@
   <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDirection="asc">
     <!-- Email Column -->
     <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef mat-sort-header translate="ADMIN_PANEL.USERS.TABLE.EMAIL"></mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'ADMIN_PANEL.USERS.TABLE.EMAIL' | translate}}
+      </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.email}}</mat-cell>
     </ng-container>
 
     <!-- Username Column -->
     <ng-container matColumnDef="userName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header translate="ADMIN_PANEL.USERS.TABLE.USERNAME"></mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'ADMIN_PANEL.USERS.TABLE.USERNAME' | translate}}
+      </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.userName}}</mat-cell>
     </ng-container>
 
     <!-- Roles Column -->
     <ng-container matColumnDef="roles">
-      <mat-header-cell *matHeaderCellDef mat-sort-header translate="ADMIN_PANEL.USERS.TABLE.ROLES"></mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'ADMIN_PANEL.USERS.TABLE.ROLES' | translate}}
+      </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.roles.join(', ')}}</mat-cell>
     </ng-container>
 
     <!-- Desc Column -->
     <ng-container matColumnDef="desc">
-      <mat-header-cell *matHeaderCellDef mat-sort-header translate="ADMIN_PANEL.USERS.TABLE.DESC"></mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'ADMIN_PANEL.USERS.TABLE.DESC' | translate}}
+      </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.desc}}</mat-cell>
     </ng-container>
 
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef translate="ADMIN_PANEL.USERS.TABLE.ACTIONS" fxFlex="60px"></mat-header-cell>
+      <mat-header-cell *matHeaderCellDef fxFlex="60px">{{'ADMIN_PANEL.USERS.TABLE.ACTIONS' | translate}}
+      </mat-header-cell>
       <mat-cell *matCellDef="let row" fxFlex="60px">
-        <mat-icon class="action" (click)="edit(row)">edit</mat-icon>
+        <mat-icon class="action" routerLink="/admin/users/{{row._id}}">edit</mat-icon>
         <mat-icon class="action" (click)="delete(row)">delete</mat-icon>
       </mat-cell>
     </ng-container>

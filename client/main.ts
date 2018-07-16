@@ -3,11 +3,13 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
 import {AppModule} from './app/app.module';
 import {environment} from './environments/environment';
-import {coreEnvironment} from 'eygle-core/client/core-environment';
+import ClientConfig from 'eygle-core/client/utils/ClientConfig';
 import 'hammerjs';
 
-// Must set core environment
-coreEnvironment.production = environment.production;
+declare var require: any
+
+// Must set client environment
+ClientConfig.init(require('../commons/eygle-conf'), environment.production);
 
 if (environment.production) {
   enableProdMode();
