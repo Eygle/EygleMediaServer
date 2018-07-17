@@ -44,7 +44,7 @@
             </div>
           </div>
           <div class="line" fxLayout="row" *ngIf="movie.files.length">
-            <div class="label" translate="MOVIES.LABELS.SIZE"></div>
+            <div class="label" translate="COMMON.SIZE"></div>
             <div>{{filesSize | formatSize}}</div>
           </div>
           <div class="line" fxLayout="row" *ngIf="movie.files.length && movie.files[0].parent">

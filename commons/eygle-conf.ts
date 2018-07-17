@@ -22,4 +22,8 @@ const config: any = {
   }
 };
 
-module.exports = config;
+if (typeof module !== 'undefined' && module.hasOwnProperty('exports')) {
+  module['exports'] = config;
+}
+
+export default config;

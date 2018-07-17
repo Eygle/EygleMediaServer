@@ -17,6 +17,7 @@
     ]
   },
   "include": [
+    "client",
     "commons/eygle-conf.ts"
   ],
   "angularCompilerOptions": {

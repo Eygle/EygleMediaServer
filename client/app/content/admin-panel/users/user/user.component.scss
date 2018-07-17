@@ -1,0 +1,10 @@
+@import "../../../../../common";
+
+form {
+  padding-top: 30px;
+
+  mat-form-field {
+    width: 50%;
+    min-width: 100px;
+  }
+}

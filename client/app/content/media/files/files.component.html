@@ -20,7 +20,7 @@
   <div class="content" fxFlex="flex">
     <mat-form-field class="search">
       <input matInput [(ngModel)]="filterText" (keyup)="applyFilter(filterText); $event.stopPropagation()"
-             (keydown)="$event.stopPropagation()" placeholder="{{'FILES.SEARCH' | translate}}">
+             (keydown)="$event.stopPropagation()" placeholder="{{'COMMON.SEARCH' | translate}}">
     </mat-form-field>
 
     <div class="loading" *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
@@ -39,7 +39,7 @@
 
       <!-- Name Column -->
       <ng-container matColumnDef="filename">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'FILES.TABLE.NAME' | translate}}</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'COMMON.NAME' | translate}}</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <span *ngIf="row.directory">{{row.filename}}</span>
           <a *ngIf="!row.directory" [href]="'/dl/' + row._id" target="_blank" onclick="event.stopPropagation()">{{row.filename}}</a>
@@ -48,7 +48,7 @@
 
       <!-- Size Column -->
       <ng-container matColumnDef="size">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="100px">{{'FILES.TABLE.SIZE' | translate}}
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="100px">{{'COMMON.SIZE' | translate}}
         </mat-header-cell>
         <mat-cell *matCellDef="let row" fxFlex="100px"> {{row.size | formatSize}}</mat-cell>
       </ng-container>

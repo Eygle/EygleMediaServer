@@ -39,8 +39,8 @@ export class AppComponent {
     translate.use(translate.getBrowserLang());
 
     // Set the translations
-    translate.setTranslation('en', en, true);
     translate.setTranslation('fr', fr, true);
+    translate.setTranslation('en', en, true);
 
     config.onSettingsChanged
       .subscribe((newSettings) => {

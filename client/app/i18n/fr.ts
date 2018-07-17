@@ -25,7 +25,6 @@ export const locale = {
     'TITLE': 'Films',
     'LABELS': {
       'FILES': 'Fichiers',
-      'SIZE': 'Taille',
       'DIRECTORY': 'Dossier',
       'DIRECTORS': 'Dirigé par',
       'WRITTERS': 'Ecrit par',
@@ -45,11 +44,7 @@ export const locale = {
     'TOOLBAR': {
       'ROOT': 'Téléchargements'
     },
-    'SEARCH': 'Rechercher',
     'TABLE': {
-      'NAME': 'Nom',
-      'SIZE': 'Taille',
-      'TYPE': 'Type',
       'LAST_MODIFICATION': 'Modifié',
     },
     'DIALOG': {
@@ -57,57 +52,16 @@ export const locale = {
     }
   },
 
-  // ACCOUNT
-  'ACCOUNT': {
-    'TITLE': 'Mon compte'
-  },
-
-  // SETTINGS
-  'SETTINGS': {
-    'TITLE': 'Paramètres'
-  },
-
-  // AUTH
-  'AUTH': {
-    'LOGIN': {
-      'TITLE': 'Connexion',
-      'ACTION': 'Se connecter',
-      'REGISTER_LINK': 'Pas de compte ? Inscris toi'
-    },
-    'REGISTER': {
-      'TITLE': 'Inscription',
-      'ACTION': 'S\'inscrire',
-      'LOGIN_LINK': 'Déjà inscris ? Connecte-toi'
-    },
-    'INPUT': {
-      'USERNAME': 'Nom d\'utilisateur',
-      'USERNAME_EMAIL': 'Nom d\'utilisateur ou email',
-      'PASSWORD': 'Mot de passe',
-      'CONFIRM_PASSWORD': 'Confirmer le mot de passe',
-      'DESC': 'Qui est-tu ?',
-      'EMAIL': 'Email'
-    }
-  },
-
   'ADMIN_PANEL': {
     'USERS': {
       'TITLE': 'Utilisateurs',
-      'TABLE': {
-        'EMAIL': 'Email',
-        'USERNAME': 'Pseudo',
-        'ROLES': 'Roles',
-        'DESC': 'Description',
-        'ACTIONS': 'Actions'
-      }
     },
     'CRON': {
       'TITLE': 'Cron manager',
       'TABLE': {
         'JOB': 'Nom',
-        'STATUS': 'Status',
         'LAST_RUN': 'Dernière exécution',
-        'SCHEDULE_RULE': 'Règle de réccurence',
-        'ACTIONS': 'Actions'
+        'SCHEDULE_RULE': 'Règle de réccurence'
       },
       'STATUS': {
         'RUNNING': 'En cours...',
@@ -117,3 +71,4 @@ export const locale = {
     },
   }
 };
+
