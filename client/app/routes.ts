@@ -7,7 +7,7 @@ import {MoviesComponent} from './content/media/movies/movies.component';
 import {TvShowsComponent} from './content/media/tv-shows/tv-shows.component';
 import {MovieComponent} from './content/media/movies/movie/movie.component';
 import {eygleCoreRoutes, IRouteItem} from 'eygle-core/client/core-routes';
-import {UserComponent} from "./content/admin-panel/users/user/user.component";
+import {UserComponent} from './content/admin-panel/users/user/user.component';
 
 let res: IRouteItem[] = [
   {

@@ -51,7 +51,6 @@
     "@angular/cli": "1.6.3",
     "@angular/compiler-cli": "^5.2.11",
     "@angular/language-service": "^5.2.11",
-    "@types/ajv": "^1.0.0",
     "@types/async": "^2.0.47",
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
