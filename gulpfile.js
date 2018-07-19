@@ -22,16 +22,11 @@ let nodemon = null;
  *  Default task launch the main optimization build task
  */
 gulp.task('server:build', [], function () {
-  const dConf = q.defer();
   const dMisc = q.defer();
   const dTpl = q.defer();
   const dFiles = q.defer();
 
   clean();
-
-  gulp.src(`${paths.root}/eygle-conf.json`)
-    .pipe(gulp.dest(`${paths.outRoot}`))
-    .on('end', () => dConf.resolve());
 
   gulp.src(`${paths.server}/templates/**/*`)
     .pipe(gulp.dest(`${paths.outServer}/templates`))
@@ -48,7 +43,6 @@ gulp.task('server:build', [], function () {
 
   return q.allSettled([
     transpiling(),
-    dConf.promise,
     dTpl.promise,
     dFiles.promise,
     dMisc.promise

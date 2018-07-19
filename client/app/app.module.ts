@@ -42,7 +42,6 @@ import {TvShowsComponent} from './content/media/tv-shows/tv-shows.component';
 import {TvShowsService} from './content/media/tv-shows/tv-shows.service';
 import {MovieComponent} from './content/media/movies/movie/movie.component';
 import {MediaComponent} from './components/media/media.component';
-import {ConfigService} from 'eygle-core/client/services/config.service';
 import {EygleCoreModule} from 'eygle-core/client/core.module';
 import {AuthService} from 'eygle-core/client/services/auth.service';
 import {UserComponent} from './content/admin-panel/users/user/user.component';
@@ -88,7 +87,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   entryComponents: [UrlsModalComponent],
   providers: [
-    ConfigService,
     AuthService,
     CookieService,
     CronService,
