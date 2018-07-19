@@ -6,8 +6,9 @@ import {EPermission} from 'eygle-core/commons/core.enums';
 import {MoviesComponent} from './content/media/movies/movies.component';
 import {TvShowsComponent} from './content/media/tv-shows/tv-shows.component';
 import {MovieComponent} from './content/media/movies/movie/movie.component';
-import {eygleCoreRoutes, IRouteItem} from 'eygle-core/client/core-routes';
 import {UserComponent} from './content/admin-panel/users/user/user.component';
+import {IRouteItem} from 'eygle-core/client/typings/route-item.interface';
+import {EygleCoreRoutingModule} from 'eygle-core/client/core-routing.module';
 
 let res: IRouteItem[] = [
   {
@@ -16,7 +17,8 @@ let res: IRouteItem[] = [
     translate: 'HOME.TITLE',
     icon: 'home',
     access: EPermission.SeeHome,
-    exactMatch: true
+    exactMatch: true,
+    order: 10
   },
 
   // Medias
@@ -26,7 +28,8 @@ let res: IRouteItem[] = [
     translate: 'MOVIES.TITLE',
     icon: 'movie',
     access: EPermission.SeeMovies,
-    category: 'MEDIAS'
+    category: 'MEDIAS',
+    order: 15
   },
   {
     path: 'movies/:id',
@@ -39,7 +42,8 @@ let res: IRouteItem[] = [
     translate: 'TV_SHOWS.TITLE',
     icon: 'tv',
     access: EPermission.SeeTVShows,
-    category: 'MEDIAS'
+    category: 'MEDIAS',
+    order: 20
   },
   {
     path: 'files',
@@ -47,7 +51,8 @@ let res: IRouteItem[] = [
     translate: 'FILES.TITLE',
     icon: 'perm_media',
     access: EPermission.SeeFiles,
-    category: 'MEDIAS'
+    category: 'MEDIAS',
+    order: 25
   },
 
   // Admin panel
@@ -57,7 +62,8 @@ let res: IRouteItem[] = [
     translate: 'ADMIN_PANEL.USERS.TITLE',
     icon: 'supervisor_account',
     access: EPermission.SeeUsers,
-    category: 'ADMIN_PANEL'
+    category: 'ADMIN_PANEL',
+    order: 200
   },
   {
     path: 'admin/users/:id',
@@ -70,10 +76,11 @@ let res: IRouteItem[] = [
     translate: 'ADMIN_PANEL.CRON.TITLE',
     icon: 'schedule',
     access: EPermission.ManageCron,
-    category: 'ADMIN_PANEL'
+    category: 'ADMIN_PANEL',
+    order: 210
   }
 ];
 
-res = res.concat(<any>eygleCoreRoutes);
+res = EygleCoreRoutingModule.prepareRoutes(res);
 
 export const routes = res;

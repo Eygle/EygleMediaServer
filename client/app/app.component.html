@@ -1,6 +1,6 @@
 <mat-sidenav-container class="example-container" *ngIf="navbar">
   <mat-sidenav mode="side" opened="true">
-    <core-sidenav [routes]="routes"></core-sidenav>
+    <core-navigation [routes]="routes"></core-navigation>
   </mat-sidenav>
   <mat-sidenav-content [ngClass]="{'with-toolbar': toolbar}">
     <router-outlet></router-outlet>

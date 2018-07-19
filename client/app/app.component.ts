@@ -2,9 +2,9 @@ import {Component} from '@angular/core';
 
 import {locale as fr} from './i18n/fr';
 import {ConfigService} from 'eygle-core/client/services/config.service';
-import {IRouteItem} from 'eygle-core/client/core-routes';
 import {routes} from './routes';
 import {LangService} from 'eygle-core/client/services/lang.service';
+import {IRouteItem} from 'eygle-core/client/typings/route-item.interface';
 
 @Component({
   selector: 'ems-root',

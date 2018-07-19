@@ -1,3 +1,3 @@
-export const environment = {
-  production: true
-};
+import {EEnv} from 'eygle-core/commons/core.enums';
+
+module['exports'] = EEnv.Prod;
