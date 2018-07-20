@@ -68,21 +68,41 @@
           </div>
         </div>
 
-        <!--<div class="block">-->
-        <!--<div class="line" fxLayout="row" *ngIf="directors.length">-->
-        <!--<div class="label" translate="MOVIES.LABELS.DIRECTORS"></div>-->
-        <!--<div><a *ngFor="let crew of directors">{{crew.name}}</a></div>-->
-        <!--</div>-->
-        <!--<div class="line" fxLayout="row" *ngIf="writers.length">-->
-        <!--<div class="label" translate="MOVIES.LABELS.WRITTERS"></div>-->
-        <!--<div><a *ngFor="let crew of writers">{{crew.name}}</a></div>-->
-        <!--</div>-->
-        <!--</div>-->
-
         <div class="block">
           <div class="line">
             {{movie.overview}}
           </div>
+        </div>
+
+        <div class="actors-list">
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <h2 translate="HOME.LAST_MOVIES"></h2>
+            <ems-slick-paginator class="sliders-actions" [slick]="slick1"></ems-slick-paginator>
+          </div>
+
+          <ngx-slick class="no-arrows" [config]="slickConf" #slick1>
+            <div ngxSlickItem *ngFor="let actor of movie.cast" class="slide">
+              <div>
+                <div class="people">
+                  <div class="image-crop">
+                    <!--<img *ngIf="actor.image" src="{{actor.image}}" alt="{{actor.image}}"/>-->
+                    <div class="placeholder" fxLayout="row" fxLayoutAlign="center center">
+                      <mat-icon>people</mat-icon>
+                    </div>
+                    <div class="image-hover">
+                      <div fxLayout="row" fxLayoutAlign="center center">
+                        <mat-icon>search</mat-icon>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="info">
+                    <div class="title">{{actor.name}}</div>
+                    <div class="subtitle" *ngIf="actor.character">{{actor.character}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ngx-slick>
         </div>
       </div>
     </div>

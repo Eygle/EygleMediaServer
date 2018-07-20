@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {MoviesService} from "../movies.service";
-import {Crew, Movie} from "../../../../../../commons/models/Movie";
-import {ActivatedRoute} from "@angular/router";
-import * as _ from "underscore";
-import {EygleFile} from "../../../../../../commons/models/File";
+import {MoviesService} from '../movies.service';
+import {Crew, Movie} from '../../../../../../commons/models/Movie';
+import {ActivatedRoute} from '@angular/router';
+import * as _ from 'underscore';
+import {EygleFile} from '../../../../../../commons/models/File';
+import {SlickConfig} from '../../../../utils/slick-config';
 
 @Component({
   selector: 'ems-movie',
@@ -37,8 +38,14 @@ export class MovieComponent implements OnInit {
    */
   public filesSize: number;
 
+  /**
+   * Slick conf
+   */
+  public slickConf: any;
+
   constructor(private moviesService: MoviesService, private route: ActivatedRoute) {
     this.isLoading = true;
+    this.slickConf = SlickConfig.generate(100, 260 + 25 * 2);
   }
 
   ngOnInit() {
@@ -47,10 +54,10 @@ export class MovieComponent implements OnInit {
       this.isLoading = false;
       this.movie = res;
       this.directors = _.filter(res.crew, c => {
-        return c.job === 'Director'
+        return c.job === 'Director';
       });
       this.writers = _.filter(res.crew, c => {
-        return c.job === 'Writer'
+        return c.job === 'Writer';
       });
       this.filesSize = _.reduce(<any>res.files, (s, f: EygleFile) => {
         return s + f.size;
@@ -63,12 +70,5 @@ export class MovieComponent implements OnInit {
     const m = Math.round((this.movie.runtime % 60));
 
     return (h ? h + ' h' : '') + (m ? (h ? ' ' : '') + m + ' min' : '');
-  }
-
-  public filterCrew(job: string): Crew[] {
-    return _.filter(this.movie.crew, (c: Crew) => {
-      console.log(c.name, c.job);
-      return c.job === job;
-    });
   }
 }
