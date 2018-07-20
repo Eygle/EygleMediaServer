@@ -7,22 +7,14 @@
       <div>
         <div fxLayout="row" fxLayoutAlign="space-between center">
           <h2 translate="HOME.LAST_MOVIES"></h2>
-          <div class="sliders-actions">
-            <mat-icon (click)="movieSlick.slickPrev()" [ngClass]="{disabled: movieSlick.disableSlidePrev()}">
-              chevron_left
-            </mat-icon>
-            <mat-icon (click)="movieSlick.slickNext()" [ngClass]="{disabled: movieSlick.disableSlideNext()}">
-              chevron_right
-            </mat-icon>
-          </div>
+          <ems-slick-paginator class="sliders-actions" [slick]="slick1"></ems-slick-paginator>
         </div>
 
         <div class="loading" *ngIf="areLoading.movies" fxLayout="row" fxLayoutAlign="center center">
           <mat-spinner></mat-spinner>
         </div>
 
-        <ngx-slick class="no-arrows" [config]="movieSlick.config"
-                   *ngIf="!areLoading.movies" (init)="movieSlick.init($event)">
+        <ngx-slick class="no-arrows" [config]="slickConf" #slick1>
           <div ngxSlickItem *ngFor="let movie of movies" class="slide">
             <ems-media [media]="movie" route="movies" placeholderIcon="movie"></ems-media>
           </div>
@@ -32,22 +24,14 @@
       <div>
         <div fxLayout="row" fxLayoutAlign="space-between center">
           <h2 translate="HOME.LAST_TV_SHOWS"></h2>
-          <div class="sliders-actions">
-            <mat-icon (click)="tvShowsSlick.slickPrev()" [ngClass]="{disabled: tvShowsSlick.disableSlidePrev()}">
-              chevron_left
-            </mat-icon>
-            <mat-icon (click)="tvShowsSlick.slickNext()" [ngClass]="{disabled: tvShowsSlick.disableSlideNext()}">
-              chevron_right
-            </mat-icon>
-          </div>
+          <ems-slick-paginator class="sliders-actions" [slick]="slick2"></ems-slick-paginator>
         </div>
 
         <div class="loading" *ngIf="areLoading.tvShows" fxLayout="row" fxLayoutAlign="center center">
           <mat-spinner></mat-spinner>
         </div>
 
-        <ngx-slick class="no-arrows" [config]="tvShowsSlick.config"
-                   *ngIf="!areLoading.tvShows" (init)="tvShowsSlick.init($event)">
+        <ngx-slick class="no-arrows" [config]="slickConf" #slick2>
           <div ngxSlickItem *ngFor="let tvShow of tvShows" class="slide">
             <ems-media [media]="tvShow" route="tv-shows" placeholderIcon="tv"></ems-media>
           </div>

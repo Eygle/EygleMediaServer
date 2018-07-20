@@ -1,0 +1,10 @@
+@import "~eygle-core/client/core-common";
+
+mat-icon {
+  cursor: pointer;
+
+  &.disabled {
+    cursor: default;
+    color: transparentize($font-color, 0.6);
+  }
+}
