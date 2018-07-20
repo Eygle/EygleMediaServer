@@ -45,6 +45,8 @@ import {MediaComponent} from './components/media/media.component';
 import {EygleCoreModule} from 'eygle-core/client/core.module';
 import {AuthService} from 'eygle-core/client/services/auth.service';
 import {UserComponent} from './content/admin-panel/users/user/user.component';
+import {SlickComponent} from './components/slick/slick/slick.component';
+import {SlickPaginatorComponent} from './components/slick/slick-paginator/slick-paginator.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -64,7 +66,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     TvShowsComponent,
     MovieComponent,
     MediaComponent,
-    UserComponent
+    UserComponent,
+    SlickComponent,
+    SlickPaginatorComponent
   ],
   imports: [
     BrowserModule,
