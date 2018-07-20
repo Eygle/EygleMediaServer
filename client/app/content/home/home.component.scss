@@ -1,31 +1,42 @@
+@import "~eygle-core/client/core-common";
+
 .main {
   font-weight: bold;
 }
 
-$ngu-btns-size: 30px;
-
-ngu-carousel {
-  padding-top: $ngu-btns-size + 10px;
-}
-
-mat-icon[ngucarouselnext], mat-icon[ngucarouselprev] {
-
-  position: absolute;
-  top: 0;
-  width: $ngu-btns-size;
-  height: $ngu-btns-size;
-  line-height: $ngu-btns-size;
+.sliders-actions {
   cursor: pointer;
 
-  &:hover {
-    color: white;
+  .disabled {
+    cursor: default;
+    color: transparentize($font-color, 0.6);
   }
 }
 
-mat-icon[ngucarouselnext] {
-  right: 0;
-}
-
-mat-icon[ngucarouselprev] {
-  right: $ngu-btns-size + 10px;
-}
+//$ngu-btns-size: 30px;
+//
+//ngu-carousel {
+//  padding-top: $ngu-btns-size + 10px;
+//}
+//
+//mat-icon[ngucarouselnext], mat-icon[ngucarouselprev] {
+//
+//  position: absolute;
+//  top: 0;
+//  width: $ngu-btns-size;
+//  height: $ngu-btns-size;
+//  line-height: $ngu-btns-size;
+//  cursor: pointer;
+//
+//  &:hover {
+//    color: white;
+//  }
+//}
+//
+//mat-icon[ngucarouselnext] {
+//  right: 0;
+//}
+//
+//mat-icon[ngucarouselprev] {
+//  right: $ngu-btns-size + 10px;
+//}

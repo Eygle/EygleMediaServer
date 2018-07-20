@@ -5,33 +5,53 @@
     </div>
     <div class="content" fxFlex="flex" fxLayout="column" [perfectScrollbar]="config">
       <div>
-        <h2 translate="HOME.LAST_MOVIES"></h2>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <h2 translate="HOME.LAST_MOVIES"></h2>
+          <div class="sliders-actions">
+            <mat-icon (click)="movieSlick.slickPrev()" [ngClass]="{disabled: movieSlick.disableSlidePrev()}">
+              chevron_left
+            </mat-icon>
+            <mat-icon (click)="movieSlick.slickNext()" [ngClass]="{disabled: movieSlick.disableSlideNext()}">
+              chevron_right
+            </mat-icon>
+          </div>
+        </div>
+
         <div class="loading" *ngIf="areLoading.movies" fxLayout="row" fxLayoutAlign="center center">
           <mat-spinner></mat-spinner>
         </div>
 
-        <ngu-carousel [inputs]="carousels" *ngIf="!areLoading.movies">
-          <ngu-item NguCarouselItem *ngFor="let movie of movies">
+        <ngx-slick class="carousel no-arrows" #slickModal="slick-modal" [config]="movieSlick.config"
+                   *ngIf="!areLoading.movies" (init)="movieSlick.init($event)">
+          <div ngxSlickItem *ngFor="let movie of movies" class="slide">
             <ems-media [media]="movie" route="movies" placeholderIcon="movie"></ems-media>
-          </ngu-item>
-          <mat-icon NguCarouselPrev class='leftRs'>chevron_left</mat-icon>
-          <mat-icon NguCarouselNext class='rightRs'>chevron_right</mat-icon>
-        </ngu-carousel>
+          </div>
+        </ngx-slick>
       </div>
 
       <div>
-        <h2 translate="HOME.LAST_TV_SHOWS">TV Shows</h2>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <h2 translate="HOME.LAST_TV_SHOWS"></h2>
+          <div class="sliders-actions">
+            <mat-icon (click)="tvShowsSlick.slickPrev()" [ngClass]="{disabled: tvShowsSlick.disableSlidePrev()}">
+              chevron_left
+            </mat-icon>
+            <mat-icon (click)="tvShowsSlick.slickNext()" [ngClass]="{disabled: tvShowsSlick.disableSlideNext()}">
+              chevron_right
+            </mat-icon>
+          </div>
+        </div>
+
         <div class="loading" *ngIf="areLoading.tvShows" fxLayout="row" fxLayoutAlign="center center">
           <mat-spinner></mat-spinner>
         </div>
 
-        <ngu-carousel [inputs]="carousels" *ngIf="!areLoading.tvShows">
-          <ngu-item NguCarouselItem *ngFor="let tvShow of tvShows">
+        <ngx-slick class="carousel no-arrows" #slickModal="slick-modal" [config]="tvShowsSlick.config"
+                   *ngIf="!areLoading.tvShows" (init)="tvShowsSlick.init($event)">
+          <div ngxSlickItem *ngFor="let tvShow of tvShows" class="slide">
             <ems-media [media]="tvShow" route="tv-shows" placeholderIcon="tv"></ems-media>
-          </ngu-item>
-          <mat-icon NguCarouselPrev class='leftRs'>chevron_left</mat-icon>
-          <mat-icon NguCarouselNext class='rightRs'>chevron_right</mat-icon>
-        </ngu-carousel>
+          </div>
+        </ngx-slick>
       </div>
     </div>
   </div>

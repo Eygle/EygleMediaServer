@@ -1,2 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~eygle-core/client/core";
+
+ngx-slick.no-arrows {
+
+  button.slick-arrow {
+    display: none !important;
+  }
+}

@@ -22,7 +22,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {CookieService} from 'ngx-cookie-service';
 import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
-import {NguCarouselModule} from '@ngu/carousel';
+import {SlickModule} from 'ngx-slick';
 
 import {AppComponent} from './app.component';
 import {FilesComponent} from './content/media/files/files.component';
@@ -76,7 +76,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     TranslateModule.forRoot(),
     FormsModule,
     PerfectScrollbarModule,
-    NguCarouselModule,
+    SlickModule.forRoot(),
 
     MatToolbarModule, MatSidenavModule,
     MatButtonModule, MatCheckboxModule, MatInputModule, MatFormFieldModule, MatSelectModule,

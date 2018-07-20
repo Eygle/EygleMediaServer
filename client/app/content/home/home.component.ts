@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {NguCarousel} from '@ngu/carousel';
+import {AfterViewChecked, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {MoviesService} from '../media/movies/movies.service';
 import {TvShowsService} from '../media/tv-shows/tv-shows.service';
 import {Movie} from '../../../../commons/models/Movie';
@@ -7,13 +6,14 @@ import {TVShow} from '../../../../commons/models/TVShow';
 import {EPermission} from 'eygle-core/commons/core.enums';
 import {AuthService} from 'eygle-core/client/services/auth.service';
 import {ConfigService} from 'eygle-core/client/services/config.service';
+import {Slick} from '../../utils/slick';
 
 @Component({
   selector: 'ems-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewChecked {
 
   /**
    * List of n last movies
@@ -31,24 +31,32 @@ export class HomeComponent implements OnInit {
   public areLoading: { movies: boolean, tvShows: boolean };
 
   /**
-   * Carousels config
+   * Movie slick
    */
-  public carousels: NguCarousel;
+  public movieSlick: Slick;
+
+  /**
+   * TV Shows slick
+   */
+  public tvShowsSlick: Slick;
 
   constructor(private auth: AuthService,
               private moviesService: MoviesService,
               private tvShowService: TvShowsService,
-              private config: ConfigService) {
-    if (this.auth.isGuest()) {
-      this.config.setSettings({
-        layout: {
-          navbar: true,
-          toolbar: false
-        }
-      });
-    }
-
+              private config: ConfigService,
+              private cdRef: ChangeDetectorRef) {
+    this.config.setSettings({
+      layout: {
+        navbar: true,
+        toolbar: !this.auth.isGuest()
+      }
+    });
     this.areLoading = {movies: true, tvShows: true};
+
+    const sidenavNPaddingWidth = 260 + 25 * 2;
+    const itemWidth = 174;
+    this.movieSlick = new Slick(itemWidth, sidenavNPaddingWidth);
+    this.tvShowsSlick = new Slick(itemWidth, sidenavNPaddingWidth);
   }
 
   ngOnInit() {
@@ -65,21 +73,17 @@ export class HomeComponent implements OnInit {
         this.areLoading.tvShows = false;
       });
     }
-
-    this.carousels = {
-      grid: {xs: 1, sm: 3, md: 4, lg: 5, all: 0},
-      speed: 400,
-      easing: 'ease',
-      point: {
-        visible: false
-      },
-      touch: true,
-      loop: false,
-      custom: 'banner'
-    };
   }
 
-  isGuest() {
+  ngAfterViewChecked() {
+    this.cdRef.detectChanges();
+  }
+
+  /**
+   * Is current user a guest
+   * @return {boolean}
+   */
+  public isGuest(): boolean {
     return this.auth.isGuest();
   }
 }
