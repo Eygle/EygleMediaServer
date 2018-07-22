@@ -94,8 +94,10 @@ export class FilesComponent implements OnInit {
       .subscribe((res: [EygleFile]) => {
         this.dataSource.data = res;
         this.isLoading = false;
-        this.directiveScroll.update();
-        this.directiveScroll.scrollTo(0, 0, 100);
+        if (this.directiveScroll) {
+          this.directiveScroll.update();
+          this.directiveScroll.scrollTo(0, 0, 100);
+        }
       });
   }
 

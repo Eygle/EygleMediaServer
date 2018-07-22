@@ -2,12 +2,7 @@ import {Episode} from './Episode';
 import {Media} from "./Media";
 
 export class TVShow extends Media {
-  tvdbId: number;
-  imdbId: number;
-
   banner: string;
-  genres: [{ type: string }];
-  overview: string;
 
   actors: [string]; // TODO change
 
@@ -17,5 +12,9 @@ export class TVShow extends Media {
   end: Date;
   network: string;
 
+  status: string;
+
   episodesList: Array<Episode>;
+
+  tvdbId: number;
 }

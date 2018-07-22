@@ -13,7 +13,7 @@ const config: any = {
     'dbCollectionsPrefix': 'EMS_',
     'sessionCookieName': 'eygle-connect.sid',
     'includeEmailUnsubscribe': true,
-    'activateCSRFSecurity': true,
+    'activateCSRFSecurity': false,
   },
   client: {
     development: {

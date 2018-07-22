@@ -76,7 +76,7 @@
 
         <div class="actors-list">
           <div fxLayout="row" fxLayoutAlign="space-between center">
-            <h2 translate="HOME.LAST_MOVIES"></h2>
+            <h2 translate="COMMON.ACTORS"></h2>
             <ems-slick-paginator class="sliders-actions" [slick]="slick1"></ems-slick-paginator>
           </div>
 
@@ -85,9 +85,9 @@
               <div>
                 <div class="people">
                   <div class="image-crop">
-                    <!--<img *ngIf="actor.image" src="{{actor.image}}" alt="{{actor.image}}"/>-->
-                    <div class="placeholder" fxLayout="row" fxLayoutAlign="center center">
-                      <mat-icon>people</mat-icon>
+                    <div class="image" *ngIf="actor.image" [style.backgroundImage]="'url(' + actor.image + ')'"></div>
+                    <div *ngIf="!actor.image" class="placeholder" fxLayout="row" fxLayoutAlign="center center">
+                      <mat-icon>person</mat-icon>
                     </div>
                     <div class="image-hover">
                       <div fxLayout="row" fxLayoutAlign="center center">
@@ -96,8 +96,10 @@
                     </div>
                   </div>
                   <div class="info">
-                    <div class="title">{{actor.name}}</div>
-                    <div class="subtitle" *ngIf="actor.character">{{actor.character}}</div>
+                    <div class="title" matTooltip="{{actor.name}}" matTooltipShowDelay="300">{{actor.name}}</div>
+                    <div class="subtitle" *ngIf="actor.character" matTooltip="{{actor.character}}"
+                         matTooltipShowDelay="300">{{actor.character}}
+                    </div>
                   </div>
                 </div>
               </div>

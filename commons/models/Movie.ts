@@ -4,8 +4,6 @@ import {Media} from "./Media";
 export class Movie extends Media {
   originalTitle: string;
   countries: [{ type: string }];
-  genres: { type: string }[];
-  overview: string;
   budget: number;
   revenue: number;
   originalLanguage: string;
@@ -18,10 +16,9 @@ export class Movie extends Media {
 
   videos: Video[];
 
-  tmdbId: number;
-  imdbId: string;
-
   files: EygleFile[];
+
+  tmdbId: number;
 }
 
 export class Cast {

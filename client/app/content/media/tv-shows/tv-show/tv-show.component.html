@@ -1,0 +1,75 @@
+<div fxLayout="column" class="unselectable">
+  <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+      <div class="title" *ngIf="!isLoading && tvShow">{{tvShow.title}}</div>
+    </div>
+  </div>
+
+  <div class="content" fxFlex="flex" fxLayout="row" fxLayoutAlign="center stretch" [perfectScrollbar]="config">
+    <div class="loading" *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <div fxLayout="row" *ngIf="!isLoading && tvShow">
+      <div class="poster-container">
+        <img src="{{tvShow.poster}}" *ngIf="tvShow.poster" alt="{{tvShow.title}}"/>
+        <div class="placeholder" *ngIf="!tvShow.poster" fxLayout="row" fxLayoutAlign="center center">
+          <mat-icon>tvShow</mat-icon>
+        </div>
+      </div>
+      <div fxFlex class="info-container">
+        <div class="main">
+          <div fxLayout="row" fxLayoutAlign="start center"><h2>{{tvShow.title}}</h2></div>
+          <div class="subtitle">{{tvShow.start.getFullYear()}}</div>
+          <div class="info" fxLayout="row" fxLayoutAlign="space-between center">
+            <div>
+              <span>{{tvShow.network}}</span>
+              <span class="separator">·</span>
+              <span tr>{{'TV_SHOWS.STATUSES.' + tvShow.status.toUpperCase() | translate}}</span>
+            </div>
+            <div>{{tvShow.genres.join(', ')}}</div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="line">
+            {{tvShow.overview}}
+          </div>
+        </div>
+
+        <div class="actors-list">
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <h2 translate="COMMON.ACTORS"></h2>
+            <ems-slick-paginator class="sliders-actions" [slick]="slick1"></ems-slick-paginator>
+          </div>
+
+          <ngx-slick class="no-arrows" [config]="slickConf" #slick1>
+            <div ngxSlickItem *ngFor="let actor of tvShow.actors" class="slide">
+              <div>
+                <div class="people">
+                  <div class="image-crop">
+                    <div class="image" *ngIf="actor.image" [style.backgroundImage]="'url(' + actor.image + ')'"></div>
+                    <div *ngIf="!actor.image" class="placeholder" fxLayout="row" fxLayoutAlign="center center">
+                      <mat-icon>person</mat-icon>
+                    </div>
+                    <div class="image-hover">
+                      <div fxLayout="row" fxLayoutAlign="center center">
+                        <mat-icon>search</mat-icon>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="info">
+                    <div class="title" matTooltip="{{actor.name}}" matTooltipShowDelay="300">{{actor.name}}</div>
+                    <div class="subtitle" *ngIf="actor.character" matTooltip="{{actor.character}}"
+                         matTooltipShowDelay="300">{{actor.character}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ngx-slick>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

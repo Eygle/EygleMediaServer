@@ -8,6 +8,10 @@ export const locale = {
     'ADMIN_PANEL': 'Panneau d\'administration',
   },
 
+  'COMMON': {
+    'ACTORS': 'Acteurs'
+  },
+
   // HOME
   'HOME': {
     'TITLE': 'Accueil',
@@ -35,7 +39,11 @@ export const locale = {
 
   // TV SHOWS
   'TV_SHOWS': {
-    'TITLE': 'Séries'
+    'TITLE': 'Séries',
+    'STATUSES': {
+      'CONTINUING': 'En cours',
+      'ENDED': 'Terminé'
+    }
   },
 
   // ALL DOWNLOADS

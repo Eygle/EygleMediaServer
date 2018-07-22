@@ -9,6 +9,7 @@ import {MovieComponent} from './content/media/movies/movie/movie.component';
 import {UserComponent} from './content/admin-panel/users/user/user.component';
 import {IRouteItem} from 'eygle-core/client/typings/route-item.interface';
 import {EygleCoreRoutingModule} from 'eygle-core/client/core-routing.module';
+import {TvShowComponent} from "./content/media/tv-shows/tv-show/tv-show.component";
 
 let res: IRouteItem[] = [
   {
@@ -44,6 +45,11 @@ let res: IRouteItem[] = [
     access: EPermission.SeeTVShows,
     category: 'MEDIAS',
     order: 20
+  },
+  {
+    path: 'tv-shows/:id',
+    component: TvShowComponent,
+    access: EPermission.SeeTVShows,
   },
   {
     path: 'files',

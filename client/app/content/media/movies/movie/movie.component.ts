@@ -5,6 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import * as _ from 'underscore';
 import {EygleFile} from '../../../../../../commons/models/File';
 import {SlickConfig} from '../../../../utils/slick-config';
+import {ConfigService} from "eygle-core/client/services/config.service";
 
 @Component({
   selector: 'ems-movie',
@@ -43,9 +44,12 @@ export class MovieComponent implements OnInit {
    */
   public slickConf: any;
 
-  constructor(private moviesService: MoviesService, private route: ActivatedRoute) {
+  constructor(private moviesService: MoviesService, private route: ActivatedRoute, config: ConfigService) {
+    config.setSettings({layout: {toolbar: true, navbar: true}});
     this.isLoading = true;
-    this.slickConf = SlickConfig.generate(100, 260 + 25 * 2);
+    const sidenavNPadding = 260 + 25 * 2;
+    // Rest of page width = sidenav + sidenav content padding + internal padding + poster part width
+    this.slickConf = SlickConfig.generate(135, sidenavNPadding + 20 * 2 + (window.innerWidth - sidenavNPadding) * .3);
   }
 
   ngOnInit() {
