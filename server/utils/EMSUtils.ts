@@ -4,14 +4,29 @@ import {EEnv} from 'eygle-core/commons/core.enums';
 import ServerConfig from 'eygle-core/server/utils/ServerConfig';
 
 class EMSUtils {
-  public mediasRoot: string;
+  /**
+   * Media root
+   */
+  public mediaRoot: string;
+
+  /**
+   * Path where the movies are stored
+   */
+  public moviesRoot: string;
+
+  /**
+   * Path where the tv shows are stores
+   */
+  public tvShowsRoot: string;
 
   constructor() {
-    this.mediasRoot = path.normalize(EEnv.Dev === ServerConfig.env ? `${ServerConfig.root}/../medias` : `${ServerConfig.filesRoot}/medias`);
+    this.mediaRoot = path.normalize(EEnv.Dev === ServerConfig.env ? `${ServerConfig.root}/../medias` : `${ServerConfig.filesRoot}/medias`);
+    this.moviesRoot = path.join(this.mediaRoot, 'movies');
+    this.tvShowsRoot = path.join(this.mediaRoot, 'tv-shows');
   }
 
   public getFileRealPath(file: EygleFile) {
-    let filePath = this.mediasRoot;
+    let filePath = this.mediaRoot;
 
     if (file.path) {
       filePath += `/${file.path}`;
