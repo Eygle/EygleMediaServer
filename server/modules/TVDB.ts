@@ -69,7 +69,7 @@ export interface ITVDBEpisode {
   id: number;
   episodeName: string;
   overview: string;
-  firstAired: string;
+  firstAired: string | Date;
   airedSeason: number;
   airedEpisodeNumber: number;
 }

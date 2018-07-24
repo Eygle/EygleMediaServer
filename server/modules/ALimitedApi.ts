@@ -96,7 +96,6 @@ abstract class ALimitedApi {
             }
           });
       } else {
-        console.log('next call: ', this.minRequestInterval - diff);
         setTimeout(() => this._processQueue(true), this.minRequestInterval - diff);
       }
     }

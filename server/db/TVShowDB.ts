@@ -89,6 +89,23 @@ export default class TVShowDB extends ADBModel {
           });
         item.runtime = parseInt(t.runtime);
         item.status = t.status;
+
+        // Set end date if status is Ended.
+        if (item.status === 'Ended') {
+          let lastDate = null;
+
+          for (const episode of t.episodes) {
+            episode.firstAired = new Date(<string>episode.firstAired);
+            if (!lastDate || episode.firstAired > lastDate) {
+              lastDate = episode.firstAired;
+            }
+          }
+
+          if (lastDate) {
+            item.end = lastDate;
+          }
+        }
+
         defer.resolve(create ? this.create(item) : item);
       });
 

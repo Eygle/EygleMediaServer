@@ -30,9 +30,10 @@ export const fileSchema: mongoose.Schema = DB.createSchema({
     codec: String,
     audio: String,
     group: String,
-    excess: [{
-      type: String
-    }]
+    excess: {
+      type: [String],
+      'default': null
+    }
   },
 
   parent: {type: String, ref: ServerConfig.dbCollectionsPrefix + 'File'},

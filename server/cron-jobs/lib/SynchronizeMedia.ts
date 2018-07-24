@@ -57,11 +57,6 @@ export abstract class SynchronizeMedia extends AJob {
   private readonly _mediaModel: any;
 
   /**
-   * List of videos extensions
-   */
-  private readonly _videoExtensions: Array<string>;
-
-  /**
    * Path where all media are stored
    */
   private readonly _mediaPath: string;
@@ -72,11 +67,7 @@ export abstract class SynchronizeMedia extends AJob {
     this.environments = [EEnv.Prod];
     this._mediaPath = mediaPath;
     this._mediaModel = model;
-
-    this._dumpPath = EEnv.Dev === ServerConfig.env ? `${ServerConfig.root}/../${dump}`
-      : `${ServerConfig.filesRoot}/${dump}`;
-    this._videoExtensions = ['.avi', '.mkv', '.webm', '.flv', '.vob', '.ogg', '.ogv', '.mov', '.qt',
-      '.wmv', '.mp4', '.m4p', '.m4v', '.mpg', '.mp2', '.mpeg', '.mpe', '.mpv'];
+    this._dumpPath = EEnv.Dev === ServerConfig.env ? `${ServerConfig.root}/../${dump}` : `${ServerConfig.filesRoot}/${dump}`;
 
     if (!fs.existsSync(ServerConfig.filesRoot)) {
       fs.mkdirSync(ServerConfig.filesRoot);
@@ -269,15 +260,6 @@ export abstract class SynchronizeMedia extends AJob {
 
       return file;
     });
-  }
-
-  /**
-   * Check if file is a video using it's path extension
-   * @param filename
-   * @returns {boolean}
-   */
-  private _isVideo(filename: string) {
-    return this._videoExtensions.indexOf(path.extname(filename)) !== -1;
   }
 
   /**

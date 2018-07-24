@@ -20,12 +20,13 @@
       <div fxFlex class="info-container">
         <div class="main">
           <div fxLayout="row" fxLayoutAlign="start center"><h2>{{tvShow.title}}</h2></div>
-          <div class="subtitle">{{tvShow.start.getFullYear()}}</div>
+          <div class="subtitle">{{tvShow.start.getFullYear()}}<span
+            *ngIf="tvShow.end"> - {{tvShow.end.getFullYear()}}</span></div>
           <div class="info" fxLayout="row" fxLayoutAlign="space-between center">
             <div>
               <span>{{tvShow.network}}</span>
               <span class="separator">·</span>
-              <span tr>{{'TV_SHOWS.STATUSES.' + tvShow.status.toUpperCase() | translate}}</span>
+              <span>{{'TV_SHOWS.STATUSES.' + tvShow.status.toUpperCase() | translate}}</span>
             </div>
             <div>{{tvShow.genres.join(', ')}}</div>
           </div>
