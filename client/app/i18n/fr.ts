@@ -43,7 +43,9 @@ export const locale = {
     'STATUSES': {
       'CONTINUING': 'En cours',
       'ENDED': 'Terminé'
-    }
+    },
+    'SEASON': 'Saison',
+    'EPISODES': 'épisodes'
   },
 
   // ALL DOWNLOADS

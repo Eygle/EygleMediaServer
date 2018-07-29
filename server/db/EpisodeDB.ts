@@ -19,7 +19,7 @@ export default class EpisodeDB extends ADBModel {
     const defer = q.defer();
 
     this._model.find()
-      .where('tvShows').equals(tid)
+      .where('tvShow').equals(tid)
       .populate('files')
       .exec((err, item) => {
         if (err) return defer.reject(err);

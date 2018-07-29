@@ -4,6 +4,7 @@ import EpisodeDB from './EpisodeDB';
 import {ITVDBShow} from '../modules/TVDB';
 import {tvShowSchema} from '../schemas/tvShow.schema';
 import ADBModel from 'eygle-core/server/db/ADBModel';
+import Utils from "eygle-core/commons/utils/Utils";
 
 export default class TVShowDB extends ADBModel {
   /**
@@ -18,7 +19,7 @@ export default class TVShowDB extends ADBModel {
       .then((tvShow: any) => {
         if (tvShow) {
           tvShow = tvShow.toObject();
-          EpisodeDB.findAllByTVShowId(tvShow._id.toString())
+          EpisodeDB.findAllByTVShowId(Utils.getId(tvShow))
             .then(items => {
               tvShow.episodesList = items;
               defer.resolve(tvShow);

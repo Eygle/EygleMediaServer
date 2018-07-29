@@ -33,43 +33,68 @@
         </div>
 
         <div class="block">
-          <div class="line">
-            {{tvShow.overview}}
+          <div class="season" *ngFor="let season of seasons">
+            <div class="image-crop">
+              <div class="image" *ngIf="season.image" [style.backgroundImage]="'url(' + season.image + ')'"></div>
+              <div *ngIf="!season.image" class="placeholder" fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon>person</mat-icon>
+              </div>
+              <div class="image-hover">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                  <mat-icon>eye</mat-icon>
+                </div>
+              </div>
+            </div>
+
+            <div class="info">
+              <div class="title">{{'TV_SHOWS.SEASON' | translate}} {{season.nbr}}</div>
+              <div class="subtitle">{{season.episodes.length}} {{'TV_SHOWS.EPISODES' | translate}}</div>
+            </div>
           </div>
         </div>
 
-        <div class="actors-list">
-          <div fxLayout="row" fxLayoutAlign="space-between center">
-            <h2 translate="COMMON.ACTORS"></h2>
-            <ems-slick-paginator class="sliders-actions" [slick]="slick1"></ems-slick-paginator>
+        <div class="tv-show-info">
+          <div class="block">
+            <div class="line">
+              {{tvShow.overview}}
+            </div>
           </div>
 
-          <ngx-slick class="no-arrows" [config]="slickConf" #slick1>
-            <div ngxSlickItem *ngFor="let actor of tvShow.actors" class="slide">
-              <div>
-                <div class="people">
-                  <div class="image-crop">
-                    <div class="image" *ngIf="actor.image" [style.backgroundImage]="'url(' + actor.image + ')'"></div>
-                    <div *ngIf="!actor.image" class="placeholder" fxLayout="row" fxLayoutAlign="center center">
-                      <mat-icon>person</mat-icon>
-                    </div>
-                    <div class="image-hover">
-                      <div fxLayout="row" fxLayoutAlign="center center">
-                        <mat-icon>search</mat-icon>
+          <div class="actors-list">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <h2 translate="COMMON.ACTORS"></h2>
+              <ems-slick-paginator class="sliders-actions" [slick]="slick1"></ems-slick-paginator>
+            </div>
+
+            <ngx-slick class="no-arrows" [config]="slickConf" #slick1>
+              <div ngxSlickItem *ngFor="let actor of tvShow.actors" class="slide">
+                <div>
+                  <div class="people">
+                    <div class="image-crop">
+                      <div class="image" *ngIf="actor.image" [style.backgroundImage]="'url(' + actor.image + ')'"></div>
+                      <div *ngIf="!actor.image" class="placeholder" fxLayout="row" fxLayoutAlign="center center">
+                        <mat-icon>person</mat-icon>
+                      </div>
+                      <div class="image-hover">
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                          <mat-icon>search</mat-icon>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="info">
-                    <div class="title" matTooltip="{{actor.name}}" matTooltipShowDelay="300">{{actor.name}}</div>
-                    <div class="subtitle" *ngIf="actor.character" matTooltip="{{actor.character}}"
-                         matTooltipShowDelay="300">{{actor.character}}
+                    <div class="info">
+                      <div class="title" matTooltip="{{actor.name}}" matTooltipShowDelay="300">{{actor.name}}</div>
+                      <div class="subtitle" *ngIf="actor.character" matTooltip="{{actor.character}}"
+                           matTooltipShowDelay="300">{{actor.character}}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </ngx-slick>
+            </ngx-slick>
+          </div>
         </div>
+
+        <div class="season-info"></div>
       </div>
     </div>
   </div>
