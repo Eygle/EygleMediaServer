@@ -1,12 +1,12 @@
-import * as _ from "underscore";
+import * as _ from 'underscore';
 
 import {Component, OnInit} from '@angular/core';
-import {TVShow} from "../../../../../../commons/models/TVShow";
-import {SlickConfig} from "../../../../utils/slick-config";
-import {ConfigService} from "eygle-core/client/services/config.service";
-import {ActivatedRoute} from "@angular/router";
-import {TvShowsService} from "../tv-shows.service";
-import {Episode} from "../../../../../../commons/models/Episode";
+import {TVShow} from '../../../../../../commons/models/TVShow';
+import {SlickConfig} from '../../../../utils/slick-config';
+import {ConfigService} from 'eygle-core/client/services/config.service';
+import {ActivatedRoute} from '@angular/router';
+import {TvShowsService} from '../tv-shows.service';
+import {Episode} from '../../../../../../commons/models/Episode';
 
 @Component({
   selector: 'ems-tv-show',
@@ -25,7 +25,15 @@ export class TvShowComponent implements OnInit {
    */
   public tvShow: TVShow;
 
+  /**
+   * List of seasons
+   */
   public seasons: [{ nbr: number, episodes: Episode[] }];
+
+  /**
+   * Selected season
+   */
+  public selectedSeason: { nbr: number, episodes: Episode[] };
 
   /**
    * Slick conf
@@ -58,6 +66,12 @@ export class TvShowComponent implements OnInit {
         }
 
         season.episodes.push(episode);
+      }
+
+      for (const season of this.seasons) {
+        season.episodes = _.sortBy(season.episodes, (e) => {
+          return e.number;
+        });
       }
 
       console.log(this.seasons);
